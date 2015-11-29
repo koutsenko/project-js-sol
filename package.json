@@ -8,6 +8,6 @@
 	"inkscape" : "*",
 	"less" : "*",
 	"pngquant" : "*",
-	"typescript" : "*"
+	"typescript" : "1.4.1"
     }
 }
