@@ -1,0 +1,13 @@
+{
+    "name" : "SolitaireOnline",
+    "author" : "Koutsenko Dmitry <koutsenko@gmail.com>",
+    "private" : true,
+    "version" : "1.0.1",
+    "dependencies" : {
+	"closure-compiler" : "*",
+	"inkscape" : "*",
+	"less" : "*",
+	"pngquant" : "*",
+	"typescript" : "*"
+    }
+}
