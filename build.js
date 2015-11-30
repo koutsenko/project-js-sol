@@ -17,26 +17,13 @@ var fs = require('fs'),
  * Сборочные утилиты
  */
 var tools = {
-    ts: require('typescript'),
     js: require('closure-compiler')
-};
-
-/**
- * Исходные файлы
- */
-var paths = {
-    //TODO добавить ручной обход всех исходников
-    ts: [
-        'source/app.ts',
-        'source/controller/main.ts'
-    ]
 };
 
 /**
  * Промежуточные данные
  */
 var data = {
-    ts: undefined,
     js: undefined,
     css: undefined,
     png: []
@@ -194,32 +181,13 @@ function processCSS() {
 }
 
 function processJS() {
-    var output = '';
-    var compilerOptions = { charset: 'UTF-8' };
-    var compilerHost = tools.ts.createCompilerHost(compilerOptions);
-    compilerHost.writeFile = function (name, text) {
-        output += text;
-    };
-
-    var program = tools.ts.createProgram(paths.ts, compilerOptions, compilerHost);
-    var checker = program.getTypeChecker(true);
-    var errors = program.getDiagnostics().concat(checker.getDiagnostics()).concat(checker.emitFiles().diagnostics).map(function (e) {
-        return e.messageText;
-    });
-
-    if (errors.length) {
-        for (var i = 0; i < errors.length; i++) {
-            console.log('[TS->JS error: ', errors[i]);
-        }
-        // TODO вываливаться при ошибках, а не продолжать сборку. Сейчас все просто печатается в консоль
-    }
-
-    tools.js.compile(output, {
+    tools.js.compile(fs.readFileSync('source/app.js').toString(), {
         language_in: 'ECMASCRIPT5_STRICT',
         charset: 'UTF-8',
         compilation_level: 'ADVANCED_OPTIMIZATIONS'
     }, function(err, js, extra) {
-        // TODO нужна обработка ошибок, пока сложно смоделировать ситуацию, когда TS сгенерить код негодный для GCC
+        console.log(err)
+
         data.js = js;
         processQueue();
     });

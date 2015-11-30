@@ -4,10 +4,9 @@
     "private" : true,
     "version" : "1.0.1",
     "dependencies" : {
-	"closure-compiler" : "*",
-	"inkscape" : "*",
-	"less" : "*",
-	"pngquant" : "*",
-	"typescript" : "1.4.1"
+    "closure-compiler" : "*",
+    "inkscape" : "*",
+    "less" : "*",
+    "pngquant" : "*"
     }
 }
