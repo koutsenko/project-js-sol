@@ -38,8 +38,8 @@ var app = {
     last: {
         type: '',
         card: '',
-        target: HTMLElement = undefined,
-        parent: HTMLElement = undefined,
+        target: undefined,
+        parent: undefined,
         flipped: false
     },
     el: {},
