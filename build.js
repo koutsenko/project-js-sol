@@ -10,7 +10,11 @@ var fs = require('fs'),
     path = require('path'),
     ink = require('inkscape'),
     opt = require('pngquant'),
-    less = require('less');
+    less = require('less'),
+    memfs = require("memory-fs"),
+    webpack = require("webpack");
+
+
 
 
 /**
@@ -181,14 +185,25 @@ function processCSS() {
 }
 
 function processJS() {
-    tools.js.compile(fs.readFileSync('source/app.js').toString(), {
-        language_in: 'ECMASCRIPT5_STRICT',
-        charset: 'UTF-8',
-        compilation_level: 'ADVANCED_OPTIMIZATIONS'
-    }, function(err, js, extra) {
-        console.log(err)
-
-        data.js = js;
-        processQueue();
+    memory = new memfs();
+    var compiler = webpack({
+        entry: "./source/app.js",
+        output: {
+            path: __dirname,
+            filename: 'bundle.js'
+        }
+    });
+    compiler.outputFileSystem = memory;
+    compiler.run(function(err, stats) {
+        var path = __dirname + "/bundle.js";
+        tools.js.compile(memory.readFileSync(path).toString(), {
+            language_in: 'ECMASCRIPT5_STRICT',
+            charset: 'UTF-8',
+            compilation_level: 'ADVANCED_OPTIMIZATIONS'
+        }, function(err, js, extra) {
+            console.log(err)
+            data.js = js;
+            processQueue();
+        });
     });
 }
