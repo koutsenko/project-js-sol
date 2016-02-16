@@ -4,11 +4,11 @@
     "private" : true,
     "version" : "1.0.1",
     "dependencies" : {
-        "webpack"           : "*",
-        "memory-fs"         : "*",
-        "closure-compiler"  : "*",
-        "inkscape"          : "*",
-        "less"              : "*",
-        "pngquant"          : "*"
+        "webpack"           : "1.12.9",
+        "memory-fs"         : "0.3.0",
+        "closure-compiler"  : "0.2.12",
+        "inkscape"          : "0.0.5",
+        "less"              : "2.5.3",
+        "pngquant"          : "0.4.0"
     }
 }
