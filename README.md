@@ -45,6 +45,7 @@ There is a standalone-client, but who knows about future...
 - вся работа с css ведется через less
 - сборка html-ника командой node build
 - для сборки нужны Java и Inkscape
+- минимальный размер выдает Inkscape 0.48
 
 Багфиксы:
 - (1.0) меню не прорисовывалось в Firefox
