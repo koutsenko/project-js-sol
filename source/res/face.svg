@@ -11,9 +11,9 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   width="1000"
-   height="900"
-   viewBox="0 0 1000 900"
+   width="250"
+   height="300"
+   viewBox="0 0 250 300"
    id="cards"
    inkscape:version="0.48.5 r10040"
    sodipodi:docname="face.svg">
@@ -293,45 +293,18 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <view
-     id="BACK"
-     viewBox="0 0 250 300" />
-  <view
-     id="CK"
-     viewBox="250 0 250 300" />
-  <view
-     id="CQ"
-     viewBox="500 0 250 300" />
-  <view
-     id="CJ"
-     viewBox="750 0 250 300" />
-  <view
-     id="DK"
-     viewBox="1000 0 250 300" />
-  <view
-     id="DQ"
-     viewBox="1250 0 250 300" />
-  <view
-     id="DJ"
-     viewBox="1500 0 250 300" />
-  <view
-     id="HK"
-     viewBox="1750 0 250 300" />
-  <view
-     id="HQ"
-     viewBox="2000 0 250 300" />
-  <view
-     id="HJ"
-     viewBox="2250 0 250 300" />
-  <view
-     id="SK"
-     viewBox="2500 0 250 300" />
-  <view
-     id="SQ"
-     viewBox="2750 0 250 300" />
-  <view
-     id="SJ"
-     viewBox="3000 0 250 300" />
+  <view id="CK" viewBox="0 0 250 300" />
+  <view id="DK" viewBox="250 0 250 300" />
+  <view id="HK" viewBox="500 0 250 300" />
+  <view id="SK" viewBox="750 0 250 300" />
+  <view id="CQ" viewBox="0 300 250 300" />
+  <view id="DQ" viewBox="250 300 250 300" />
+  <view id="HQ" viewBox="500 300 250 300" />
+  <view id="SQ" viewBox="750 300 250 300" />
+  <view id="CJ" viewBox="0 600 250 300" />
+  <view id="DJ" viewBox="250 600 250 300" />
+  <view id="HJ" viewBox="500 600 250 300" />
+  <view id="SJ" viewBox="750 600 250 300" />
   <path
      d="m 94.29627,599.1868 c 29.8714,-0.27713 55.42405,1.10853 88.89441,0.27713 C 296.55807,485.19314 -49.752278,441.77579 94.29627,599.1868 z"
      id="path7505"

@@ -11,9 +11,9 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.1"
-   width="300"
-   height="200"
-   viewBox="0 0 300 200"
+   width="100"
+   height="100"
+   viewBox="0 0 100 100"
    id="cards"
    inkscape:version="0.48.4 r9939"
    sodipodi:docname="menu.svg">
@@ -4281,45 +4281,11 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
-  <view
-     id="BACK"
-     viewBox="0 0 250 300" />
-  <view
-     id="CK"
-     viewBox="250 0 250 300" />
-  <view
-     id="CQ"
-     viewBox="500 0 250 300" />
-  <view
-     id="CJ"
-     viewBox="750 0 250 300" />
-  <view
-     id="DK"
-     viewBox="1000 0 250 300" />
-  <view
-     id="DQ"
-     viewBox="1250 0 250 300" />
-  <view
-     id="DJ"
-     viewBox="1500 0 250 300" />
-  <view
-     id="HK"
-     viewBox="1750 0 250 300" />
-  <view
-     id="HQ"
-     viewBox="2000 0 250 300" />
-  <view
-     id="HJ"
-     viewBox="2250 0 250 300" />
-  <view
-     id="SK"
-     viewBox="2500 0 250 300" />
-  <view
-     id="SQ"
-     viewBox="2750 0 250 300" />
-  <view
-     id="SJ"
-     viewBox="3000 0 250 300" />
+  <view id="records" viewBox="100 0 100 100" />
+  <view id="deal" viewBox="200 0 100 100" />
+  <view id="undo" viewBox="0 100 100 100" />
+  <view id="auto" viewBox="100 100 100 100" />
+  <view id="help" viewBox="200 100 100 100" />
   <path
      style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
      d="m 217.4571,136.96 c 13.6,-3.6 25.4,-1.4 32.7,1.4 8.5,-4.1 22.8,-5.6 32.8,-1.4 l 1.1,44.8 c -14.8,-2.7 -24.7,-0.9 -34.1,1.3 -11.8,-3.8 -22.1,-2.6 -32.5,-1.3 z"
