@@ -36,13 +36,13 @@ module.exports = {
     }]
   },
   plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false,
-        drop_console: true,
-        unsafe: true
-      }
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   compress: {
+    //     warnings: false,
+    //     drop_console: true,
+    //     unsafe: true
+    //   }
+    // }),
     new ExtractTextPlugin({
       filename: 'app.min.css'
     })
