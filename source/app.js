@@ -137,6 +137,7 @@ function rebuildTable() {
     table.innerHTML = buildTable();
 }
 
+// Пока оставим функцию клон здесь
 function buildTable() {
     var table = '<span class="number head">#</span><span class="login head">игрок</span><span class="move head">ходы</span><span class="time head">время</span><br>';
 
@@ -176,73 +177,6 @@ function buildTable() {
 
     return table;
 
-}
-
-function buildRecords() {
-    // document.cookie = "record_diman=198,00:45; path=/; expires=" + (new Date((new Date).getTime() + 31536E6)).toUTCString();
-
-    var layout = '<span class="header-top">Рейтинг *</span><div class="recordstable">' + buildTable() + '</div>' +
-        '<span class="header-top">Cтатистика</span><div class="recordstable">' +
-        '<span class="key">расклады</span><span class="value">' + app.data.games + '</span><span class="dummy">&nbsp;</span><br>' +
-        '<span class="key">% побед</span><span class="value">' + (app.data.games === 0 ? 0 : Math.ceil(100 * app.data.wins / app.data.games)) + '%</span><span class="dummy">&nbsp;</span><br></div>';
-
-    layout += '<div class="close">&times;</div><div class="note">* на данном устройстве</div>';
-    layout += '<div class="recordsmask"></div>';
-    layout += '<div class="prompt"><span>Новый рекорд!</span><br><input type="text" value="игрок"/><br><div class="submit">Записать</div></div>';
-
-    return layout;
-}
-
-function buildLayout() {
-    document.body.innerHTML =
-        '<div class="game">' +
-        '<div class="version">v1.1a</div>' +
-        '<div class="wmark"><a href="mailto:koutsenko@gmail.com">©</a> Куценко Д. С., 2015<br>сборка для портала<br><span>www.solo-games.ru</span></div>' +
-        '<div class="menu">' +
-        '<div class="buttons">' +
-        '<div title="Начать новый расклад, текущий будет закрыт"        class="btn1"> <div class="face"><div>Разложить</div></div></div><span>&nbsp;</span>' +
-        '<div title="Отмена последнего сделанного хода"                 class="btn2"> <div class="face"><div>Ход назад</div></div></div><span>&nbsp;</span>' +
-        '<div title="Автозавершение игры, если открыты все карты"       class="btn3"> <div class="face"><div>Автосбор </div></div></div><span>&nbsp;</span>' +
-        '<div title="Как играть в пасьянс-косынку"                      class="btn4"> <div class="face"><div>Правила  </div></div></div><span>&nbsp;</span>' +
-        '<div title="Авторизация, статистика, рекорды"                  class="btn5"> <div class="face"><div>Рекорды  </div></div></div><span>&nbsp;</span>' +
-        '</div>' +
-        '</div>' +
-        '<div class="table">' +
-        '<div class="deck"><div class="face"></div></div>' +
-        '<div class="open"><div class="face"></div></div>' +
-        '<div class="status">"Косынка"<br>классика<br><div class="counter"></div></div>' +
-        '<div class="home1"><div class="face">Т</div></div>' +
-        '<div class="home2"><div class="face">Т</div></div>' +
-        '<div class="home3"><div class="face">Т</div></div>' +
-        '<div class="home4"><div class="face">Т</div></div>' +
-        '<div class="stack1"><div class="face">К</div></div>' +
-        '<div class="stack2"><div class="face">К</div></div>' +
-        '<div class="stack3"><div class="face">К</div></div>' +
-        '<div class="stack4"><div class="face">К</div></div>' +
-        '<div class="stack5"><div class="face">К</div></div>' +
-        '<div class="stack6"><div class="face">К</div></div>' +
-        '<div class="stack7"><div class="face">К</div></div>' +
-        '</div>' +
-        '<div class="records">' + buildRecords() + '</div>' +
-        '<div class="rules">' +
-        '<div class="close">&times;</div>' +
-        '&nbsp;&nbsp;&nbsp;&nbsp;Как играть?<br><br>' +
-        '&nbsp;&nbsp;&nbsp;&nbsp;Цель - заполнить все четыре дома картами одной масти, сначала тузы, далее двойки, тройки и так до короля. ' +
-        '<div class="image"></div><br><br>&nbsp;&nbsp;&nbsp;&nbsp;Карты берутся из колоды или со стола. ' +
-        'Открытые карты стола Вы можете перемещать по принципу: короля - на пустую стопку, не короля - на карту выше рангом и другого цвета.<br><br> ' +
-        '&nbsp;&nbsp;&nbsp;&nbsp;Сойдется ли пасьянс? Все как в жизни - зависит от везения и Вашего мастерства...' +
-        '</div>' +
-        '<div class="mask"></div>' +
-        '</div>' +
-        '<div class="mark"></div>';/* +
-        '<div class="console"></div>';*/
-
-    for (var i = 0, els = document.body.getElementsByTagName('div'); i < els.length; i++) {
-        // face это чисто оформительский элемент верстки, ссылки на них не нужны
-        if (els[i].className !== 'face' && els[i].className !== '') {
-            app.el[els[i].className] = els[i];
-        }
-    }
 }
 
 function buildCards() {
@@ -333,85 +267,85 @@ function collectCards() {
     }
 }
 
-function dealCards(state) {
-    // восстанавливаем перевернутые по окончании игры короли
-    app.data.cards['HK'].className = app.data.cards['HK'].className.replace(' flipped', '');
-    app.data.cards['DK'].className = app.data.cards['DK'].className.replace(' flipped', '');
-    app.data.cards['CK'].className = app.data.cards['CK'].className.replace(' flipped', '');
-    app.data.cards['SK'].className = app.data.cards['SK'].className.replace(' flipped', '');
+function restoreKings() {
+  // восстанавливаем перевернутые по окончании игры короли
+  app.data.cards['HK'].className = app.data.cards['HK'].className.replace(' flipped', '');
+  app.data.cards['DK'].className = app.data.cards['DK'].className.replace(' flipped', '');
+  app.data.cards['CK'].className = app.data.cards['CK'].className.replace(' flipped', '');
+  app.data.cards['SK'].className = app.data.cards['SK'].className.replace(' flipped', '');
+}
 
-    var i, j;
+function loadCards(state) {
+  var i, j;
+  // разбираем строку, она должна быть такой: dkCKH8_opH9_h1_h2_h3SA_h4_s1_s2_s3_s4_s5_s6_s7fSKoD9_2300_230 но без префиксов см ниже
+  // элементы тут app.data.cards[{'H', 'D', 'C', 'S'}{'A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'}]
+  // 0 генерирую руками сохраненку с почти законченной игрой и думаю как проверить кнопку закончить игру и надо ли увеличить кол-во раскладов
+  state = '__HAH2H3H4H5H6H7H8H9H=HJHQHK_DAD2D3D4D5D6D7D8D9D=DJDQDK_CAC2C3C4C5C6C7C8C9C=CJCQCK_SAS2S3S4S5S6S7S8S9S=SJSQ_oSK_______23:00_230';
+  var data = state.split('_');
+  // 0 - колода, 1 - опен, 2-5 - хомы, 6-13 - стеки, 14-15 - время и ход
+  for (i = 0; i < data[0].length / 2; i++) {
+      // TODO парсим колоду
+  }
+  // TODO парсим опен
+  // парсим хомы
+  for (j = 0; j < 4; j++) {
+      var target = app.el['home' + (j+1)];
+      for (i = 0; i < data[2+j].length; i += 2) {
+          target = target.appendChild(app.data.cards[data[2+j][i] + data[2+j][i+1]]);
+      }
+  }
+  // парсим стеки
+  for (j = 0; j < 7; j++) {
+      var target = app.el['stack' + (j+1)];
+      for (i = 0; i < data[6+j].length; i += 3) {
+          target = target.appendChild(app.data.cards[data[6+j][i+1] + data[6+j][i+2]]);
+          if (data[6+j][i] === 'f') {
+              target.className += ' flipped';
+          }
+      }
+  }
 
-    // FIXME неоднозначность
-    if (state === '' || state === undefined) {
-        var index = 0,
-            temp;
+  // загружаем время старта раунда
+  var time = data[13];
+  app.data.timer = new Date(new Date().getTime() - 60000 * (+(time[0] + time[1]) - 1000 * (+(time[3] + time[4])))).getTime();
 
-        for (i = 0; i < 7; i += 1) {
+  // обновляем счетчик ходов
+  app.data.moves = data[14];
 
-            app.el['stack'+(i+1)].appendChild(app.data.deck[index]);
-            if (i !== 0) {
-                app.data.deck[index].className += ' flipped';
-            }
+  increaseGamesCounter(1);
+}
 
-            for (j = 0; j < i + 1; j += 1, index += 1) {
-                if (temp) {
-                    temp.appendChild(app.data.deck[index]);
-                    if (j !== i) {
-                        app.data.deck[index].className += ' flipped';
-                    }
-                }
-                temp = app.data.deck[index];
-            }
-            temp = undefined;
-        }
+function dealCards() {
+    
+  var i, j;
+  var index = 0,
+      temp;
 
-        index = 28;
-        for (i = index; i < 50; i += 1) {
-            app.data.deck[i].appendChild(app.data.deck[i + 1]);
-        }
-        app.el['deck'].appendChild(app.data.deck[index]);
-        app.el['open'].appendChild(app.data.deck[51]);
-        unsetEnd();
-        unsetLast();
-    } else {
-        // разбираем строку, она должна быть такой: dkCKH8_opH9_h1_h2_h3SA_h4_s1_s2_s3_s4_s5_s6_s7fSKoD9_2300_230 но без префиксов см ниже
-        // элементы тут app.data.cards[{'H', 'D', 'C', 'S'}{'A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'}]
-        // 0 генерирую руками сохраненку с почти законченной игрой и думаю как проверить кнопку закончить игру и надо ли увеличить кол-во раскладов
-        state = '__HAH2H3H4H5H6H7H8H9H=HJHQHK_DAD2D3D4D5D6D7D8D9D=DJDQDK_CAC2C3C4C5C6C7C8C9C=CJCQCK_SAS2S3S4S5S6S7S8S9S=SJSQ_oSK_______23:00_230';
-        var data = state.split('_');
-        // 0 - колода, 1 - опен, 2-5 - хомы, 6-13 - стеки, 14-15 - время и ход
-        for (i = 0; i < data[0].length / 2; i++) {
-            // TODO парсим колоду
-        }
-        // TODO парсим опен
-        // парсим хомы
-        for (j = 0; j < 4; j++) {
-            var target = app.el['home' + (j+1)];
-            for (i = 0; i < data[2+j].length; i += 2) {
-                target = target.appendChild(app.data.cards[data[2+j][i] + data[2+j][i+1]]);
-            }
-        }
-        // парсим стеки
-        for (j = 0; j < 7; j++) {
-            var target = app.el['stack' + (j+1)];
-            for (i = 0; i < data[6+j].length; i += 3) {
-                target = target.appendChild(app.data.cards[data[6+j][i+1] + data[6+j][i+2]]);
-                if (data[6+j][i] === 'f') {
-                    target.className += ' flipped';
-                }
-            }
-        }
+  for (i = 0; i < 7; i += 1) {
 
-        // загружаем время старта раунда
-        var time = data[13];
-        app.data.timer = new Date(new Date().getTime() - 60000 * (+(time[0] + time[1]) - 1000 * (+(time[3] + time[4])))).getTime();
+      app.el['stack'+(i+1)].appendChild(app.data.deck[index]);
+      if (i !== 0) {
+          app.data.deck[index].className += ' flipped';
+      }
 
-        // обновляем счетчик ходов
-        app.data.moves = data[14];
+      for (j = 0; j < i + 1; j += 1, index += 1) {
+          if (temp) {
+              temp.appendChild(app.data.deck[index]);
+              if (j !== i) {
+                  app.data.deck[index].className += ' flipped';
+              }
+          }
+          temp = app.data.deck[index];
+      }
+      temp = undefined;
+  }
 
-        increaseGamesCounter(1);
-    }
+  index = 28;
+  for (i = index; i < 50; i += 1) {
+      app.data.deck[i].appendChild(app.data.deck[i + 1]);
+  }
+  app.el['deck'].appendChild(app.data.deck[index]);
+  app.el['open'].appendChild(app.data.deck[51]);       
 }
 
 function doLayout() {
@@ -1249,7 +1183,10 @@ function initHandlers() {
         scheduleHud();
         collectCards();
         shuffle(app.data.deck);
+        restoreKings();
         dealCards();
+        unsetEnd();
+        unsetLast();
     }, true);
     handlePress(app.el['btn2'], app.undoMove, true);
     handlePress(app.el['btn3'], app.completeGame, true);
@@ -1310,7 +1247,12 @@ function initXhr() {
     }
 }
 
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './js/components/app';
+
 window.onload = function() {
+
     // FIXME ужасно некрасивый код
     app.data.records = getCookie('sol_records');
     if (app.data.records === '') {
@@ -1329,14 +1271,30 @@ window.onload = function() {
         app.data.wins = 0;
     }
 
-    buildLayout();
+  ReactDOM.render((
+    <App />
+  ), document.getElementById('root'), function() {
+    for (var i = 0, els = document.body.getElementsByTagName('div'); i < els.length; i++) {
+      // face это чисто оформительский элемент верстки, ссылки на них не нужны
+      if (els[i].className !== 'face' && els[i].className !== '') {
+          app.el[els[i].className] = els[i];
+      }
+    }
     buildCards();
-    dealCards(window.location.hash);
+    if (window.location.hash) {
+      loadCards(window.location.hash);
+    } else {
+      dealCards();
+      unsetEnd();
+      unsetLast();
+    }
     doLayout();
 
     scheduleHud();
     initXhr();
     initHandlers();
     setupResize();
-
+  });
 }
+
+export default app;
