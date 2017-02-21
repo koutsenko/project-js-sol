@@ -1249,7 +1249,17 @@ function initXhr() {
 
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
 import App from './js/components/app';
+
+const store = createStore(function(action, state) {
+  if (state === undefined) {
+    state = {};
+  }
+
+  return state;
+});
 
 window.onload = function() {
 
@@ -1272,7 +1282,9 @@ window.onload = function() {
     }
 
   ReactDOM.render((
-    <App />
+    <Provider store={store}> 
+      <App />
+    </Provider>
   ), document.getElementById('root'), function() {
     for (var i = 0, els = document.body.getElementsByTagName('div'); i < els.length; i++) {
       // face это чисто оформительский элемент верстки, ссылки на них не нужны
