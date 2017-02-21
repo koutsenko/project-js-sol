@@ -12,23 +12,28 @@ module.exports = {
     filename: 'app.min.js'
   },
   module: {
-    rules: [
-      {
-        test: /\.less$/,
-        use: ExtractTextPlugin.extract({
-          use: ['css-loader', {
-            loader: 'less-loader',
-            options: {
-              compress: true
-            }
-          }]
-        })
-      },
-      {
-        test: /\.(png|ttf|woff)$/,
-        use: ['url-loader']
+    rules: [{
+      test : /\.jsx?/,
+      loader : 'babel-loader',
+      query: {
+        presets: ['react', 'es2015']
       }
-    ]
+    },
+    {
+      test: /\.less$/,
+      use: ExtractTextPlugin.extract({
+        use: ['css-loader', {
+          loader: 'less-loader',
+          options: {
+            compress: true
+          }
+        }]
+      })
+    },
+    {
+      test: /\.(png|ttf|woff)$/,
+      use: ['url-loader']
+    }]
   },
   plugins: [
     new ClosureCompiler({
