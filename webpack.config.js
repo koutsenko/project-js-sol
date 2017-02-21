@@ -1,5 +1,5 @@
-const ClosureCompiler = require('google-closure-compiler-js').webpack;
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
@@ -36,12 +36,12 @@ module.exports = {
     }]
   },
   plugins: [
-    new ClosureCompiler({
-      options: {
-        languageIn: 'ECMASCRIPT5_STRICT',
-        compilationLevel: 'ADVANCED_OPTIMIZATIONS',
-        warningLevel: 'VERBOSE'
-      },
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        drop_console: true,
+        unsafe: true
+      }
     }),
     new ExtractTextPlugin({
       filename: 'app.min.css'
