@@ -5,7 +5,7 @@ const path = require('path');
 module.exports = {
   entry: [
     path.join(__dirname, 'source', 'app.less'),
-    path.join(__dirname, 'source', 'app.js')
+    path.join(__dirname, 'source', 'EP.js')
   ],
   output: {
     path: path.join(__dirname, 'build'),
