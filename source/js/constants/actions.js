@@ -14,6 +14,7 @@ export default {
   DRAG_LEAVE_STACK      : 'DRAG_LEAVE_STACK'      ,
   GAME_END              : 'GAME_END'              ,
   GAME_START            : 'GAME_START'            ,
+  HOME_TO_DECK          : 'HOME_TO_DECK'          , /** Дурацкое авто-действие в конце игры после закрытия рекордов */
   LAY_TO_DECK           : 'LAY_TO_DECK'           , /** Тупо кладет карты с уже измененным owner в деку, это действие, а не ход, поэтому пока что мы это действие видим только во время начала игры */
   LAY_TO_STACK          : 'LAY_TO_STACK'          ,
   LAY_TO_OPEN           : 'LAY_TO_OPEN'           ,

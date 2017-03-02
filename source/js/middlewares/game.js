@@ -2,11 +2,11 @@ import actions from '../constants/actions';
 
 import recordActions from '../actions/records';
 
-const canComplete = function(board) {
+const canComplete = function(cards, board) {
   // если есть закрытые карты в стеках, автосбор пока невозможен
   for (var i = 0; i < board.stacks.length; i++) {
-    let cannotComplete = board.stacks[i].some(function(card) {
-      return card.flip;
+    let cannotComplete = board.stacks[i].some(function(id) {
+      return cards[id].flip === true;
     });
     if (cannotComplete) {
       return false;
@@ -66,7 +66,7 @@ export default function(store) {
           // TODO хотя щас я уже думаю что "масок запрета" должно быть две - на игровое поле и на меню
           // попапы в масках запрета не нуждаются
           store.dispatch({
-            value : canComplete(getState().gameCurrent.board),
+            value : canComplete(getState().gameCurrent.cards, getState().gameCurrent.board),
             type  : actions.CAN_COMPLETE
           });
           store.dispatch({

@@ -4,7 +4,7 @@ export default {
   open: function() {
     return {
       type: actions.SHOW_RECORDS
-    }
+    };
   },
   close: function() {
     return {

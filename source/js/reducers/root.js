@@ -1,12 +1,12 @@
 import consts from '../constants/actions';
 import cPlaces from '../constants/places';
 
-const buildCard = function(rank, suit, type, itemIndex, placeIndex) {
+const buildCard = function(rank, suit, type, itemIndex, placeIndex, flip) {
   return {
     id    : rank + suit,
     rank  : rank,
     suit  : suit,
-    flip  : false,
+    flip  : flip || false,
     place : {
       index : itemIndex,      // индекс карты в колонке
       owner : {
@@ -21,9 +21,9 @@ const buildEmptyGame = function() {
   let cards = {};
   var suits = ['H', 'D', 'C', 'S'];
   var ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
-  suits.forEach(function(suit) {
-    ranks.forEach(function(rank) {
-      cards[rank+suit] = buildCard(rank, suit);
+  suits.forEach(function(suit, index1) {
+    ranks.forEach(function(rank, index2) {
+      cards[rank+suit] = buildCard(rank, suit, cPlaces.DECK, index2*index1 + index2, undefined, true);
     });
   })
 
@@ -37,7 +37,7 @@ const buildEmptyGame = function() {
     canComplete: false,
     cards: cards,
     board: {
-      deck: [],
+      deck: Object.keys(cards),
       open: [],
       homes: [
         [],
@@ -232,6 +232,20 @@ export default function(state, action) {
       var newState = JSON.parse(JSON.stringify(state));
       newState.gameCurrent.elapsedTime++;
       return newState;
+
+    case consts.HOME_TO_DECK:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.gameCurrent.cards[action.id].flip = true;
+      newState.gameCurrent.cards[action.id].place = {
+        index : newState.gameCurrent.board.deck.length,
+        owner : {
+          type  : cPlaces.DECK,
+          index : undefined
+        }
+      };
+      newState.gameCurrent.board.deck.push(newState.gameCurrent.board.homes[action.index].pop());
+      return newState;
+      
 
     case consts.LOAD_SCENARIO:     
       var newState = JSON.parse(JSON.stringify(state));
