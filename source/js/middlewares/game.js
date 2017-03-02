@@ -60,7 +60,6 @@ export default function(store) {
         case actions.GAME_START:
         case actions.STACK_TO_HOME:
         case actions.OPEN_TO_HOME:
-        case actions.DECK_TO_HOME:
         case actions.OPEN_CARD:
         case actions.REVERT:
           // TODO возможно это станет единым событием, накладывающим "маску запрета" на все контролы игры

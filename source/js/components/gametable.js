@@ -17,7 +17,8 @@ class GameTable extends React.Component {
     if (!array.length) {
       return null;
     }
-    let card = array.shift();
+    let id = array.shift();
+    let card = this.props.gameCurrent.cards[id];
     return (
       <Card children={this.stackCards(array)} card={card}/>
     );
@@ -47,37 +48,37 @@ class GameTable extends React.Component {
           {openCards}
         </Open>
         <Status />
-        <Home index="1">
+        <Home index="0">
           {home1Cards}
         </Home>
-        <Home index="2">
+        <Home index="1">
           {home2Cards}
         </Home>
-        <Home index="3">
+        <Home index="2">
           {home3Cards}
         </Home>
-        <Home index="4">
+        <Home index="3">
           {home4Cards}
         </Home>          
-        <Stack index="1">
+        <Stack index="0">
           {stack1Cards}
         </Stack>
-        <Stack index="2">
+        <Stack index="1">
           {stack2Cards}
         </Stack>
-        <Stack index="3">
+        <Stack index="2">
           {stack3Cards}
         </Stack>
-        <Stack index="4">
+        <Stack index="3">
           {stack4Cards}
         </Stack>
-        <Stack index="5">
+        <Stack index="4">
           {stack5Cards}
         </Stack>
-        <Stack index="6">
+        <Stack index="5">
           {stack6Cards}
         </Stack>
-        <Stack index="7">
+        <Stack index="6">
           {stack7Cards}
         </Stack>
       </div>

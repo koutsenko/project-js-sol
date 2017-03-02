@@ -25,7 +25,6 @@ class App extends React.Component {
     app.queryEls();
     app.doLayout();  
     app.initXhr();
-    app.initHandlers();
     app.setupResize();
   }
 
@@ -38,7 +37,6 @@ class App extends React.Component {
         <GameTable />
         <Records />
         <Rules />
-        <div className="mark"></div>
         <Mask />
       </div>
     );

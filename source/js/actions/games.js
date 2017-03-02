@@ -1,4 +1,5 @@
 import actions from '../constants/actions';
+import cPlaces from '../constants/places';
 
 const shuffle = function(source) {
   var array = source.slice();
@@ -16,44 +17,32 @@ const shuffle = function(source) {
   return array;
 };
 
-const buildRandomDeck = function() {
+const buildRandomDeckIds = function() {
   var cards = [];
   var suits = ['H', 'D', 'C', 'S'];
   var ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
   for (var i = 0; i < suits.length; i++) {
     for (var j = 0; j < ranks.length; j++) {
-      cards.push({
-        rank: ranks[j],
-        suit: suits[i],
-        flip: true
-      });
+      cards.push(ranks[j]+suits[i]);
     }
   }
 
-  cards = shuffle(cards);
-
-  return cards;
+  return shuffle(cards);
 };
 
 
 export default {
-  stackToHome: function(srcIndex, dstIndex) {
+  stackToHome: function(id, index) {
     return {
-      dstIndex  : dstIndex,
-      srcIndex  : srcIndex,
-      type      : actions.STACK_TO_HOME
+      id    : id,
+      index : index,
+      type  : actions.STACK_TO_HOME
     };
   },
-  openToHome: function(dstIndex) {
+  openToHome: function(index) {
     return {
-      dstIndex  : dstIndex,
-      type      : actions.OPEN_TO_HOME
-    };
-  },
-  deckToHome: function(dstIndex) {
-    return {
-      dstIndex  : dstIndex,
-      type      : actions.DECK_TO_HOME
+      index   : index,
+      type    : actions.OPEN_TO_HOME
     };
   },
   load: function() {
@@ -63,39 +52,38 @@ export default {
   },
   deal: function() {
     return function(dispatch, getState) {
+      let deck = buildRandomDeckIds();
       var batch = [];
+
+      // Даем сигнал о старте раздачи карт
       batch.push({
         type: actions.NEW_GAME
       });
 
-      let deck = buildRandomDeck();
       // Раскладываем карты по стекам
       for (var i = 0; i < 7; i++) {
         for (var j = 0; j <= i; j++) {
-          let card = deck.pop();
-          if (i === j) {
-            card.flip = false;
-          };
           batch.push({
-            card  : card,
+            id    : deck.pop(),
             index : i,
             type  : actions.LAY_TO_STACK
           });
         }
       }
-
-      let openedCard = deck.pop();
-      openedCard.flip = false;
+      
+      // Кладем одну в open
       batch.push({
-        card  : openedCard,
+        id    : deck.pop(),
         type  : actions.LAY_TO_OPEN
       });
 
+      // И остаток - в deck
       batch.push({
-        cards : deck,
+        ids   : deck,
         type  : actions.LAY_TO_DECK
       });
 
+      // Даем сигнал о старте игры
       batch.push({
         type  : actions.GAME_START
       });
@@ -150,8 +138,8 @@ export default {
           if (home.length !== 13) {
             let targetCard = home[home.length-1];
             map[index] = {
-              rank: ranks[ranks.indexOf(targetCard.rank)+1],
-              suit: targetCard.suit
+              rank: ranks[ranks.indexOf(targetCard[0])+1],
+              suit: targetCard[1]
             };
           }
         });
@@ -166,7 +154,7 @@ export default {
           console.log('Какая-то ошибка');
           return;
         }
-        // открываем один дом если можем
+        // открываем одну карту из колоды и кладем в open если можем
         let board = getState().gameCurrent.board;
         if (board.deck.length) {
           dispatch(this.openCard());          
@@ -181,22 +169,11 @@ export default {
           if (board.open.length) {
             // смотрим верхнюю open карту
             let lastOpen = board.open[board.open.length - 1];
-            if ((lastOpen.suit === wantedCard.suit) && (lastOpen.rank === wantedCard.ranks)) {
+            if ((lastOpen[0] === wantedCard.rank) && (lastOpen[1] === wantedCard.suit)) {
               // FIXME придется этот action creator объявить в другом файле, чтобы через импорт-таки получить доступ к уже описанному action creator
               dispatch({
-                dstIndex  : index,
-                type      : actions.OPEN_TO_HOME
-              });
-              return;
-            }
-          } else if (board.deck.length) {
-            // смотрим верхнюю deck карту
-            let lastDeck = board.deck[board.deck.length - 1];
-            if ((lastDeck.suit === wantedCard.suit) && (lastDeck.rank === wantedCard.rank)) {
-              // FIXME придется этот action creator объявить в другом файле, чтобы через импорт-таки получить доступ к уже описанному action creator
-              dispatch({
-                dstIndex  : index,
-                type      : actions.DECK_TO_HOME
+                index  : index,
+                type   : actions.OPEN_TO_HOME
               });
               return;
             }
@@ -206,12 +183,12 @@ export default {
               let stack = board.stacks[i];
               if (stack.length) {
                 let lastStack = stack[stack.length - 1];
-                if ((lastStack.suit === wantedCard.suit) && (lastStack.rank === wantedCard.rank)) {
+                if ((lastStack[0] === wantedCard.rank) && (lastStack[1] === wantedCard.suit)) {
                   // FIXME придется этот action creator объявить в другом файле, чтобы через импорт-таки получить доступ к уже описанному action creator
                   dispatch({
-                    dstIndex  : index,
-                    srcIndex  : i,
-                    type      : actions.STACK_TO_HOME
+                    id      : lastStack,
+                    index   : index,
+                    type    : actions.STACK_TO_HOME
                   });
                   return;
                 }

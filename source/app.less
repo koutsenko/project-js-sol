@@ -507,51 +507,51 @@ div[class*="stack"] > .face {
 /**
  * Иконки лиц и рубашки игральных карт.
  */
-.card.CK > .face  {
+.card.KC > .face  {
     background-image: data-uri('res/face_CK.png');
     background-size: cover;
 }
-.card.CQ > .face  {
+.card.QC > .face  {
     background-image: data-uri('res/face_CQ.png');
     background-size: cover;
 }
-.card.CJ > .face  {
+.card.JC > .face  {
     background-image: data-uri('res/face_CJ.png');
     background-size: cover;
 }
-.card.DK > .face {
+.card.KD > .face {
     background-image: data-uri('res/face_DK.png');
     background-size: cover;
 }
-.card.DQ > .face {
+.card.QD > .face {
     background-image: data-uri('res/face_DQ.png');
     background-size: cover;
 }
-.card.DJ > .face {
+.card.JD > .face {
     background-image: data-uri('res/face_DJ.png');
     background-size: cover;
 }
-.card.HK > .face {
+.card.KH > .face {
     background-image: data-uri('res/face_HK.png');
     background-size: cover;
 }
-.card.HQ > .face {
+.card.QH > .face {
     background-size: cover;
     background-image: data-uri('res/face_HQ.png');
 }
-.card.HJ > .face {
+.card.JH > .face {
     background-size: cover;
     background-image: data-uri('res/face_HJ.png');
 }
-.card.SK > .face  {
+.card.KS > .face  {
     background-size: cover;
     background-image: data-uri('res/face_SK.png');
 }
-.card.SQ > .face {
+.card.QS > .face {
     background-size: cover;
     background-image: data-uri('res/face_SQ.png');
 }
-.card.SJ > .face  {
+.card.JS > .face  {
     background-image: data-uri('res/face_SJ.png');
     background-size: cover;
 }
@@ -580,10 +580,12 @@ div[class*="stack"] > .face {
 /* Маркер над текущей картой-целью, был вынесен в отдельный элемент из-за проблем с производительностью */
 .mark {
     border-radius: 13%;
-    visibility: hidden;
     position: absolute;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.5;
 }
 
 div[class*="home"] .back,
