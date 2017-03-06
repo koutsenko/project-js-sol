@@ -11,6 +11,12 @@ module.exports = {
     path: path.join(__dirname, 'build'),
     filename: 'app.min.js'
   },
+  devServer: {
+    contentBase: path.join(__dirname, "build"),
+    compress: true,
+    port: 9000
+  },
+  devtool: "source-map",
   module: {
     rules: [{
       test : /\.jsx?/,
