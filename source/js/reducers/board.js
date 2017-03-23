@@ -30,15 +30,17 @@ export default function(state, action) {
       var newState = JSON.parse(JSON.stringify(state));
       var deck = newState.deck;
       var open = newState.open;
+      var length = newState.open.length;
       open.forEach(function(id, i) {
         let card = newState.cards[id];
         card.flip = true;
         card.place = {
-          index : i + deck.length,
+          index : length - i - 1,
           owner : {
             index : undefined,
             type  : places.DECK
-          }
+          },
+          touched : true
         };
         deck.unshift(id);
       }, this);
@@ -67,7 +69,8 @@ export default function(state, action) {
         owner : {
           index : action.target_index,
           type  : action.target
-        }
+        },
+        touched : newState.cards[id].place.touched
       }
       newState.cards[id].flip = action.flip || false;
       target.push(id);
@@ -95,6 +98,11 @@ export default function(state, action) {
         card_ids = [action.card_id];
       }
 
+      // дроп обратно в свою же зону не обрабатываем как ход!
+      if ((source_type === action.target_type) && (source_index === action.target_index)) {
+        return state;
+      }
+
       // дроп нескольких карт разрешен только в стек!
       // FIXME а как мы вообще его допустили!? Должна была быть красная дропзона...
       if ((card_ids.length > 1) && (action.target_type !== places.STACK)) {
@@ -108,7 +116,8 @@ export default function(state, action) {
           owner : {
             type  : action.target_type,
             index : action.target_index
-          }
+          },
+          touched : true
         };
         source.splice(source.indexOf(id), 1);
         target.push(id);
@@ -135,7 +144,8 @@ export default function(state, action) {
         owner : {
           index : undefined,
           type  : places.OPEN
-        }
+        },
+        touched : true
       };
       open.push(id);
       newState.previous = JSON.parse(JSON.stringify(state));
@@ -162,11 +172,12 @@ export default function(state, action) {
           }
           newState.homes[i].push(action.source_id);
           source_card.place = {
-            index : newState.homes[i].length,
+            index : newState.homes[i].length - 1,
             owner : {
               index : i,
               type  : places.HOME
-            }
+            },
+            touched : true
           };
 
           newState.previous = JSON.parse(JSON.stringify(state));
@@ -193,21 +204,21 @@ const buildBoard = function() {
     cards     : cards,      // ассоциативный массив объектов карт
     deck      : deck,       // массив id карт, в данный момент находящихся в деке
     open      : [],         // массив id карт, в данный момент открытых рядом с декой
-    homes     : {           // ассоциативный массив объектов домов с массивами id карт
-      '0': [],
-      '1': [],
-      '2': [],
-      '3': [],
-    },
-    stacks    : {           // ассоциативный массив объектов стопок с массивами id карт
-      '0': [],
-      '1': [],
-      '2': [],
-      '3': [],
-      '4': [],
-      '5': [],
-      '6': []
-    }
+    homes     : [           // двухмерный массив объектов домов с массивами id карт
+      [],
+      [],
+      [],
+      [],
+    ],
+    stacks    : [           // двухмерный массив объектов стопок с массивами id карт
+      [],
+      [],
+      [],
+      [],
+      [],
+      [],
+      []
+    ]
   };
 }
 
@@ -236,31 +247,32 @@ const buildCards = function(deck) {
 };
 
 const loadBoard = function() {
-  let stacks = {
-    '0': ['KS'],
-    '1': [],
-    '2': [],
-    '3': [],
-    '4': [],
-    '5': [],
-    '6': []
-  };
-  let homes = {
-    '0': ['AH', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '=H', 'JH', 'QH', 'KH'],
-    '1': ['AD', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '=D', 'JD', 'QD', 'KD'],
-    '2': ['AC', '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '=C', 'JC', 'QC', 'KC'],
-    '3': ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '=S', 'JS', 'QS'      ]
-  };
+  // Обрати внимание, что при загрузке расклада параметры touched будут везде false. Я пока не понял как правильнее.
+  let stacks = [
+    ['KS'],
+    [],
+    [],
+    [],
+    [],
+    [],
+    []
+  ];
+  let homes = [
+    ['AH', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '=H', 'JH', 'QH', 'KH'],
+    ['AD', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '=D', 'JD', 'QD', 'KD'],
+    ['AC', '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '=C', 'JC', 'QC', 'KC'],
+    ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '=S', 'JS', 'QS'      ]
+  ];
 
   let cards = {};
-  Object.keys(stacks).forEach(function(key) {
-    stacks[key].forEach(function(id, index) {
-      cards[id] = buildCard(id, false, places.STACK, key, index);
+  stacks.forEach(function(stack, place_index) {
+    stack.forEach(function(id, index) {
+      cards[id] = buildCard(id, false, places.STACK, place_index, index);
     });
   });
-  Object.keys(homes).forEach(function(key) {
-    homes[key].forEach(function(id, index) {
-      cards[id] = buildCard(id, false, places.HOME, key, index);
+  homes.forEach(function(home, place_index) {
+    home.forEach(function(id, index) {
+      cards[id] = buildCard(id, false, places.HOME, place_index, index);
     });
   });
 
@@ -286,7 +298,8 @@ const buildCard = function(id, flipped, placeType, placeIndex, indexInPlace) {
       owner : {
         index : placeIndex,
         type  : placeType
-      }
+      },
+      touched : false
     }
   };
 };

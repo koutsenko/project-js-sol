@@ -48,6 +48,7 @@ class Stack extends React.Component {
 }
 
 Stack.propTypes = {
+  index: React.PropTypes.number.isRequired,
   cardDropHandler: React.PropTypes.func.isRequired
 };
 

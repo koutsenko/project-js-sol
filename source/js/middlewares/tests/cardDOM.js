@@ -1,4 +1,5 @@
 import { places } from '../../constants/app';
+import { canAcceptDropToHome, canAcceptDropToStack } from '../../tools/rules';
 
 export default function(store) {
   let getState = store.getState;
@@ -26,13 +27,15 @@ const performTests = function(state) {
   lastError = lastError || testDOM(places.OPEN, '#app .open', cardSelector, state.board.open, state.board.cards, undefined);
   for (var i = 0; i < 4; i++) {
     lastError = lastError || testDOM(places.HOME, '#app .home'+i, cardSelector, state.board.homes[i], state.board.cards, i);
+    lastError = lastError || testHomeCards(state.board.homes[i], state.board.cards);
   }
   for (var i = 0; i < 7; i++) {
     lastError = lastError || testDOM(places.STACK, '#app .stack'+i, cardSelector, state.board.stacks[i], state.board.cards, i);
+    lastError = lastError || testStackOpenedCards(state.board.stacks[i], state.board.cards);
   }
 
   if (lastError) {
-    console.log('state changed and game board integrity test failed: ', lastError);
+    console.log('Новое состояние ошибочное! Последняя из ошибок: ', lastError);
   }
 };
 
@@ -70,4 +73,68 @@ const testDOM = function(placeType, holderSelector, cardSelector, holderRef, car
   return lastError;
 };
 
+/**
+ *
+ */
+const testStackOpenedCards = function(stack, cards) {
+  let lastError;
+
+  // проверим, что последняя карта стека - открытая
+  if (stack.length && stack[stack.length - 1].flip) {
+    lastError = 'Последняя карта стека закрытая :(';
+  }
+
+  // проверим, что нет закрытых карт после открытых
+  stack.forEach(function(id, index) {
+    if (index !== 0) {
+      if (cards[id].flip && !cards[stack[index-1]].flip) {
+        lastError = 'В стеке появилась закрытая карта после открытой';
+      }
+    }
+  });
+
+  // проверим, что открытые карты соответствуют правилам пасьянса-косынки (понижается старшинство, чередуется цвет, первый - король)
+  stack.forEach(function(id, index) {
+    let source = cards[id];
+    let target = index === 0 ? undefined : cards[stack[index-1]];
+
+    if (target !== undefined) {
+      if (!source.flip && !target.flip && !canAcceptDropToStack(cards[id], target)) {
+        lastError = 'В стеке есть две открытые карты не по правилам косынки (понижение старшинства и чередование цвета)';
+      }
+    } else {
+      if (source.place.touched && !source.flip && !canAcceptDropToStack(cards[id])) {
+        lastError = 'В стеке есть первая открытая карта не по правилам косынки (не король), при этом это не комп ее туда положил на раздаче';
+      }
+    }
+  });
+
+  return lastError;
+};
+
+/**
+ *
+ */
+const testHomeCards = function(home, cards) {
+  let lastError;
+
+  // проверим что все карты дома открытые
+  home.forEach(function(id) {
+    if (cards[id].flip) {
+      lastError = 'В доме нашлась закрытая карта...';
+    }
+  });
+
+  // проверим, что карты дома соответствуют правилам пасьянса косынки (повышается старшинство, одна масть, первая - двойка)
+  home.forEach(function(id, index) {
+    let source = cards[id];
+    let target = index === 0 ? undefined : cards[home[index-1]];
+
+    if (!canAcceptDropToHome(source, target)) {
+      lastError = 'В доме есть карта не по правилам косынки';
+    };
+  });
+
+  return lastError;
+};
 

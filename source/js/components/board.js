@@ -49,39 +49,39 @@ class Board extends React.Component {
             {openCards}
           </Open>
           <Status />
-          <Home cardDropHandler={this.props.cardDrop} index="0">
+          <Home cardDropHandler={this.props.cardDrop} index={0}>
             {home1Cards}
           </Home>
-          <Home cardDropHandler={this.props.cardDrop} index="1">
+          <Home cardDropHandler={this.props.cardDrop} index={1}>
             {home2Cards}
           </Home>
-          <Home cardDropHandler={this.props.cardDrop} index="2">
+          <Home cardDropHandler={this.props.cardDrop} index={2}>
             {home3Cards}
           </Home>
-          <Home cardDropHandler={this.props.cardDrop} index="3">
+          <Home cardDropHandler={this.props.cardDrop} index={3}>
             {home4Cards}
           </Home>
         </div>
         <div className="row">
-          <Stack cardDropHandler={this.props.cardDrop} index="0">
+          <Stack cardDropHandler={this.props.cardDrop} index={0}>
             {stack1Cards}
           </Stack>
-          <Stack cardDropHandler={this.props.cardDrop} index="1">
+          <Stack cardDropHandler={this.props.cardDrop} index={1}>
             {stack2Cards}
           </Stack>
-          <Stack cardDropHandler={this.props.cardDrop} index="2">
+          <Stack cardDropHandler={this.props.cardDrop} index={2}>
             {stack3Cards}
           </Stack>
-          <Stack cardDropHandler={this.props.cardDrop} index="3">
+          <Stack cardDropHandler={this.props.cardDrop} index={3}>
             {stack4Cards}
           </Stack>
-          <Stack cardDropHandler={this.props.cardDrop} index="4">
+          <Stack cardDropHandler={this.props.cardDrop} index={4}>
             {stack5Cards}
           </Stack>
-          <Stack cardDropHandler={this.props.cardDrop} index="5">
+          <Stack cardDropHandler={this.props.cardDrop} index={5}>
             {stack6Cards}
           </Stack>
-          <Stack cardDropHandler={this.props.cardDrop} index="6">
+          <Stack cardDropHandler={this.props.cardDrop} index={6}>
             {stack7Cards}
           </Stack>
         </div>
