@@ -74,7 +74,7 @@ class Card extends React.Component {
 
   handleSingleClick(event) {
     if (this.props.card.place.owner.type === places.DECK) {
-      console.log('OWNER = DECK, одиночный клик допущен!');
+      // console.log('OWNER = DECK, одиночный клик допущен!');
       this.props.singleClickHandler();
     }
     event.preventDefault();
@@ -87,7 +87,7 @@ class Card extends React.Component {
 
   handleDoubleClick(event) {
     if (((this.props.card.place.owner.type === places.OPEN) || (this.props.card.place.owner.type === places.STACK)) && (!this.hasChildrenCards())) {
-      console.log('OWNER = OPEN|STACK, двойной клик допущен!');
+      // console.log('OWNER = OPEN|STACK, двойной клик допущен!');
       this.props.doubleClickHandler(this.props.card.id);
     }
     event.preventDefault();
