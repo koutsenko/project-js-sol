@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import interactActions from '../../actions/interact';
+import boardActions from '../../actions/board';
 
 import interact from 'interact.js';
 import Highlight from './fx/highlight';
@@ -20,6 +21,13 @@ class Card extends React.Component {
     // TODO планируется добавить туда еще одну дропзону (с контекстом stack и флагом для поддержки 2-х interactions)
     let ir = interact(this.refs["card"]);
     ir.styleCursor(false); // Workaround для проблемы https://github.com/taye/interact.js/issues/497
+    ir.dropzone({
+      accept      : '.card',
+      overlap     : 0.1,
+      ondragenter : this.onDragEnter.bind(this),
+      ondragleave : this.onDragLeave.bind(this),
+      ondrop      : this.onDrop.bind(this)
+    });
     ir.draggable({
       onmove      : this.onDragMove.bind(this),
       onend       : this.onDragEnd.bind(this),
@@ -49,6 +57,18 @@ class Card extends React.Component {
     if (prevProps.card.flip !== this.props.card.flip) {
       interact(this.refs["card"]).draggable(this.dndEnabled());
     }
+  }
+
+  onDragEnter(event) {
+    this.props.dragEnterCard(event.relatedTarget.dataset['id'], this.props.card.id);
+  }
+
+  onDragLeave(event) {
+    this.props.dragLeaveCard(event.relatedTarget.dataset['id'], this.props.card.id);
+  }
+
+  onDrop(event) {
+    this.props.cardDropHandler(event.relatedTarget.dataset['id'], this.props.card.place.owner.type, this.props.card.place.owner.index);
   }
 
   onDragEnd(event) {
@@ -174,7 +194,10 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    dragEndCard     : bindActionCreators(interactActions.dragEndCard, dispatch)
+    dragEndCard     : bindActionCreators(interactActions.dragEndCard, dispatch),
+    dragEnterCard   : bindActionCreators(interactActions.dragEnterCard, dispatch),
+    dragLeaveCard   : bindActionCreators(interactActions.dragLeaveCard, dispatch),
+    cardDropHandler : bindActionCreators(boardActions.cardDrop, dispatch)
   };
 };
 

@@ -10,7 +10,10 @@ export default {
   cardDrop: function(id, target_type, target_index) {
     // console.log('card drop');
     return function(dispatch, getState) {
-
+      // Дроп мог осуществлен на карту в деке или опен - фильтруем сразу
+      if ((target_type === places.OPEN) || (target_type === places.DECK)) {
+        return;
+      }
       let state = getState();
       let target_holder = {
         [places.STACK]  : state.board.stacks[target_index],
