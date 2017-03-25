@@ -1,42 +1,35 @@
-import actions from '../constants/actions';
+import   actions      from '../constants/actions';
 
 import recordActions from '../actions/records';
 
-const canComplete = function(cards, board) {
+const canComplete = function(board) {
   // если есть закрытые карты в стеках, автосбор пока невозможен
-  for (var i = 0; i < board.stacks.length; i++) {
-    let cannotComplete = board.stacks[i].some(function(id) {
-      return cards[id].flip === true;
+  if (Object.keys(board.stacks).some(function(key) {
+    return board.stacks[key].some(function(id) {
+      return board.cards[id].flip === true;
     });
-    if (cannotComplete) {
-      return false;
-    }
-  }
-
-  // если в источниках остались карты, автосбор пока невозможен
-  let alreadyComplete = true;
-  for (var i = 0; i < board.stacks.length; i++) {
-    if (board.stacks[i].length) {
-      alreadyComplete = false;
-    }
-  }
-  if (board.open.length) {
-    alreadyComplete = false;
-  }
-  if (board.open.length) {
-    alreadyComplete = false;
-  }
-  if (alreadyComplete) {
+  })) {
     return false;
   }
 
-  // ну или нам ничего не мешает
+  // если есть закрытые карты в open, автосбор пока невозможен
+  if (board.open.some(function(id) {
+    return board.cards[id].flip === true;
+  })) {
+    return false;
+  }
+
+  // если есть закрытые карты в deck, автосбор пока невозможен
+  if (board.deck.some(function(id) {
+    return board.cards[id].flip === true;
+  })) {
+    return false;
+  }
+
+  // ну или нам ничего не мешает...
+  // TEST Предполагается что мы не попадем в ситуацию, когда этот метод вызван на уже законченной игре...
   return true;
 }
-
-const canSwap = function(board) {
-  return board.deck.length || board.open.length;
-};
 
 const gameEnd = function(board) {
   let gameIsEnded = true;
@@ -57,43 +50,48 @@ export default function(store) {
       let returnValue = next(action);
       switch (action.type) {
         case actions.LOAD_SCENARIO:
-        case actions.GAME_START:
-        case actions.STACK_TO_HOME:
-        case actions.OPEN_TO_HOME:
-        case actions.OPEN_CARD:
+        // FIXME эта четверка действий может и не случиться, если хакнутый клиент пришлет невовремя или не с теми параметрами. И что? Походу просто лишняя нагрузка на сервер...
+        case actions.CARD_BACK_BY_PLAYER:
+        case actions.CARD_OPEN_BY_PLAYER:
+        case actions.CARD_MOVE_BY_PLAYER:
+        case actions.CARD_TRY_HOME_BY_PLAYER:
         case actions.REVERT:
           // TODO возможно это станет единым событием, накладывающим "маску запрета" на все контролы игры
           // TODO хотя щас я уже думаю что "масок запрета" должно быть две - на игровое поле и на меню
           // попапы в масках запрета не нуждаются
+          let canCompleteValue = canComplete(getState().board);
           store.dispatch({
-            value : canComplete(getState().gameCurrent.cards, getState().gameCurrent.board),
-            type  : actions.CAN_COMPLETE
+            value : canCompleteValue,
+            type  : actions.MENU_BTN3_STATE
           });
-          store.dispatch({
-            value : canSwap(getState().gameCurrent.board),
-            type  : actions.CAN_SWAP
-          });
-          if (gameEnd(getState().gameCurrent.board)) {
+          if (gameEnd(getState().board)) {
             store.dispatch({
               type  : actions.GAME_END
             });
           }
+          break;
+        case actions.GAME_END:
+          store.dispatch({
+            value : false,
+            type  : actions.MENU_BTN3_STATE
+          });
           break;
       }
 
 
       // отдельные обработки для меню, пока для кнопки Новая игра
       switch (action.type) {
-        case actions.NEW_GAME:
+        case actions.GAME_CREATED:
           store.dispatch({
-            type  : actions.CAN_NEW_GAME,
+            type  : actions.MENU_BTN1_STATE,
             value : false
           });
           break;
 
+        // TODO имей в виду, что GAME_LOAD потребует еще и проверки MENU_BTN3_STATE
         case actions.GAME_START:
           store.dispatch({
-            type  : actions.CAN_NEW_GAME,
+            type  : actions.MENU_BTN1_STATE,
             value : true
           });
           break;
@@ -101,11 +99,11 @@ export default function(store) {
 
       // отдельно обрабатываем конец игры, чтобы показать таблицу рекордов
       if (action.type === actions.GAME_END) {
-        let gameCurrent = getState().gameCurrent;
+        let state = getState();
         store.dispatch(recordActions.write({
-          moves: gameCurrent.moveIndex,
+          moves: state.board.index,
           nick: "тест",
-          time: gameCurrent.elapsedTime
+          time: state.game.time
         }));
         store.dispatch({
           type: actions.SHOW_RECORDS

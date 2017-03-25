@@ -11,7 +11,7 @@ class Mask extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    visible : state.maskVisible
+    visible : state.popup.maskVisible
   };
 }
 

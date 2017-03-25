@@ -89,7 +89,7 @@ class Records extends Popup {
   render() {
     // console.log('рендеринг таблицы рекордов');
     return (
-      <Popup role="records" visible={this.props.showRecords} handler={this.props.closeRecords}>
+      <Popup role="records" visible={this.props.recordsVisible} handler={this.props.closeRecords}>
         <div style={{position: 'absolute', left: 0, right: 0, color: 'black', backgroundColor: 'yellow', textAlign: 'center', top: '-2.75em'}}>{this.props.result ? 'поздравляем, пасьянс сложился!' : ''}</div>
         <span className="header-top">Рейтинг *</span>
         {this.buildTable()}
@@ -109,12 +109,12 @@ const mapDispatchToProps = function(dispatch) {
 
 const mapStateToProps = function(state) {
   return {
-    showRecords : state.showRecords,
-    result      : state.result,       /** Выигранная только что игра                        */
-    resultIndex : state.resultIndex,  /** Индекс этой игры в таблице рекордов               */
-    gamesCount  : state.gamesCount,   /** Общее кол-во сыгранных игр на данном устройстве   */
-    records     : state.records,      /** Массив текущих рекордов на данном устройстве      */
-    winsCount   : state.winsCount     /** Кол-во побед среди сыгранных на устройстве игр    */
+    recordsVisible : state.popup.recordsVisible,  /** Флаг открытости попапа с рекордами */
+    result      : state.game.result,        /** Выигранная только что игра                        */
+    resultIndex : state.game.index,         /** Индекс этой игры в таблице рекордов               */
+    gamesCount  : state.stats.gamesCount,   /** Общее кол-во сыгранных игр на данном устройстве   */
+    records     : state.stats.records,      /** Массив текущих рекордов на данном устройстве      */
+    winsCount   : state.stats.winsCount     /** Кол-во побед среди сыгранных на устройстве игр    */
   };
 }
 

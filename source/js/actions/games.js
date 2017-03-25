@@ -1,50 +1,7 @@
-import actions from '../constants/actions';
-import cPlaces from '../constants/places';
-
-const shuffle = function(source) {
-  var array = source.slice();
-  var x, j,
-      i = array.length;
-
-  while (i) {
-    //j = parseInt(Math.random() * i, 10);
-    j = Math.round(Math.random() * i);
-    i = i - 1;
-    x = array[i];
-    array[i] = array[j];
-    array[j] = x;
-  }
-  return array;
-};
-
-const buildRandomDeckIds = function() {
-  var cards = [];
-  var suits = ['H', 'D', 'C', 'S'];
-  var ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
-  for (var i = 0; i < suits.length; i++) {
-    for (var j = 0; j < ranks.length; j++) {
-      cards.push(ranks[j]+suits[i]);
-    }
-  }
-
-  return shuffle(cards);
-};
-
+import   actions      from '../constants/actions' ;
+import { places } from '../constants/app';
 
 export default {
-  stackToHome: function(id, index) {
-    return {
-      id    : id,
-      index : index,
-      type  : actions.STACK_TO_HOME
-    };
-  },
-  openToHome: function(index) {
-    return {
-      index   : index,
-      type    : actions.OPEN_TO_HOME
-    };
-  },
   load: function() {
     return {
       type: actions.LOAD_SCENARIO
@@ -52,28 +9,34 @@ export default {
   },
   deal: function() {
     return function(dispatch, getState) {
-      let deck = buildRandomDeckIds();
       var batch = [];
 
       // Даем сигнал о старте раздачи карт
       batch.push({
-        deck  : deck.slice(),
-        type  : actions.NEW_GAME
+        type  : actions.GAME_CREATED
       });
 
       // Раскладываем карты по стекам
       for (var i = 0; i < 7; i++) {
         for (var j = 0; j <= i; j++) {
           batch.push({
-            index : i,
-            type  : actions.DECK_TO_STACK
+            flip          : i !== j,
+            source        : places.DECK,
+            source_index  : undefined,
+            target        : places.STACK,
+            target_index  : i,
+            type          : actions.CARD_MOVE_BY_ENGINE
           });
         }
       }
-      
+
       // Кладем одну в open
       batch.push({
-        type  : actions.OPEN_CARD
+        source        : places.DECK,
+        source_index  : undefined,
+        target        : places.OPEN,
+        target_index  : undefined,
+        type          : actions.CARD_MOVE_BY_ENGINE
       });
 
       // Даем сигнал о старте игры
@@ -88,42 +51,13 @@ export default {
       });
     };
   },
-  openCard: function() {
-    return {
-      type: actions.OPEN_CARD
-    };
-  },
-  writeTurn: function(move) {
-    return {
-      type: actions.WRITE_TURN
-    };
-  },
   completeGame: function() {
     return function(dispatch, getState) {
-
-      /**
-       * Метод вычисляющий не закончилась ли игра.
-       * Возможно надо переделать на тупо чтение признака конца игры.
-       * Просто у меня пока еще нет такого поля в стейте.
-       */
-      let done = function() {
-        let board = getState().gameCurrent.board;
-        let length = 0;
-
-        length += board.open.length;
-        length += board.deck.length;
-        for (var i = 0; i < 7; i++) {
-          length += board.stacks[i].length;
-        }
-
-        return !length;
-      };
-
       /**
        * Метод вычисляющий в какой хоум какую карту можно вкинуть.
        */
       let getHomeMap = function() {
-        let homes = getState().gameCurrent.board.homes;
+        let homes = getState().board.homes;
         let ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '=', 'J', 'Q', 'K'];
         let map = {};
         homes.forEach(function(home, index) {
@@ -139,6 +73,13 @@ export default {
         return map;
       };
 
+      let end = function() {
+        let cards = getState().board.cards;
+        return Object.keys(cards).every(function(id) {
+          return cards[id].place.owner.type === places.HOME;
+        });
+      };
+
       let cycleCount = 0;
 
       do {
@@ -148,25 +89,28 @@ export default {
           return;
         }
         // открываем одну карту из колоды и кладем в open если можем
-        let board = getState().gameCurrent.board;
+        let board = getState().board;
         if (board.deck.length) {
-          dispatch(this.openCard());          
+          dispatch({
+            type: actions.CARD_OPEN_BY_PLAYER
+          });
         }
 
         let map = getHomeMap();
         // ищем карты, подходящие для перемещения в дома
         Object.keys(map).forEach(function(index) {
           let wantedCard = map[index];
-          let board = getState().gameCurrent.board;
+          let board = getState().board;
 
           if (board.open.length) {
             // смотрим верхнюю open карту
             let lastOpen = board.open[board.open.length - 1];
             if ((lastOpen[0] === wantedCard.rank) && (lastOpen[1] === wantedCard.suit)) {
-              // FIXME придется этот action creator объявить в другом файле, чтобы через импорт-таки получить доступ к уже описанному action creator
               dispatch({
-                index  : index,
-                type   : actions.OPEN_TO_HOME
+                card_id       : lastOpen,
+                target_type   : places.HOME,
+                target_index  : parseInt(index),
+                type          : actions.CARD_MOVE_BY_PLAYER
               });
               return;
             }
@@ -179,9 +123,10 @@ export default {
                 if ((lastStack[0] === wantedCard.rank) && (lastStack[1] === wantedCard.suit)) {
                   // FIXME придется этот action creator объявить в другом файле, чтобы через импорт-таки получить доступ к уже описанному action creator
                   dispatch({
-                    id      : lastStack,
-                    index   : index,
-                    type    : actions.STACK_TO_HOME
+                    card_id       : lastStack,
+                    target_type   : places.HOME,
+                    target_index  : parseInt(index),
+                    type          : actions.CARD_MOVE_BY_PLAYER
                   });
                   return;
                 }
@@ -190,7 +135,7 @@ export default {
           }
         }.bind(this));
 
-      } while(!done());
+      } while(!end());
     }.bind(this);
   },
   revertTurn: function() {

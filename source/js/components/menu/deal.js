@@ -21,7 +21,7 @@ class ButtonDeal extends MenuButton {
 
 const mapStateToProps = function(state) {
   return {
-    disabled: !state.gameCurrent.canNewGame
+    disabled: !state.menu.gameCreateEnabled
   };
 };
 

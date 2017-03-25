@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import interactActions from '../../actions/interact';
+import Highlight from './fx/highlight';
+
+import { places } from '../../constants/app';
 
 import interact from 'interact.js';
 
@@ -16,7 +19,7 @@ class Home extends React.Component {
   }
 
   onDrop(event) {
-    this.props.dropHome(event.relatedTarget.dataset['id'], this.props.index);
+    this.props.cardDropHandler(event.relatedTarget.dataset['id'], places.HOME, this.props.index);
   }
 
   componentDidMount() {
@@ -34,24 +37,27 @@ class Home extends React.Component {
     return (
       <div ref="home" className={"home" + this.props.index + " holder"}>
         <div className="face">Т</div>
+        <Highlight value={this.props.highlights[this.props.index]} />
         {this.props.children}
-        {this.props.accepts.home[this.props.index] !== null ? (
-          <div className="mark" style={{backgroundColor: this.props.accepts.home[this.props.index] ? 'lime' : 'red'}}></div>
-        ) : null}
       </div>
     );
   }
 }
 
+Home.propTypes = {
+  cardDropHandler: React.PropTypes.func.isRequired
+};
+
 const mapStateToProps = function(state) {
-  return state;
+  return {
+    highlights: state.fx.home_highlights
+  };
 }
 
 const mapDispatchToProps = function(dispatch) {
   return {
     dragEnterHome : bindActionCreators(interactActions.dragEnterHome, dispatch),
-    dragLeaveHome : bindActionCreators(interactActions.dragLeaveHome, dispatch),
-    dropHome      : bindActionCreators(interactActions.dropHome, dispatch)
+    dragLeaveHome : bindActionCreators(interactActions.dragLeaveHome, dispatch)
   };
 };
 

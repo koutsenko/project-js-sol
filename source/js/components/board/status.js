@@ -6,7 +6,7 @@ import aboutActions from '../../actions/about';
 
 class Status extends React.Component {
   calculateElapsedTime() {
-    let elapsedSeconds  = Math.floor(this.props.elapsedTime);
+    let elapsedSeconds  = Math.floor(this.props.time);
     let elapsedMinutes  = Math.floor(elapsedSeconds/60);
 
     if (elapsedMinutes > 99) {
@@ -35,8 +35,8 @@ class Status extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
-    counter: state.gameCurrent.moveIndex,
-    elapsedTime: state.gameCurrent.elapsedTime
+    counter : state.board.index,
+    time    : state.game.time
   };
 };
 

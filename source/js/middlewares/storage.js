@@ -8,11 +8,11 @@ export default function(store) {
       let returnValue = next(action);
       let state = getState();
       if (action.type === actions.NEW_RECORD) {
-        localStorage.setItem('m2w-sol-records', JSON.stringify(state.records));
+        localStorage.setItem('m3w-sol-records', JSON.stringify(state.stats.records));
       } else if (action.type === actions.LOAD_SCENARIO) {
-        localStorage.setItem('m2w-sol-games-count', state.gamesCount);
+        localStorage.setItem('m3w-sol-games-count', state.stats.gamesCount);
       } else if (action.type === actions.GAME_END) {
-        localStorage.setItem('m2w-sol-wins-count', state.winsCount);
+        localStorage.setItem('m3w-sol-wins-count', state.stats.winsCount);
       }
       return returnValue;
     };

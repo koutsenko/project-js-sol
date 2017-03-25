@@ -1,4 +1,5 @@
 import actions from '../constants/actions';
+import { places } from '../constants/app';
 
 export default function(store) {
   var getState = store.getState;
@@ -7,20 +8,23 @@ export default function(store) {
   return function(next) {
     return function(action) {
       let state = getState();
-      if ((action.type === 'CLOSE_RECORDS') && (state.result !== undefined)) {
+      if ((action.type === actions.CLOSE_RECORDS) && (state.game.result !== undefined)) {
         console.log('Закрытие таблицы рекордов после окончания игры');
-        let actions = [];
+        let batch = [];
         for (var i = 0; i < 4; i++) {
-          for (var j = state.gameCurrent.board.homes[i].length; j > 0; j--) {
-            actions.push({
-              id    : state.gameCurrent.board.homes[i][j-1],
-              index : i,
-              type  : 'HOME_TO_DECK'
+          for (var j = state.board.homes[i].length; j > 0; j--) {
+            batch.push({
+              flip          : true,
+              source        : places.HOME,
+              source_index  : i,
+              target        : places.DECK,
+              target_index  : undefined,
+              type          : actions.CARD_MOVE_BY_ENGINE
             });
           }
         }
-        
-        actions.forEach(function(action, index) {
+
+        batch.forEach(function(action, index) {
           let timer = setTimeout(function() {
             store.dispatch(action);
 
@@ -28,11 +32,11 @@ export default function(store) {
           timers.push(timer);
         });
 
-      } else if (action.type === 'NEW_GAME') {
+      } else if (action.type === actions.GAME_CREATED) {
         // Очищаем анимации, игрок не захотел смотреть на анимацию сбора карт
         timers.forEach(function(timer) {
           clearTimeout(timer);
-        });     
+        });
       }
 
       return next(action);

@@ -21,7 +21,7 @@ class ButtonUndo extends MenuButton {
 
 const mapStateToProps = function(state) {
   return {
-    disabled: state.gameCurrent.prevBoard === undefined || state.gameCurrent.completed
+    disabled: state.board.previous === undefined || state.game.completed
   };
 };
 

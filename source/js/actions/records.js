@@ -15,9 +15,9 @@ export default {
     return function(dispatch, getState) {
       var state = getState();
       var isWeak = true;
-      for (var i = 0; i < state.records.length; i++) {
-        if ((state.records[i].moves < record.moves) || ((state.records[i].moves === record.moves) && (state.records[i].time > record.time))) {
-          // Побили чей-то рекорд, отправляем заявку 
+      for (var i = 0; i < state.stats.records.length; i++) {
+        if ((state.stats.records[i].moves < record.moves) || ((state.stats.records[i].moves === record.moves) && (state.stats.records[i].time > record.time))) {
+          // Побили чей-то рекорд, отправляем заявку
           dispatch({
             index   : i,
             record  : record,
@@ -28,9 +28,9 @@ export default {
         }
       }
       // Ничей рекорд не побили, но есть еще незанятые места
-      if (isWeak && state.records.length < 5) {
+      if (isWeak && state.stats.records.length < 5) {
         dispatch({
-          index   : state.records.length,
+          index   : state.stats.records.length,
           record  : record,
           type    : actions.NEW_RECORD
         });

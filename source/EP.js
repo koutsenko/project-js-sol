@@ -17,12 +17,15 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, compose } from 'redux';
 import App from './js/components/app';
-import rootMiddleware from './js/middlewares/root';
-import rootReducer from './js/reducers/root';
-import recordActions from './js/actions/records';
-import gameActions from './js/actions/games';
+import rootMiddleware from './js/middlewares/_root' ;
+import rootReducer    from './js/reducers/_root'    ;
+import recordActions  from './js/actions/records'   ;
+import gameActions    from './js/actions/games'     ;
+import { composeWithDevTools } from 'redux-devtools-extension';
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const composeEnhancers = composeWithDevTools({
+  maxAge: 5000  // 5000 actions in redux-devtools history instead of default 50
+});
 const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
 
 window.onload = function() {

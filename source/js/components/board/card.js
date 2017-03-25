@@ -5,17 +5,30 @@ import { bindActionCreators } from 'redux';
 import interactActions from '../../actions/interact';
 
 import interact from 'interact.js';
+import Highlight from './fx/highlight';
+
+import { places } from '../../constants/app';
+
+import { highlights } from '../../constants/app';
 
 class Card extends React.Component {
+  dndEnabled() {
+    return !this.props.card.flip;
+  }
+
   componentDidMount() {
-    interact(this.refs["card"]).draggable({
+    // TODO планируется добавить туда еще одну дропзону (с контекстом stack и флагом для поддержки 2-х interactions)
+    let ir = interact(this.refs["card"]);
+    ir.styleCursor(false); // Workaround для проблемы https://github.com/taye/interact.js/issues/497
+    ir.draggable({
       onmove      : this.onDragMove.bind(this),
       onend       : this.onDragEnd.bind(this),
-      enabled     : !this.props.card.flip,
+      enabled     : !this.dndEnabled(),
       manualStart : true
-    }).on('move', function(event) {
+    });
+    ir.on('move', function(event) {
       let interaction = event.interaction;
-      if (interaction.pointerIsDown && !interaction.interacting()) {
+      if (interaction.pointerIsDown && !interaction.interacting() && this.dndEnabled()) {
         let rect = event.currentTarget.getBoundingClientRect();
         this.clone = event.currentTarget.cloneNode(true);
         this.clone.className += " moving";
@@ -28,15 +41,13 @@ class Card extends React.Component {
         this.origin = event.currentTarget;
         this.origin.style.visibility = 'hidden';
         interaction.start({ name: 'drag' }, event.interactable, this.clone);
-      } else {
-        interaction.start({ name: 'drag' }, event.interactable, event.currentTarget);
       }
     }.bind(this));
   }
 
   componentDidUpdate(prevProps) {
     if (prevProps.card.flip !== this.props.card.flip) {
-      interact(this.refs["card"]).draggable(!this.props.card.flip);
+      interact(this.refs["card"]).draggable(this.dndEnabled());
     }
   }
 
@@ -59,6 +70,28 @@ class Card extends React.Component {
     // update the posiion attributes
     target.setAttribute('data-x', x);
     target.setAttribute('data-y', y);
+  }
+
+  handleSingleClick(event) {
+    if (this.props.card.place.owner.type === places.DECK) {
+      console.log('OWNER = DECK, одиночный клик допущен!');
+      this.props.singleClickHandler();
+    }
+    event.preventDefault();
+    event.stopPropagation();
+  }
+
+  hasChildrenCards() {
+    return this.refs['card'].querySelectorAll('.card').length > 0;
+  }
+
+  handleDoubleClick(event) {
+    if (((this.props.card.place.owner.type === places.OPEN) || (this.props.card.place.owner.type === places.STACK)) && (!this.hasChildrenCards())) {
+      console.log('OWNER = OPEN|STACK, двойной клик допущен!');
+      this.props.doubleClickHandler(this.props.card.id);
+    }
+    event.preventDefault();
+    event.stopPropagation();
   }
 
   render() {
@@ -106,7 +139,7 @@ class Card extends React.Component {
 
 
     return (
-      <div ref="card" data-id={this.props.card.id} className={"card "+this.props.card.id + (this.props.card.flip ? ' flipped' : ' ')}>
+      <div ref="card" data-id={this.props.card.id} onDoubleClick={this.handleDoubleClick.bind(this)} onClick={this.handleSingleClick.bind(this)} className={"card "+this.props.card.id + (this.props.card.flip ? ' flipped' : ' ')}>
         <div className="back">
         </div>
         <div className="face">
@@ -119,27 +152,31 @@ class Card extends React.Component {
             </span>
           )}
         </div>
+        <Highlight value={this.props.highlights[this.props.card.id]} />
         {this.props.children}
-        {([null, undefined].indexOf(this.props.accepts.card[this.props.card.id]) === -1) ? (
-          <div className="mark" style={{backgroundColor: this.props.accepts.card[this.props.card.id] ? 'lime' : 'red'}}></div>
-        ) : null}
       </div>
     );
   }
+
 }
 
 Card.propTypes = {
-  card: React.PropTypes.object.isRequired
+  card: React.PropTypes.object.isRequired,
+  doubleClickHandler: React.PropTypes.func.isRequired,
+  singleClickHandler: React.PropTypes.func.isRequired
 };
 
 const mapStateToProps = function(state) {
-  return state;
+  return {
+    highlights: state.fx.card_highlights
+  };
 }
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    dragEndCard   : bindActionCreators(interactActions.dragEndCard, dispatch)
+    dragEndCard     : bindActionCreators(interactActions.dragEndCard, dispatch)
   };
 };
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card);
