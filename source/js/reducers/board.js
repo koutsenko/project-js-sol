@@ -34,13 +34,13 @@ export default function(state, action) {
       open.forEach(function(id, i) {
         let card = newState.cards[id];
         card.flip = true;
+        card.touched = true;
         card.place = {
           index : length - i - 1,
           owner : {
             index : undefined,
             type  : places.DECK
-          },
-          touched : true
+          }
         };
         deck.unshift(id);
       }, this);
@@ -69,8 +69,7 @@ export default function(state, action) {
         owner : {
           index : action.target_index,
           type  : action.target
-        },
-        touched : newState.cards[id].place.touched
+        }
       }
       newState.cards[id].flip = action.flip || false;
       target.push(id);
@@ -111,13 +110,13 @@ export default function(state, action) {
 
       card_ids.forEach(function(id) {
         var card = newState.cards[id];
+        card.touched = true;
         card.place = {
           index : target.length,
           owner : {
             type  : action.target_type,
             index : action.target_index
           },
-          touched : true
         };
         source.splice(source.indexOf(id), 1);
         target.push(id);
@@ -139,13 +138,13 @@ export default function(state, action) {
       var id = deck.pop();
       var card = newState.cards[id];
       card.flip = false;
+      card.touched = true;
       card.place = {
         index : open.length,
         owner : {
           index : undefined,
           type  : places.OPEN
-        },
-        touched : true
+        }
       };
       open.push(id);
       newState.previous = JSON.parse(JSON.stringify(state));
@@ -171,13 +170,13 @@ export default function(state, action) {
             newState.cards[source[source.length-1]].flip = false;
           }
           newState.homes[i].push(action.source_id);
+          source_card.touched = true;
           source_card.place = {
             index : newState.homes[i].length - 1,
             owner : {
               index : i,
               type  : places.HOME
             },
-            touched : true
           };
 
           newState.previous = JSON.parse(JSON.stringify(state));
@@ -289,17 +288,17 @@ const loadBoard = function() {
 
 const buildCard = function(id, flipped, placeType, placeIndex, indexInPlace) {
   return {
-    id    : id      ,
-    rank  : id[0]   ,
-    suit  : id[1]   ,
-    flip  : flipped ,
-    place : {
+    id      : id      ,
+    rank    : id[0]   ,
+    suit    : id[1]   ,
+    flip    : flipped ,
+    touched : false   ,
+    place   : {
       index : indexInPlace,
       owner : {
         index : placeIndex,
         type  : placeType
-      },
-      touched : false
+      }
     }
   };
 };

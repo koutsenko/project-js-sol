@@ -103,7 +103,7 @@ const testStackOpenedCards = function(stack, cards) {
         lastError = 'В стеке есть две открытые карты не по правилам косынки (понижение старшинства и чередование цвета)';
       }
     } else {
-      if (source.place.touched && !source.flip && !canAcceptDropToStack(cards[id])) {
+      if (source.touched && !source.flip && !canAcceptDropToStack(cards[id])) {
         lastError = 'В стеке есть первая открытая карта не по правилам косынки (не король), при этом это не комп ее туда положил на раздаче';
       }
     }
