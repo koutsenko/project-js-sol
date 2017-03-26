@@ -1,3 +1,5 @@
+import { places } from '../constants/app';
+
 const canAcceptDropToStack = function(source, target) {
   if (target === undefined) {
     return source.rank === 'K';
@@ -21,4 +23,10 @@ const canAcceptDropToHome = function(source, target) {
   }
 };
 
-export { canAcceptDropToHome, canAcceptDropToStack };
+const isGameEnd = function(cards) {
+  return Object.keys(cards).every(function(id) {
+    return cards[id].place.owner.type === places.HOME;
+  });
+};
+
+export { canAcceptDropToHome, canAcceptDropToStack, isGameEnd };

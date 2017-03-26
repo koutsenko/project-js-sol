@@ -2,6 +2,8 @@ import   actions      from '../constants/actions';
 
 import recordActions from '../actions/records';
 
+import { isGameEnd } from '../tools/rules';
+
 const canComplete = function(board) {
   // если есть закрытые карты в стеках, автосбор пока невозможен
   if (Object.keys(board.stacks).some(function(key) {
@@ -31,17 +33,6 @@ const canComplete = function(board) {
   return true;
 }
 
-const gameEnd = function(board) {
-  let gameIsEnded = true;
-  for (var i = 0; i < 4; i++) {
-    if (board.homes[i].length < 13) {
-      gameIsEnded = false;
-      break;
-    }
-  }
-  return gameIsEnded;
-}
-
 export default function(store) {
   var getState = store.getState;
 
@@ -64,7 +55,7 @@ export default function(store) {
             value : canCompleteValue,
             type  : actions.MENU_BTN3_STATE
           });
-          if (gameEnd(getState().board)) {
+          if (isGameEnd(getState().board.cards)) {
             store.dispatch({
               type  : actions.GAME_END
             });

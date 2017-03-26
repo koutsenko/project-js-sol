@@ -1,5 +1,7 @@
 import   actions      from '../constants/actions' ;
 import { places } from '../constants/app';
+import { isGameEnd } from '../tools/rules';
+
 
 export default {
   load: function() {
@@ -73,13 +75,6 @@ export default {
         return map;
       };
 
-      let end = function() {
-        let cards = getState().board.cards;
-        return Object.keys(cards).every(function(id) {
-          return cards[id].place.owner.type === places.HOME;
-        });
-      };
-
       let cycleCount = 0;
 
       do {
@@ -135,7 +130,7 @@ export default {
           }
         }.bind(this));
 
-      } while(!end());
+      } while(!isGameEnd(getState().board.cards));
     }.bind(this);
   },
   revertTurn: function() {
