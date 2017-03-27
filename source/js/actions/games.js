@@ -9,12 +9,13 @@ export default {
       type: actions.LOAD_SCENARIO
     };
   },
-  deal: function() {
+  deal: function(seed) {
     return function(dispatch, getState) {
       var batch = [];
 
       // Даем сигнал о старте раздачи карт
       batch.push({
+        seed  : seed,
         type  : actions.GAME_CREATED
       });
 

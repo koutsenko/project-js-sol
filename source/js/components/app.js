@@ -2,6 +2,8 @@ import React      from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { getHashCmd, getHashParm } from '../tools/hash';
+
 import Board      from './board';
 import Menu       from './menu';
 import About      from './popup/about';
@@ -13,10 +15,15 @@ import gameActions from '../actions/games';
 
 class App extends React.Component {
   componentDidMount() {
-    if (window.location.hash.length) {
+    let cmd = getHashCmd();
+    let p1 = getHashParm();
+
+    if (cmd === 'load') {
       this.props.load();
+    } else if (cmd === 'deal') {
+      this.props.deal(p1 || Date.now());
     } else {
-      this.props.deal();
+      this.props.deal(Date.now());
     }
   }
 

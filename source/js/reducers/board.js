@@ -1,9 +1,8 @@
-import   shuffle  from '../tools/fisherYates' ;
-import { places } from '../constants/app'     ;
-import   actions  from '../constants/actions' ;
-
+import   actions                from '../constants/actions' ;
 import { canAcceptDropToHome }  from '../tools/rules'       ;
 import { canAcceptDropToStack } from '../tools/rules'       ;
+import { places }               from '../constants/app'     ;
+import   shuffleSeed            from 'knuth-shuffle-seeded' ;
 
 /**
  * Редьюсер, работающий с состоянием игры (игрового поля, она же доска) в данный ход.
@@ -24,7 +23,7 @@ export default function(state, action) {
       return loadBoard();
 
     case actions.GAME_CREATED:
-      return buildBoard();
+      return buildBoard(action.seed);
 
     case actions.CARD_BACK_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
@@ -193,8 +192,8 @@ export default function(state, action) {
   return state;
 };
 
-const buildBoard = function() {
-  let deck  = buildDeck();
+const buildBoard = function(seed) {
+  let deck  = buildDeck(seed || 'test');
   let cards = buildCards(deck);
 
   return {
@@ -221,7 +220,7 @@ const buildBoard = function() {
   };
 }
 
-const buildDeck = function() {
+const buildDeck = function(seed) {
   let deck = [];
   let suits = ['H', 'D', 'C', 'S'];
   let ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
@@ -232,7 +231,7 @@ const buildDeck = function() {
     });
   });
 
-  return shuffle(deck);
+  return shuffleSeed(deck, seed);
 };
 
 const buildCards = function(deck) {
