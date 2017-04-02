@@ -1,5 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import aboutActions from '../../actions/about';
 
 class Status extends React.Component {
   calculateElapsedTime() {
@@ -17,7 +20,9 @@ class Status extends React.Component {
   render() {
     return (
       <div className="status">
-        "Косынка"<br />классика<br />
+        <div className="btn-about" onClick={this.props.openAbout}>
+          "Косынка"<br />классика <br />©
+        </div>
         <div className="counter">
           ход {this.props.counter}
           <br/>
@@ -35,4 +40,10 @@ const mapStateToProps = function(state) {
   };
 };
 
-export default connect(mapStateToProps)(Status);
+const mapDispatchToProps = function(dispatch) {
+  return {
+    openAbout: bindActionCreators(aboutActions.open, dispatch),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Status);

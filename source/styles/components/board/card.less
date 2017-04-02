@@ -1,0 +1,82 @@
+.card {
+  background-color: rgba(0,0,0,0.5);  // по идее полупрозрачная тень
+  position: absolute;
+  border-radius: 0.5em;
+  font-family: 'm3w-card';
+  width: 100%;
+  height: 100%;
+  color: black;
+
+  &.moving {
+    top: 0;
+    left: 0;
+  }
+
+  &.flipped > .face {
+    visibility: hidden;
+  }
+
+  &[class*='D'],
+  &[class*='H'] {
+    color: red;
+  }
+
+  & > .face {
+    background-color: #ffa;
+    background-size: cover;
+    border-radius: 0.5em;
+    position: absolute;
+    top: 0.2em;
+    bottom: 0.2em;
+    left: 0.2em;
+    right: 0.2em;
+    & > .center {
+      white-space: pre-wrap;
+      text-align: center;
+      position: absolute;
+      bottom: 0.3em;
+      right: 0.1em;
+      line-height: 0.6em;
+    }
+    & > .corner:first-letter {
+      padding-left: 0.1em;
+    }
+    & > .corner {
+      position: absolute;
+      left: 0;
+      line-height: 1em;
+    }
+  }
+
+  &.KC > .face { background-image: data-uri('../../../res/face_CK.png'); }
+  &.QC > .face { background-image: data-uri('../../../res/face_CQ.png'); }
+  &.JC > .face { background-image: data-uri('../../../res/face_CJ.png'); }
+  &.KD > .face { background-image: data-uri('../../../res/face_DK.png'); }
+  &.QD > .face { background-image: data-uri('../../../res/face_DQ.png'); }
+  &.JD > .face { background-image: data-uri('../../../res/face_DJ.png'); }
+  &.KH > .face { background-image: data-uri('../../../res/face_HK.png'); }
+  &.QH > .face { background-image: data-uri('../../../res/face_HQ.png'); }
+  &.JH > .face { background-image: data-uri('../../../res/face_HJ.png'); }
+  &.KS > .face { background-image: data-uri('../../../res/face_SK.png'); }
+  &.QS > .face { background-image: data-uri('../../../res/face_SQ.png'); }
+  &.JS > .face { background-image: data-uri('../../../res/face_SJ.png'); }
+
+  & > .back {
+    background-color: #ffa;
+    position: absolute;
+    border-radius: 0.4em;
+    top: 0.2em;
+    bottom: 0.1em;
+    left: 0.1em;
+    right: 0.1em;
+  }
+
+  &.flipped > .back {
+    background-size: cover;
+    background-image: data-uri('../../../res/back_back.png');
+  }
+
+  &:not(.flipped) {
+    cursor: pointer;
+  }
+}

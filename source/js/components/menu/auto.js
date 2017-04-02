@@ -1,12 +1,11 @@
 import React from 'react';
-import app from '../../../EP';
 import gameActions from '../../actions/games';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import MenuButton from '../../controls/menu/button';
-  
-class ButtonAutoComplete extends MenuButton {
+
+class ButtonAuto extends MenuButton {
   render() {
     return (
       <MenuButton
@@ -32,4 +31,4 @@ const mapDispatchToProps = function(dispatch) {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonAutoComplete);
+export default connect(mapStateToProps, mapDispatchToProps)(ButtonAuto);

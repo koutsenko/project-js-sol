@@ -1,19 +1,18 @@
 import React from 'react';
-import app from '../../../EP';
 import gameActions from '../../actions/games';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import MenuButton from '../../controls/menu/button';
-  
-class ButtonNewGame extends MenuButton {
+
+class ButtonUndo extends MenuButton {
   render() {
     return (
       <MenuButton
-        hint="Начать новый расклад, текущий будет закрыт"
-        role="btn1"
-        text="Разложить"
-        handler={this.props.newGame}
+        hint="Отмена последнего сделанного хода"
+        role="btn2"
+        text="Ход назад"
+        handler={this.props.revertTurn}
         disabled={this.props.disabled}
       />
     );
@@ -22,14 +21,14 @@ class ButtonNewGame extends MenuButton {
 
 const mapStateToProps = function(state) {
   return {
-    disabled: !state.gameCurrent.canNewGame
+    disabled: state.gameCurrent.prevBoard === undefined || state.gameCurrent.completed
   };
 };
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    newGame: bindActionCreators(gameActions.deal, dispatch)
+    revertTurn: bindActionCreators(gameActions.revertTurn, dispatch)
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonNewGame);
+export default connect(mapStateToProps, mapDispatchToProps)(ButtonUndo);

@@ -32,7 +32,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div ref="home" className={"home" + this.props.index}>
+      <div ref="home" className={"home" + this.props.index + " holder"}>
         <div className="face">Т</div>
         {this.props.children}
         {this.props.accepts.home[this.props.index] !== null ? (

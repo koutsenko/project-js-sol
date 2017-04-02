@@ -2,9 +2,11 @@ export default {
   CAN_COMPLETE          : 'CAN_COMPLETE'          ,
   CAN_NEW_GAME          : 'CAN_NEW_GAME'          ,
   CAN_SWAP              : 'CAN_SWAP'              ,
+  CLOSE_ABOUT           : 'CLOSE_ABOUT'           ,
   CLOSE_RECORDS         : 'CLOSE_RECORDS'         ,
   CLOSE_RULES           : 'CLOSE_RULES'           ,
   DECK_SHOW             : 'DECK_SHOW'             ,
+  DECK_TO_STACK         : 'DECK_TO_STACK'         , /** Служебное действие, не является ходом */
   DRAG_END_CARD         : 'DRAG_END_CARD'         ,
   DRAG_ENTER_CARD       : 'DRAG_ENTER_CARD'       ,
   DRAG_ENTER_HOME       : 'DRAG_ENTER_HOME'       ,
@@ -15,15 +17,13 @@ export default {
   GAME_END              : 'GAME_END'              ,
   GAME_START            : 'GAME_START'            ,
   HOME_TO_DECK          : 'HOME_TO_DECK'          , /** Дурацкое авто-действие в конце игры после закрытия рекордов */
-  LAY_TO_DECK           : 'LAY_TO_DECK'           , /** Тупо кладет карты с уже измененным owner в деку, это действие, а не ход, поэтому пока что мы это действие видим только во время начала игры */
-  LAY_TO_STACK          : 'LAY_TO_STACK'          ,
-  LAY_TO_OPEN           : 'LAY_TO_OPEN'           ,
-  LOAD_SCENARIO         : 'LOAD_SCENARIO'         , 
+  LOAD_SCENARIO         : 'LOAD_SCENARIO'         ,
   NEW_GAME              : 'NEW_GAME'              ,
   NEW_RECORD            : 'NEW_RECORD'            ,
   OPEN_CARD             : 'OPEN_CARD'             ,
   OPEN_TO_HOME          : 'OPEN_TO_HOME'          , /** А это уже реальный ход, с бэкапом доски и (TODO а объект "карта" бэкапится?!!!!) */
   REVERT                : 'REVERT'                ,
+  SHOW_ABOUT            : 'SHOW_ABOUT'            ,
   SHOW_RECORDS          : 'SHOW_RECORDS'          ,
   SHOW_RULES            : 'SHOW_RULES'            ,
   STACK_TO_HOME         : 'STACK_TO_HOME'         ,

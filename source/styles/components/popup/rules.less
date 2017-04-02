@@ -1,0 +1,29 @@
+.rules {
+
+  @maxWidth: 30em;
+
+  margin-left: ~'calc((100vw - @{maxWidth})/2)';
+  max-width: @maxWidth;
+
+  bottom: initial !important;
+  left:  initial !important;
+  right: initial !important;
+  font-size: 1.2em;
+
+  text-align: justify;
+  padding: 1em;
+  box-sizing: border-box;
+
+  .image {
+    background-image: data-uri('../../../res/rule.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0 0 1em 1.5em;
+    height: 6.4em;
+    width: 8.4em;
+    float: right;
+    border: 0.5em green solid;
+    background-color: green;
+    border-radius: 0.5em;
+  }
+}

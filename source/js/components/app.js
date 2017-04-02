@@ -2,15 +2,11 @@ import React      from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-
-import app        from '../../EP';
-
-import GameTable  from './gametable';
+import Board      from './board';
 import Menu       from './menu';
+import About      from './popup/about';
 import Records    from './popup/records';
 import Rules      from './popup/rules';
-import Version    from './version';
-import Watermark  from './watermark';
 import Mask       from './mask';
 
 import gameActions from '../actions/games';
@@ -22,22 +18,19 @@ class App extends React.Component {
     } else {
       this.props.deal();
     }
-    app.queryEls();
-    app.doLayout();  
-    app.initXhr();
-    app.setupResize();
   }
 
   render() {
     return (
-      <div className="game">
-        <Version />
-        <Watermark />
+      <div id="app">
+        <Board />
         <Menu />
-        <GameTable />
-        <Records />
-        <Rules />
-        <Mask />
+        <div id="popups">
+          <Mask />
+          <About />
+          <Records />
+          <Rules />
+        </div>
       </div>
     );
   }

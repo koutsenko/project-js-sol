@@ -1,0 +1,92 @@
+.records {
+
+  @maxWidth: 20em;
+
+  margin-left: ~'calc((100vw - @{maxWidth})/2)';
+  max-width: @maxWidth;
+
+  bottom: initial !important;
+  left:  initial !important;
+  right: initial !important;
+  font-size: 1.2em;
+
+  .congrats {
+    padding-top: 5%;
+  }
+
+  .note {
+    margin-top: 1em;
+    text-align: center;
+    font-size: 0.75em;
+  }
+
+  .header-top {
+    display: inline-block;
+    border-radius: 0 0.5em 0.5em 0;
+    background: green;
+    border-bottom: 0.1em solid black;
+    padding-right: 1em;
+    padding-left: 2em;
+    text-transform: lowercase;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  .recordstable {
+    margin-top: 0.25em;
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    span {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      height: 1.1em;
+      line-height: 1em;
+      background: green;
+      display: inline-block;
+      margin: 0.1em;
+      &.head {
+        background: black;
+      }
+      &.number {
+        width: 2em;
+      }
+      &.login {
+        width: 5em;
+      }
+      &.move {
+        width: 3em;
+      }
+      &.time {
+        width: 3.5em;
+      }
+      &.fill {
+        background: darkgreen;
+      }
+      &.your {
+        color: green;
+        background: yellow;
+      }
+      &.key {
+        text-align: left;
+        padding-left: 0.5em;
+        width: 5.5em;
+        display: inline-block;
+        background: black;
+      }
+      &.value {
+        text-align: left;
+        padding-left: 0.5em;
+        width: 4.5em;
+        display: inline-block;
+        background: green;
+      }
+      &.dummy {
+        width: 2.7em;
+        display: inline-block;
+        background: transparent;
+      }
+    }
+  }
+}

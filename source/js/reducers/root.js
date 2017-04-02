@@ -17,15 +17,25 @@ const buildCard = function(rank, suit, type, itemIndex, placeIndex, flip) {
   };
 };
 
-const buildEmptyGame = function() {
-  let cards = {};
+const buildNonShuffledDeck = function() {
+  var deck = [];
   var suits = ['H', 'D', 'C', 'S'];
   var ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
-  suits.forEach(function(suit, index1) {
-    ranks.forEach(function(rank, index2) {
-      cards[rank+suit] = buildCard(rank, suit, cPlaces.DECK, index2*index1 + index2, undefined, true);
+  ranks.forEach(function(rank) {
+    suits.forEach(function(suit) {
+      deck.push(rank+suit);
     });
   })
+
+  return deck;
+}
+
+const buildEmptyGame = function(deck) {
+  let cards = {};
+  var deck = deck || [buildNonShuffledDeck()];
+  deck.forEach(function(id, index) {
+    cards[id] = buildCard(id[0], id[1], cPlaces.DECK, index, undefined, true);
+  });
 
   return {
     completed: false,
@@ -37,7 +47,7 @@ const buildEmptyGame = function() {
     canComplete: false,
     cards: cards,
     board: {
-      deck: Object.keys(cards),
+      deck: deck,
       open: [],
       homes: [
         [],
@@ -106,17 +116,17 @@ export default function(state, action) {
 
     case consts.DRAG_LEAVE_HOME:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.accepts.home[action.index] = null;        
+      newState.accepts.home[action.index] = null;
       return newState;
 
     case consts.DRAG_ENTER_CARD:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.accepts.card[action.id] = action.value;        
+      newState.accepts.card[action.id] = action.value;
       return newState;
 
     case consts.DRAG_ENTER_STACK:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.accepts.stack[action.index] = action.value;        
+      newState.accepts.stack[action.index] = action.value;
       return newState;
 
     case consts.DRAG_LEAVE_STACK:
@@ -127,6 +137,18 @@ export default function(state, action) {
     case consts.DRAG_LEAVE_CARD:
       var newState = JSON.parse(JSON.stringify(state));
       newState.accepts.card[action.id] = null;
+      return newState;
+
+    case consts.SHOW_ABOUT:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.showAbout = true;
+      newState.maskVisible = true;
+      return newState;
+
+    case consts.CLOSE_ABOUT:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.showAbout = false;
+      newState.maskVisible = false;
       return newState;
 
     case consts.SHOW_RULES:
@@ -163,13 +185,15 @@ export default function(state, action) {
 
     case consts.NEW_GAME:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.gameCurrent = buildEmptyGame();
+      newState.gameCurrent = buildEmptyGame(action.deck);
       return newState;
 
-    case consts.LAY_TO_STACK:
+    case consts.DECK_TO_STACK:
       var newState = JSON.parse(JSON.stringify(state));
       var stack = newState.gameCurrent.board.stacks[action.index];
-      var card = newState.gameCurrent.cards[action.id];
+      var deck = newState.gameCurrent.board.deck;
+      var id = newState.gameCurrent.board.deck.pop();
+      var card = newState.gameCurrent.cards[id];
       card.flip = action.index !== stack.length;
       card.place = {
         index : stack.length,
@@ -181,38 +205,6 @@ export default function(state, action) {
       stack.push(card.id);
       return newState;
 
-    case consts.LAY_TO_OPEN:
-      var newState = JSON.parse(JSON.stringify(state));
-      var open = newState.gameCurrent.board.open;
-      var card = newState.gameCurrent.cards[action.id];
-      card.flip = false;
-      card.place = {
-        index : open.length,
-        owner : {
-          index : undefined,
-          type  : cPlaces.OPEN
-        }
-      };
-      open.push(card.id);
-      return newState;
-
-    case consts.LAY_TO_DECK:
-      var newState = JSON.parse(JSON.stringify(state));
-      var deck = newState.gameCurrent.board.deck;
-      action.ids.forEach(function(id, index) {
-        let card = newState.gameCurrent.cards[id];
-        card.flip = true;
-        card.place = {
-          index : deck.length + index,
-          owner : {
-            index : undefined,
-            type  : cPlaces.DECK
-          }
-        };
-        deck.push(id);
-      });
-      return newState;
-
     case consts.CAN_SWAP:
       var newState = JSON.parse(JSON.stringify(state));
       newState.gameCurrent.canSwap = action.value;
@@ -222,7 +214,7 @@ export default function(state, action) {
       var newState = JSON.parse(JSON.stringify(state));
       newState.gameCurrent.canNewGame = action.value;
       return newState;
-    
+
     case consts.CAN_COMPLETE:
       var newState = JSON.parse(JSON.stringify(state));
       newState.gameCurrent.canComplete = action.value;
@@ -245,9 +237,9 @@ export default function(state, action) {
       };
       newState.gameCurrent.board.deck.push(newState.gameCurrent.board.homes[action.index].pop());
       return newState;
-      
 
-    case consts.LOAD_SCENARIO:     
+
+    case consts.LOAD_SCENARIO:
       var newState = JSON.parse(JSON.stringify(state));
       newState.gamesCount++;
 
@@ -314,7 +306,7 @@ export default function(state, action) {
       var newState = JSON.parse(JSON.stringify(state));
       var card = newState.gameCurrent.cards[action.id];
       var old_index = card.place.owner.index;
-      
+
       card.place = {
         index : newState.gameCurrent.board.homes[action.index].length,
         owner : {
@@ -376,7 +368,7 @@ export default function(state, action) {
           };
           deck.unshift(id);
         }, this);
-        open = [];
+        newState.gameCurrent.board.open = [];
       }
 
       newState.gameCurrent.prevBoard = JSON.parse(JSON.stringify(state.gameCurrent.board));

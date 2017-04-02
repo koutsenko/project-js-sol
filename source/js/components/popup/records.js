@@ -15,14 +15,14 @@ class Records extends Popup {
 
     // Собираем верстку таблицы по кусочкам...
     var layout = {};
-    layout.head = [ 
+    layout.head = [
       <span key="h1" className="number head" >#       </span> ,
       <span key="h2" className="login head"  >игрок   </span> ,
       <span key="h3" className="move head"   >ходы    </span> ,
       <span key="h4" className="time head"   >время   </span> ,
       <br   key="h5"/>
     ];
-    layout.records = recordsDisplayed.map(function(r, index) {    
+    layout.records = recordsDisplayed.map(function(r, index) {
       var highlight = this.props.resultIndex === index ? ' your' : '';
       var displayIndex = index + 1;
       return [
@@ -40,8 +40,8 @@ class Records extends Popup {
         <span key={"e2_"+index} className="login" >{"-"}          </span>  ,
         <span key={"e3_"+index} className="move"  >{"-"}          </span>  ,
         <span key={"e4_"+index} className="time"  >{"-"}          </span>  ,
-        <br   key={"e5_"+index}/>          
-      ];                
+        <br   key={"e5_"+index}/>
+      ];
     }, this);
     layout.fill = [
       <span key="f1" className="fill" style={{lineHeight: '0.1em'}}>...</span>,
@@ -53,7 +53,7 @@ class Records extends Popup {
       <span key="w3" className="move   your">  {this.props.result.moves} </span> ,
       <span key="w4" className="time   your">  {this.props.result.time}  </span> ,
       <br   key="w5"/>
-    ] : [ 
+    ] : [
       <span key="h1" className="number" >-</span> ,
       <span key="h2" className="login"  >-</span> ,
       <span key="h3" className="move"   >-</span> ,
@@ -80,7 +80,7 @@ class Records extends Popup {
         <span className="value">{this.props.gamesCount}</span>
         <br/>
         <span className="key">% побед</span>
-        <span className="value">{winsPercentage}%</span>    
+        <span className="value">{winsPercentage}%</span>
         <br/>
       </div>
     );
@@ -89,16 +89,14 @@ class Records extends Popup {
   render() {
     // console.log('рендеринг таблицы рекордов');
     return (
-      <div>
-        <div style={{position: 'absolute', left: 0, right: 0, backgroundColor: 'yellow', textAlign: 'center', fontSize: '2em', zIndex: 2}}>{this.props.result ? 'поздравляем, пасьянс сложился!' : ''}</div>
-        <Popup role="records" visible={this.props.showRecords} handler={this.props.closeRecords}>
-          <span className="header-top">Рейтинг *</span>
-          {this.buildTable()}
-          <span className="header-top">Cтатистика</span>
-          {this.buildStats()}
-          <div className="note">* на данном устройстве</div>
-        </Popup>
-      </div>
+      <Popup role="records" visible={this.props.showRecords} handler={this.props.closeRecords}>
+        <div style={{position: 'absolute', left: 0, right: 0, color: 'black', backgroundColor: 'yellow', textAlign: 'center', top: '-2.75em'}}>{this.props.result ? 'поздравляем, пасьянс сложился!' : ''}</div>
+        <span className="header-top">Рейтинг *</span>
+        {this.buildTable()}
+        <span className="header-top">Cтатистика</span>
+        {this.buildStats()}
+        <div className="note">* на данном устройстве</div>
+      </Popup>
     );
   }
 }

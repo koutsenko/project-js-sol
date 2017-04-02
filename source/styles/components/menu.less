@@ -1,0 +1,38 @@
+/**
+ * Игровое меню
+ */
+#menu {
+  & > * {
+    cursor: pointer;
+    border-radius: 1em;
+    border: 0.2em solid black;
+    background-color: green;
+    & > div {
+      background: black;
+      color: yellow;
+      text-transform: lowercase;
+      text-align: center;
+    }
+  }
+
+  .pressed:not(.disabled) {
+    transform: scale(0.9);
+  }
+
+  .disabled {
+    cursor: default;
+    opacity: 0.3;
+  }
+
+  /**
+  * Иконки меню.
+  */
+  [class*='btn'] {
+    background-size: cover;
+  }
+  .btn1 { background-image: data-uri('../../res/menu_deal.png');    }
+  .btn2 { background-image: data-uri('../../res/menu_undo.png');    }
+  .btn3 { background-image: data-uri('../../res/menu_auto.png');    }
+  .btn4 { background-image: data-uri('../../res/menu_help.png');    }
+  .btn5 { background-image: data-uri('../../res/menu_records.png'); }
+}

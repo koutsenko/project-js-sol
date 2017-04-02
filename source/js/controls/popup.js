@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 class Popup extends React.Component {
   render() {
     return (
-      <div className={this.props.role + (this.props.visible ? ' visible' : '')} ref={this.props.role}>
+      <div className={this.props.role + ' window' + (this.props.visible ? ' visible' : '')} ref={this.props.role}>
         {this.props.children}
         <div className="close" onClick={this.props.handler}>&times;</div>
       </div>

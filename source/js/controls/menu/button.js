@@ -5,7 +5,7 @@ export default class MenuButton extends React.Component {
     if (this.props.disabled) {
       return;
     }
-    
+
     let el = this.refs[this.props.role];
     el.className += ' pressed';
     setTimeout(function() {
@@ -16,10 +16,8 @@ export default class MenuButton extends React.Component {
 
   render() {
     return (
-      <div title={this.props.hint} className={this.props.role + (this.props.disabled ? ' disabled' : '')} onClick={this.handlePress.bind(this)} ref={this.props.role}>
-        <div className="face">
-          <div>{this.props.text}</div>
-        </div>
+      <div title={this.props.hint} className={this.props.role + " button" + (this.props.disabled ? ' disabled' : '')} onClick={this.handlePress.bind(this)} ref={this.props.role}>
+        <div>{this.props.text}</div>
       </div>
     );
   }

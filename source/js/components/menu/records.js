@@ -6,7 +6,7 @@ import actions from '../../actions/records';
 
 import MenuButton from '../../controls/menu/button';
   
-class ButtonGameRecords extends MenuButton {
+class ButtonRecords extends MenuButton {
   render() {
     return (
       <MenuButton
@@ -29,4 +29,4 @@ const mapDispatchToProps = function(dispatch) {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonGameRecords);
+export default connect(mapStateToProps, mapDispatchToProps)(ButtonRecords);

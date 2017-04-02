@@ -9,9 +9,8 @@ export default class Deck extends React.Component {
 
   render() {
     return (
-      <div className="deck" onClick={this.handlePress.bind(this)}>
-        <div className="face">
-        </div>
+      <div className="deck holder" onClick={this.handlePress.bind(this)}>
+        <div className="face"></div>
         {this.props.children}
       </div>
     );

@@ -29,7 +29,7 @@ class Stack extends React.Component {
     ) : null;
 
     return (
-      <div ref="stack" className={"stack" + this.props.index}>
+      <div ref="stack" className={"stack" + this.props.index + " holder"}>
         <div className="face">К</div>
         {this.props.children ? this.props.children : mark}
       </div>

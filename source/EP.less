@@ -1,0 +1,50 @@
+@import 'styles/controls/popup'             ;
+
+@import 'styles/components/board'           ;
+@import 'styles/components/board/card'      ;
+@import 'styles/components/board/deck'      ;
+@import 'styles/components/board/status'    ;
+@import 'styles/components/board/open'      ;
+@import 'styles/components/board/home'      ;
+@import 'styles/components/board/stack'     ;
+
+@import 'styles/components/menu'            ;
+
+@import 'styles/components/popup/about'     ;
+@import 'styles/components/popup/records'   ;
+@import 'styles/components/popup/rules'     ;
+
+@import 'styles/layout/layout-common'       ;
+@import 'styles/layout/layout-0'            ;
+@import 'styles/layout/layout-1'            ;
+@import 'styles/layout/layout-2'            ;
+
+@font-face {
+  font-family: 'm3w-card';
+  src: data-uri('res/solcard.woff') format('woff');
+}
+@font-face {
+  font-family: 'm3w-main';
+  src:  data-uri('res/solmain.woff') format('woff');
+}
+
+html {
+  font-family: 'm3w-main';
+  background-image: svg-gradient(ellipse at center, #22ad32 0%,#001100 100%);
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+/**
+ * Disabling text selections for menu buttons, cards etc
+ */
+:not(input) {
+  -webkit-user-select : none;
+  -khtml-user-select  : none;
+  -moz-user-select    : none;
+  -ms-user-select     : none;
+  user-select         : none;
+}

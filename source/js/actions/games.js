@@ -57,30 +57,23 @@ export default {
 
       // Даем сигнал о старте раздачи карт
       batch.push({
-        type: actions.NEW_GAME
+        deck  : deck.slice(),
+        type  : actions.NEW_GAME
       });
 
       // Раскладываем карты по стекам
       for (var i = 0; i < 7; i++) {
         for (var j = 0; j <= i; j++) {
           batch.push({
-            id    : deck.pop(),
             index : i,
-            type  : actions.LAY_TO_STACK
+            type  : actions.DECK_TO_STACK
           });
         }
       }
       
       // Кладем одну в open
       batch.push({
-        id    : deck.pop(),
-        type  : actions.LAY_TO_OPEN
-      });
-
-      // И остаток - в deck
-      batch.push({
-        ids   : deck,
-        type  : actions.LAY_TO_DECK
+        type  : actions.OPEN_CARD
       });
 
       // Даем сигнал о старте игры
