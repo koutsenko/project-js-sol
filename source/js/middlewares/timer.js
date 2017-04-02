@@ -18,6 +18,7 @@ export default function(store) {
           }, 1000);
           break;
         case actions.GAME_END:
+        case actions.GAME_CREATED:
           clearInterval(timer);
           break;
       }

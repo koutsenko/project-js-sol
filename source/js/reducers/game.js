@@ -26,6 +26,11 @@ export default function(state, action) {
       newState.result = action.record;
       return newState;
 
+    case actions.GAME_CREATED:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.time = 0;
+      return newState;
+
     case actions.LOAD_SCENARIO:
       var newState = JSON.parse(JSON.stringify(state));
       newState.time = 23*60;
