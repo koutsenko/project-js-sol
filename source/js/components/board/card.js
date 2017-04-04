@@ -47,7 +47,7 @@ class Card extends React.Component {
         this.clone.setAttribute('data-y', rect.top);
         document.body.appendChild(this.clone);
         this.origin = event.currentTarget;
-        this.origin.style.visibility = 'hidden';
+        this.origin.style.display = 'none';
         interaction.start({ name: 'drag' }, event.interactable, this.clone);
       }
     }.bind(this));
@@ -73,7 +73,7 @@ class Card extends React.Component {
 
   onDragEnd(event) {
     document.body.removeChild(this.clone);
-    this.origin.style.visibility = 'visible';
+    this.origin.style.display = null;
     this.props.dragEndCard();
   }
 
