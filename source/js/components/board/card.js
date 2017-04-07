@@ -51,6 +51,8 @@ class Card extends React.Component {
         interaction.start({ name: 'drag' }, event.interactable, this.clone);
       }
     }.bind(this));
+    ir.on(['doubleclick', 'doubletap'], this.handleDoubleClick.bind(this));
+    ir.on(['click', 'tap'], this.handleSingleClick.bind(this));
   }
 
   componentDidUpdate(prevProps) {
@@ -159,7 +161,7 @@ class Card extends React.Component {
 
 
     return (
-      <div ref="card" data-id={this.props.card.id} onDoubleClick={this.handleDoubleClick.bind(this)} onClick={this.handleSingleClick.bind(this)} className={"card "+this.props.card.id + (this.props.card.flip ? ' flipped' : ' ')}>
+      <div ref="card" data-id={this.props.card.id} className={"card "+this.props.card.id + (this.props.card.flip ? ' flipped' : ' ')}>
         <div className="back">
         </div>
         <div className="face">

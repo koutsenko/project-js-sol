@@ -29,6 +29,10 @@ const composeEnhancers = composeWithDevTools({
 const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
 
 window.onload = function() {
+  // выключаем браузерные жесты на iPhone кроме history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
+  document.body.ongesturestart = document.body.ongesturechange = document.body.ongestureend = function(event) {
+    event.preventDefault();
+  }
   ReactDOM.render((
     <Provider store={store}>
       <App />
