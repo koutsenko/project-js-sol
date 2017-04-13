@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Card   from './board/card';
-import Deck   from './board/deck';
-import Open   from './board/open';
+import Deck   from './board/holder/deck';
+import Home   from './board/holder/home';
+import Open   from './board/holder/open';
+import Stack  from './board/holder/stack';
 import Status from './board/status';
-import Home   from './board/home';
-import Stack  from './board/stack';
 
 import boardActions from '../actions/board';
 

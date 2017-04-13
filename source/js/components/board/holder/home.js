@@ -2,12 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import interactActions from '../../actions/interact';
-import Highlight from './fx/highlight';
+import interactActions from '../../../actions/interact';
 
-import { places } from '../../constants/app';
+import { places } from '../../../constants/app';
 
 import interact from 'interact.js';
+import getFxHighlight from '../fx/highlight';
 
 class Home extends React.Component {
   onDragEnter(event) {
@@ -35,9 +35,7 @@ class Home extends React.Component {
 
   render() {
     return (
-      <div ref="home" className={"home" + this.props.index + " holder"}>
-        <div className="face">Т</div>
-        <Highlight value={this.props.highlights[this.props.index]} />
+      <div ref="home" className={"home" + this.props.index + " holder " + getFxHighlight(this.props.highlights[this.props.index])}>
         {this.props.children}
       </div>
     );

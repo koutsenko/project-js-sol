@@ -1,19 +1,13 @@
 [class*="stack"] {
-  & > .face {
-    background-image  : data-uri('../../../res/back_stack.png');
-    font-family       : 'm3w-card';
-    position          : absolute;
-  }
-  & > .card {
-    top: 0;
-  }
-  .card.flipped > .card:not(.flipped) {
+  & .card .card {
     top: 10%;
   }
-  :not(:first-child) .card:not(.flipped) {
+  & .card:not(.flipped) > .card {
     top: 20%;
   }
-  :not(:first-child) .card.flipped {
-    top: 10%;
+
+  &:before {
+    content           : 'K';
+    background-image  : data-uri('../../../res/back_stack.png');
   }
 }

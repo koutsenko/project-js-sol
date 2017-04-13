@@ -46,7 +46,8 @@ const testDOM = function(placeType, holderSelector, cardSelector, holderRef, car
   let cardEls = holderEl.querySelectorAll(cardSelector);
 
   cardEls.forEach(function(cardEl, index) {
-    let domClassValue = cardEl.classList[1];
+    // FIXME как выяснилось, удаление DOM-элементов карт вручную не ведет к ошибкам, хотя должно
+    let domClassValue = cardEl.classList[1].slice(1);
 
     let dataPlaceType = cardsRef[domClassValue].place.owner.type;
     let dataOwnerIndex = cardsRef[domClassValue].place.owner.index;

@@ -1,11 +1,217 @@
 .card {
-  background-color: rgba(0,0,0,0.5);  // по идее полупрозрачная тень
+  background-color: #ffa;
   position: absolute;
   border-radius: 0.5em;
+  box-shadow: 0 0 0.1em 0.1em rgba(0,0,0,0.25);
   font-family: 'm3w-card';
   width: 100%;
-  height: 100%;
+  height: inherit;
   color: black;
+
+  /**
+   * Меняем stacking order, т.к. по-дефолту after рендерится после child'ов...
+   */
+  & {
+    z-index: 0;
+  }
+  &:before,
+  &:after {
+    z-index: -1;
+    position: absolute;
+  }
+
+  &:before { 
+    margin-left: 0.1em;
+    display: inline-block;
+    text-indent: 0.1em;
+    white-space: pre; 
+  }
+
+  &:after {
+    top: 0;
+    white-space: pre;
+    display: inline-block;
+    text-align: center;
+  }
+
+  /**
+   * corners
+   */
+  &._\2S:before { content: '2\2660\A\2660\A'; }
+  &._\3S:before { content: '3\2660\A\2660\A'; }
+  &._\4S:before { content: '4\2660\A\2660\A'; }
+  &._\5S:before { content: '5\2660\A\2660\A'; }
+  &._\6S:before { content: '6\2660\A\2660\A'; }
+  &._\7S:before { content: '7\2660\A\2660\A'; }
+  &._\8S:before { content: '8\2660\A\2660\A'; }
+  &._\9S:before { content: '9\2660\A\2660\A'; }
+  &._\=S:before { content: '=\2660\A\2660\A'; }
+  &._\JS:before { content: 'J\2660\A\2660\A'; }
+  &._\QS:before { content: 'Q\2660\A\2660\A'; }
+  &._\KS:before { content: 'K\2660\A\2660\A'; }
+  &._\AS:before { content: 'A\2660\A\2660\A'; }
+
+  &._\2H:before { content: '2\2665\A\2665\A'; }
+  &._\3H:before { content: '3\2665\A\2665\A'; }
+  &._\4H:before { content: '4\2665\A\2665\A'; }
+  &._\5H:before { content: '5\2665\A\2665\A'; }
+  &._\6H:before { content: '6\2665\A\2665\A'; }
+  &._\7H:before { content: '7\2665\A\2665\A'; }
+  &._\8H:before { content: '8\2665\A\2665\A'; }
+  &._\9H:before { content: '9\2665\A\2665\A'; }
+  &._\=H:before { content: '=\2665\A\2665\A'; }
+  &._\JH:before { content: 'J\2665\A\2665\A'; }
+  &._\QH:before { content: 'Q\2665\A\2665\A'; }
+  &._\KH:before { content: 'K\2665\A\2665\A'; }
+  &._\AH:before { content: 'A\2665\A\2665\A'; }
+
+  &._\2C:before { content: '2\2663\A\2663\A'; }
+  &._\3C:before { content: '3\2663\A\2663\A'; }
+  &._\4C:before { content: '4\2663\A\2663\A'; }
+  &._\5C:before { content: '5\2663\A\2663\A'; }
+  &._\6C:before { content: '6\2663\A\2663\A'; }
+  &._\7C:before { content: '7\2663\A\2663\A'; }
+  &._\8C:before { content: '8\2663\A\2663\A'; }
+  &._\9C:before { content: '9\2663\A\2663\A'; }
+  &._\=C:before { content: '=\2663\A\2663\A'; }
+  &._\JC:before { content: 'J\2663\A\2663\A'; }
+  &._\QC:before { content: 'Q\2663\A\2663\A'; }
+  &._\KC:before { content: 'K\2663\A\2663\A'; }
+  &._\AC:before { content: 'A\2663\A\2663\A'; }
+
+  &._\2D:before { content: '2\2666\A\2666\A'; }
+  &._\3D:before { content: '3\2666\A\2666\A'; }
+  &._\4D:before { content: '4\2666\A\2666\A'; }
+  &._\5D:before { content: '5\2666\A\2666\A'; }
+  &._\6D:before { content: '6\2666\A\2666\A'; }
+  &._\7D:before { content: '7\2666\A\2666\A'; }
+  &._\8D:before { content: '8\2666\A\2666\A'; }
+  &._\9D:before { content: '9\2666\A\2666\A'; }
+  &._\=D:before { content: '=\2666\A\2666\A'; }
+  &._\JD:before { content: 'J\2666\A\2666\A'; }
+  &._\QD:before { content: 'Q\2666\A\2666\A'; }
+  &._\KD:before { content: 'K\2666\A\2666\A'; }
+  &._\AD:before { content: 'A\2666\A\2666\A'; }
+
+  /**
+   * bodies
+   */
+
+  // тузы
+  &[class*="_A"]:after { 
+    font-size : 3em;
+    left      : 0.4em;
+    top       : 0.6em;
+  }
+  &._\AH:after { content: '\2665'; }
+  &._\AS:after { content: '\2660'; }
+  &._\AC:after { content: '\2663'; }
+  &._\AD:after { content: '\2666'; }
+
+  // двойки
+  &[class*="_2"]:after { 
+    font-size : 2em;
+    left      : 1.1em;
+    top       : 0.25em;
+  }
+  &._\2H:after { content: '\2665\A\2665'; }
+  &._\2S:after { content: '\2660\A\2660'; }
+  &._\2C:after { content: '\2663\A\2663'; }
+  &._\2D:after { content: '\2666\A\2666'; }
+
+  // тройки
+  &[class*="_3"]:after { 
+    font-size : 1.3em;
+    left      : 2em;
+    top       : 0.5em;
+  }
+  &._\3H:after { content: '\2665\A\2665\A\2665'; }
+  &._\3S:after { content: '\2660\A\2660\A\2660'; }
+  &._\3C:after { content: '\2663\A\2663\A\2663'; }
+  &._\3D:after { content: '\2666\A\2666\A\2666'; }
+  
+  // четверки
+  &[class*="_4"]:after { 
+    font-size : 1.4em;
+    left      : 1.3em;
+    top       : 1.2em;
+  }
+  &._\4H:after { content: '\2665\2665\A\2665\2665'; }
+  &._\4S:after { content: '\2660\2660\A\2660\2660'; }
+  &._\4C:after { content: '\2663\2663\A\2663\2663'; }
+  &._\4D:after { content: '\2666\2666\A\2666\2666'; }
+
+  // пятерки
+  &[class*="_5"]:after { 
+    font-size   : 1.4em;
+    left        : 1.3em;
+    line-height : 0.9em;
+    top         : 1em;
+  }
+  &._\5H:after { content: '\2665\2665\A\2665\A\2665\2665'; }
+  &._\5S:after { content: '\2660\2660\A\2660\A\2660\2660'; }
+  &._\5C:after { content: '\2663\2663\A\2663\A\2663\2663'; }
+  &._\5D:after { content: '\2666\2666\A\2666\A\2666\2666'; }
+
+  // шестерки
+  &[class*="_6"]:after { 
+    font-size   : 1.4em;
+    left        : 1.3em;
+    line-height : 0.9em;
+    top         : 1em;
+  }
+  &._\6H:after { content: '\2665\2665\A\2665\2665\A\2665\2665'; }
+  &._\6S:after { content: '\2660\2660\A\2660\2660\A\2660\2660'; }
+  &._\6C:after { content: '\2663\2663\A\2663\2663\A\2663\2663'; }
+  &._\6D:after { content: '\2666\2666\A\2666\2666\A\2666\2666'; }
+
+  // семерки
+  &[class*="_7"]:after {
+    font-size   : 1.1em;
+    left        : 2em;
+    line-height : 0.9em;
+    top         : 1em;
+  }
+  &._\7H:after { content: '\2665\2665\A\2665\A\2665\2665\A\2665\2665'; }
+  &._\7S:after { content: '\2660\2660\A\2660\A\2660\2660\A\2660\2660'; }
+  &._\7C:after { content: '\2663\2663\A\2663\A\2663\2663\A\2663\2663'; }
+  &._\7D:after { content: '\2666\2666\A\2666\A\2666\2666\A\2666\2666'; }
+
+  // восьмерки
+  &[class*="_8"]:after {
+    font-size   : 1.1em;
+    left        : 2em;
+    line-height : 0.9em;
+    top         : 1em;
+  }
+  &._\8H:after { content: '\2665\2665\A\2665\2665\A\2665\2665\A\2665\2665'; }
+  &._\8S:after { content: '\2660\2660\A\2660\2660\A\2660\2660\A\2660\2660'; }
+  &._\8C:after { content: '\2663\2663\A\2663\2663\A\2663\2663\A\2663\2663'; }
+  &._\8D:after { content: '\2666\2666\A\2666\2666\A\2666\2666\A\2666\2666'; }
+
+  // девятки
+  &[class*="_9"]:after {
+    font-size   : 1.1em;
+    left        : 2em;
+    line-height : 0.9em;
+    top         : 0.4em;
+  }
+  &._\9H:after { content: '\2665\2665\A\2665\A\2665\2665\A\2665\2665\A\2665\2665'; }
+  &._\9S:after { content: '\2660\2660\A\2660\A\2660\2660\A\2660\2660\A\2660\2660'; }
+  &._\9C:after { content: '\2663\2663\A\2663\A\2663\2663\A\2663\2663\A\2663\2663'; }
+  &._\9D:after { content: '\2666\2666\A\2666\A\2666\2666\A\2666\2666\A\2666\2666'; }
+
+  // десятки
+  &[class*="_="]:after {
+    font-size   : 1.1em;
+    left        : 2em;
+    line-height : 0.9em;
+    top         : 0.4em;
+  }
+  &._\=H:after { content: '\2665\2665\A\2665\2665\A\2665\2665\A\2665\2665\A\2665\2665'; }
+  &._\=S:after { content: '\2660\2660\A\2660\2660\A\2660\2660\A\2660\2660\A\2660\2660'; }
+  &._\=C:after { content: '\2663\2663\A\2663\2663\A\2663\2663\A\2663\2663\A\2663\2663'; }
+  &._\=D:after { content: '\2666\2666\A\2666\2666\A\2666\2666\A\2666\2666\A\2666\2666'; }
 
   &.moving {
     top: 0;
@@ -16,8 +222,9 @@
     }
   }
 
-  &.flipped > .face {
-    visibility: hidden;
+  &.flipped:before,
+  &.flipped:after {
+    content: '';
   }
 
   &[class*='D'],
@@ -52,18 +259,18 @@
     }
   }
 
-  &.KC > .face { background-image: data-uri('../../../res/face_CK.png'); }
-  &.QC > .face { background-image: data-uri('../../../res/face_CQ.png'); }
-  &.JC > .face { background-image: data-uri('../../../res/face_CJ.png'); }
-  &.KD > .face { background-image: data-uri('../../../res/face_DK.png'); }
-  &.QD > .face { background-image: data-uri('../../../res/face_DQ.png'); }
-  &.JD > .face { background-image: data-uri('../../../res/face_DJ.png'); }
-  &.KH > .face { background-image: data-uri('../../../res/face_HK.png'); }
-  &.QH > .face { background-image: data-uri('../../../res/face_HQ.png'); }
-  &.JH > .face { background-image: data-uri('../../../res/face_HJ.png'); }
-  &.KS > .face { background-image: data-uri('../../../res/face_SK.png'); }
-  &.QS > .face { background-image: data-uri('../../../res/face_SQ.png'); }
-  &.JS > .face { background-image: data-uri('../../../res/face_SJ.png'); }
+  &._KC { background-image: data-uri('../../../res/face_CK.png'); background-size: cover; }
+  &._QC { background-image: data-uri('../../../res/face_CQ.png'); background-size: cover; }
+  &._JC { background-image: data-uri('../../../res/face_CJ.png'); background-size: cover; }
+  &._KD { background-image: data-uri('../../../res/face_DK.png'); background-size: cover; }
+  &._QD { background-image: data-uri('../../../res/face_DQ.png'); background-size: cover; }
+  &._JD { background-image: data-uri('../../../res/face_DJ.png'); background-size: cover; }
+  &._KH { background-image: data-uri('../../../res/face_HK.png'); background-size: cover; }
+  &._QH { background-image: data-uri('../../../res/face_HQ.png'); background-size: cover; }
+  &._JH { background-image: data-uri('../../../res/face_HJ.png'); background-size: cover; }
+  &._KS { background-image: data-uri('../../../res/face_SK.png'); background-size: cover; }
+  &._QS { background-image: data-uri('../../../res/face_SQ.png'); background-size: cover; }
+  &._JS { background-image: data-uri('../../../res/face_SJ.png'); background-size: cover; }
 
   & > .back {
     background-color: #ffa;
@@ -75,7 +282,7 @@
     right: 0.1em;
   }
 
-  &.flipped > .back {
+  &.flipped {
     background-size: cover;
     background-image: data-uri('../../../res/back_back.png');
   }

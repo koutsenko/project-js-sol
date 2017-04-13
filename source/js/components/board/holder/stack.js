@@ -1,13 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import Highlight from './fx/highlight';
 
-
-import interactActions from '../../actions/interact';
-import { places } from '../../constants/app';
+import interactActions from '../../../actions/interact';
+import { places } from '../../../constants/app';
 
 import interact from 'interact.js';
+
+import getFxHighlight from '../fx/highlight';
 
 class Stack extends React.Component {
   onDragEnter(event) {
@@ -32,16 +32,9 @@ class Stack extends React.Component {
     });
   }
   render() {
-    // var mark = this.props.accepts.stack[this.props.index] !== null ? (
-    //   <div className="mark" style={{backgroundColor: this.props.accepts.stack[this.props.index] ? 'lime' : 'red'}}></div>
-    // ) : null;
-    var mark = null;
-
     return (
-      <div ref="stack" className={"stack" + this.props.index + " holder"}>
-        <div className="face">К</div>
-        <Highlight value={this.props.highlights[this.props.index]} />
-        {this.props.children ? this.props.children : mark}
+      <div ref="stack" className={"stack" + this.props.index + " holder " + getFxHighlight(this.props.highlights[this.props.index])}>
+        {this.props.children}
       </div>
     );
   }

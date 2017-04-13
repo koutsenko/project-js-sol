@@ -1,9 +1,6 @@
 .deck {
-  cursor: pointer;
-  & > .card {
-    top               : 0;
-  }
-  & > .face {
+  &:before {
+    content           : '';
     background-image  : data-uri('../../../res/back_deck.png');
   }
 }
