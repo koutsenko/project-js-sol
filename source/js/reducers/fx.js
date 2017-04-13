@@ -14,7 +14,7 @@ export default function(state, action) {
   }
 
   switch (action.type) {
-    case actions.DRAG_ENTER_CARD:
+    case actions.DRAG_ENTER_INTO_CARD:
       var newState = JSON.parse(JSON.stringify(state));
       if (action.target.place.owner.type === places.STACK) {
         newState.card_highlights[action.target.id] = canAcceptDropToStack(action.source, action.target) ? highlights.ACCEPT : highlights.DENY;
@@ -23,20 +23,20 @@ export default function(state, action) {
       }
       return newState;
 
-    case actions.DRAG_ENTER_HOME:
+    case actions.DRAG_ENTER_INTO_HOME:
       var newState = JSON.parse(JSON.stringify(state));
       newState.home_highlights[action.target_index] = canAcceptDropToHome(action.source) ? highlights.ACCEPT : highlights.DENY;
       return newState;
 
-    case actions.DRAG_ENTER_STACK:
+    case actions.DRAG_ENTER_INTO_STACK:
       var newState = JSON.parse(JSON.stringify(state));
       newState.stack_highlights[action.target_index] = canAcceptDropToStack(action.source) ? highlights.ACCEPT : highlights.DENY;
       return newState;
 
     case actions.DRAG_END_CARD:
-    case actions.DRAG_LEAVE_CARD:
-    case actions.DRAG_LEAVE_HOME:
-    case actions.DRAG_LEAVE_STACK:
+    case actions.DRAG_LEAVE_FROM_CARD:
+    case actions.DRAG_LEAVE_FROM_HOME:
+    case actions.DRAG_LEAVE_FROM_STACK:
       return buildHighlights();
   }
 

@@ -13,7 +13,7 @@ export default {
       console.log('карту накрыло');
       let state = getState();
       let target = state.board.cards[drop_card_id];
-      if (target.place.owner.type === places.DECK) {
+      if ((target.place.owner.type === places.DECK) || (target.place.owner.type === places.OPEN)) {
         return;
       }
       let source = state.board.cards[drag_card_id];
@@ -24,11 +24,15 @@ export default {
         [places.HOME]   : state.board.homes[owner_index]
       }[target.place.owner.type];
       let last = state.board.cards[owner[owner.length-1]];
+      if (last.id === drag_card_id) {
+        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        return;
+      }
       console.log('нашли верхнюю карту в том месте где накрытая и на нее диспатчим');
       dispatch({
         source: source,
         target: last,
-        type: actions.DRAG_ENTER_CARD
+        type: actions.DRAG_ENTER_INTO_CARD
       });
     };
   },
@@ -37,7 +41,7 @@ export default {
       console.log('карту отпустило');
       let state = getState();
       let target = state.board.cards[drop_card_id];
-      if (target.place.owner.type === places.DECK) {
+      if ((target.place.owner.type === places.DECK) || (target.place.owner.type === places.OPEN)) {
         return;
       }
       let source = state.board.cards[drag_card_id];
@@ -48,11 +52,15 @@ export default {
         [places.HOME]   : state.board.homes[owner_index]
       }[target.place.owner.type];
       let last = state.board.cards[owner[owner.length-1]];
+      if (last.id === drag_card_id) {
+        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        return;
+      }
       console.log('нашли верхнюю карту в том месте где накрытая и на нее диспатчим');
       dispatch({
         source: source,
         target: last,
-        type: actions.DRAG_LEAVE_CARD
+        type: actions.DRAG_LEAVE_FROM_CARD
       });
     };
   },
@@ -60,18 +68,29 @@ export default {
     return function(dispatch, getState) {
       let state = getState();
       let card = state.board.cards[id];
+      if ((card.place.owner.type === places.HOME) && (card.place.owner.index === index)) {
+        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        return;
+      }
       dispatch({
         source        : card,
         target_index  : index,
-        type          : actions.DRAG_ENTER_HOME
+        type          : actions.DRAG_ENTER_INTO_HOME
       });
     }
   },
   dragLeaveHome: function(id, index) {
     return function(dispatch, getState) {
+      let state = getState();
+      let owner = state.board.homes[index];
+      let card = state.board.cards[id];
+      if ((card.place.owner.type === places.HOME) && (card.place.owner.index === index)) {
+        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        return;
+      }
       dispatch({
         index : index,
-        type  : actions.DRAG_LEAVE_HOME
+        type  : actions.DRAG_LEAVE_FROM_HOME
       });
     };
   },
@@ -79,18 +98,28 @@ export default {
     return function(dispatch, getState) {
       let state = getState();
       let card = state.board.cards[id];
+      if ((card.place.owner.type === places.STACK) && (card.place.owner.index === index)) {
+        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        return;
+      }
       dispatch({
         source        : card,
         target_index  : index,
-        type          : actions.DRAG_ENTER_STACK
+        type          : actions.DRAG_ENTER_INTO_STACK
       });
     };
   },
   dragLeaveStack: function(id, index) {
     return function(dispatch, getState) {
+      let state = getState();
+      let card = state.board.cards[id];
+      if ((card.place.owner.type === places.STACK) && (card.place.owner.index === index)) {
+        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        return;
+      }
       dispatch({
         index : index,
-        type  : actions.DRAG_LEAVE_STACK
+        type  : actions.DRAG_LEAVE_FROM_STACK
       });
     };
   }
