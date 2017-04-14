@@ -1,5 +1,13 @@
 #board {
 
+  // выделяем изменяющиеся DOM-элементы и их потомки в отдельные GPU-слои
+  .holder,
+  .card.moving {
+    -webkit-transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    -webkit-perspective: 1000;
+  }
+
   .holder {
     position          : relative;
     border-radius     : 0.5em;
