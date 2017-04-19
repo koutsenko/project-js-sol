@@ -23,8 +23,11 @@ const performTests = function(state) {
   // let cardSelector = '.card:not(.hidden)';
   let cardSelector = '.card';
 
+  lastError = lastError || testCards(state.board.cards);
+
   lastError = lastError || testDOM(places.DECK, '#app .deck', cardSelector, state.board.deck, state.board.cards, undefined);
   lastError = lastError || testDOM(places.OPEN, '#app .open', cardSelector, state.board.open, state.board.cards, undefined);
+  lastError = lastError || testOpenCards(state.board.open, state.board.cards);
   for (var i = 0; i < 4; i++) {
     lastError = lastError || testDOM(places.HOME, '#app .home'+i, cardSelector, state.board.homes[i], state.board.cards, i);
     lastError = lastError || testHomeCards(state.board.homes[i], state.board.cards);
@@ -37,6 +40,31 @@ const performTests = function(state) {
   if (lastError) {
     console.log('Новое состояние ошибочное! Последняя из ошибок: ', lastError);
   }
+};
+
+const testCards = function(cards) {
+  let lastError;
+
+  let ids = Object.keys(cards);
+  let length = ids.length;
+  if (length !== 52) {
+    let suits = ['S', 'C', 'H', 'D'];
+    let ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '=', 'J', 'Q', 'K'];
+    let missing = [];
+    // TODO добавить так же вывод лишних карт
+    suits.forEach(function(suit) {
+      ranks.forEach(function(rank) {
+        let card = rank+suit;
+        if (Object.keys(cards).indexOf(card) < 0) {
+          missing.push(card);
+        }
+      });
+    });
+    lastError = 'Неверное кол-во на столе, должно быть 52, а по факту ' + length + ', отсутствующие карты: ' + missing.toString();
+  }
+
+
+  return lastError;
 };
 
 const testDOM = function(placeType, holderSelector, cardSelector, holderRef, cardsRef, ownerIndex) {
@@ -73,6 +101,16 @@ const testDOM = function(placeType, holderSelector, cardSelector, holderRef, car
 
   return lastError;
 };
+
+const testOpenCards = function(open, cards) {
+  let lastError;
+  open.forEach(function(id) {
+    if (cards[id].flip) {
+      lastError = 'В открытых появилась закрытая карта';
+    }   
+  });
+  return lastError;
+}
 
 /**
  *

@@ -88,15 +88,29 @@ export default {
       let getHomeMap = function() {
         let homes = getState().board.homes;
         let ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '=', 'J', 'Q', 'K'];
+        let freeSuits = ['H', 'C', 'D', 'S'];
         let map = {};
+        homes.forEach(function(home, index) {
+          if (home[0] !== undefined) {
+            freeSuits.splice(freeSuits.indexOf(home[0][1]), 1);
+          }
+        });
         homes.forEach(function(home, index) {
           // если этот дом еще не заполнен
           if (home.length !== 13) {
-            let targetCard = home[home.length-1];
-            map[index] = {
-              rank: ranks[ranks.indexOf(targetCard[0])+1],
-              suit: targetCard[1]
-            };
+            let last = home[home.length-1];
+            if (last === undefined) {
+              map[index] = {
+                rank: 'A',
+                suit: freeSuits[0]
+              }
+              freeSuits.splice(0, 1);
+            } else {
+              map[index] = {
+                rank: ranks[ranks.indexOf(last[0])+1],
+                suit: last[1]
+              };
+            }
           }
         });
         return map;
@@ -110,11 +124,15 @@ export default {
           console.log('Какая-то ошибка');
           return;
         }
-        // открываем одну карту из колоды и кладем в open если можем
+        // открываем карту из deck и кладем в open если можем, если надо - возвращаем open в deck
         let board = getState().board;
         if (board.deck.length) {
           dispatch({
             type: actions.CARD_OPEN_BY_PLAYER
+          });
+        } else if (board.open.length) {
+          dispatch({
+            type: actions.CARD_BACK_BY_PLAYER
           });
         }
 

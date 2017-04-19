@@ -5,32 +5,11 @@ import recordActions from '../actions/records';
 import { isGameEnd } from '../tools/rules';
 
 const canComplete = function(board) {
-  // если есть закрытые карты в стеках, автосбор пока невозможен
-  if (Object.keys(board.stacks).some(function(key) {
+  return !Object.keys(board.stacks).some(function(key) {
     return board.stacks[key].some(function(id) {
       return board.cards[id].flip === true;
     });
-  })) {
-    return false;
-  }
-
-  // если есть закрытые карты в open, автосбор пока невозможен
-  if (board.open.some(function(id) {
-    return board.cards[id].flip === true;
-  })) {
-    return false;
-  }
-
-  // если есть закрытые карты в deck, автосбор пока невозможен
-  if (board.deck.some(function(id) {
-    return board.cards[id].flip === true;
-  })) {
-    return false;
-  }
-
-  // ну или нам ничего не мешает...
-  // TEST Предполагается что мы не попадем в ситуацию, когда этот метод вызван на уже законченной игре...
-  return true;
+  });
 }
 
 export default function(store) {
