@@ -14,18 +14,41 @@ import Mask       from './mask';
 import gameActions from '../actions/games';
 
 class App extends React.Component {
+  onHashChange(event) {
+    let oldHash = event.oldURL.split('#')[1];
+    let cmd = getHashCmd();
+    let p1 = getHashParm();
+    console.log('hash cmd = ', cmd);
+    if (cmd === 'dump') {
+      this.props.dump();
+    } else if (cmd === 'load') {
+      this.props.load(p1);
+    }
+    if (oldHash !== undefined) {
+      window.location.hash = oldHash;
+    } else {
+      window.history.pushState('', '/', window.location.pathname);
+    }
+    event.preventDefault();
+  }
+
   componentDidMount() {
     let cmd = getHashCmd();
     let p1 = getHashParm();
 
     if (cmd === 'load') {
-      this.props.load();
+      this.props.load(p1);
+      window.history.pushState('', '/', window.location.pathname);
     } else if (cmd === 'deal') {
       this.props.deal(p1 || Date.now());
     } else {
       this.props.deal(Date.now());
     }
+
+    window.onhashchange = this.onHashChange.bind(this);
   }
+
+
 
   render() {
     return (
@@ -49,8 +72,9 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    load: bindActionCreators(gameActions.load, dispatch),
-    deal: bindActionCreators(gameActions.deal, dispatch)
+    deal: bindActionCreators(gameActions.deal, dispatch),
+    dump: bindActionCreators(gameActions.dump, dispatch),
+    load: bindActionCreators(gameActions.load, dispatch)
   };
 };
 

@@ -20,7 +20,7 @@ export default function(state, action) {
       return newState;
 
     case actions.LOAD_SCENARIO:
-      return loadBoard();
+      return loadBoard(action.data);
 
     case actions.GAME_CREATED:
       return buildBoard(action.seed);
@@ -244,42 +244,61 @@ const buildCards = function(deck) {
   return cards;
 };
 
-const loadBoard = function() {
+const loadBoard = function(data) {
   // Обрати внимание, что при загрузке расклада параметры touched будут везде false. Я пока не понял как правильнее.
-  let stacks = [
-    ['KS'],
-    [],
-    [],
-    [],
-    [],
-    [],
-    []
-  ];
-  let homes = [
-    ['AH', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '=H', 'JH', 'QH', 'KH'],
-    ['AD', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '=D', 'JD', 'QD', 'KD'],
-    ['AC', '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '=C', 'JC', 'QC', 'KC'],
-    ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '=S', 'JS', 'QS'      ]
-  ];
+  let save = JSON.parse(decodeURI(data));
+  let board = save.board;
+  let opened = save.opened;  // ids открытых карт стеков
+  let stacks = board.stacks;
+  let homes = board.homes;
+  let deck = board.deck;
+  let open = board.open;
+  let index = board.index;
+
+  // let stacks = [
+  //   ['KS'],
+  //   [],
+  //   [],
+  //   [],
+  //   [],
+  //   [],
+  //   []
+  // ];
+  // let homes = [
+  //   ['AH', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '=H', 'JH', 'QH', 'KH'],
+  //   ['AD', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '=D', 'JD', 'QD', 'KD'],
+  //   ['AC', '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '=C', 'JC', 'QC', 'KC'],
+  //   ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '=S', 'JS', 'QS'      ]
+  // ];
 
   let cards = {};
   stacks.forEach(function(stack, place_index) {
     stack.forEach(function(id, index) {
-      cards[id] = buildCard(id, false, places.STACK, place_index, index);
+      let flip = opened.indexOf(id) < 0;
+      cards[id] = buildCard(id, flip, places.STACK, place_index, index);
     });
   });
   homes.forEach(function(home, place_index) {
     home.forEach(function(id, index) {
-      cards[id] = buildCard(id, false, places.HOME, place_index, index);
+      let flip = opened.indexOf(id) < 0;
+      cards[id] = buildCard(id, flip, places.HOME, place_index, index);
     });
+  });
+  deck.forEach(function(id, index, all) {
+    let flip = opened.indexOf(id) < 0;
+    cards[id] = buildCard(id, flip, places.DECK, undefined, index);
+  });
+  open.forEach(function(id, index, all) {
+    let flip = opened.indexOf(id) < 0;
+    cards[id] = buildCard(id, flip, places.OPEN, undefined, index);
   });
 
   return {
-    index     : 230,
+    index     : index,
     previous  : undefined,
     cards     : cards,
-    deck      : [],
-    open      : [],
+    deck      : deck,
+    open      : open,
     homes     : homes,
     stacks    : stacks
   };

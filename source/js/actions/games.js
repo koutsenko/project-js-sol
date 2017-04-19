@@ -4,8 +4,9 @@ import { isGameEnd } from '../tools/rules';
 
 
 export default {
-  load: function() {
+  load: function(data) {
     return {
+      data: data,
       type: actions.LOAD_SCENARIO
     };
   },
@@ -52,6 +53,31 @@ export default {
           dispatch(action);
         }, 100*(index+1));
       });
+    };
+  },
+  dump: function() {
+    return function(dispatch, getState) {
+      let state = getState();
+      let opened = [];
+      Object.keys(state.board.cards).forEach(function(id) {
+        if (!state.board.cards[id].flip) {
+          opened.push(id);
+        };
+      });
+      let data = {
+        board: {
+          stacks  : state.board.stacks,
+          homes   : state.board.homes,
+          deck    : state.board.deck,
+          open    : state.board.open,
+          index   : state.board.index
+        },
+        time    : state.game.time,
+        opened  : opened,
+      };
+      setTimeout(function() {
+        alert(encodeURI(JSON.stringify(data)));
+      }.bind(this), 0);      
     };
   },
   completeGame: function() {

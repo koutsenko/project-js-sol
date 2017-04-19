@@ -33,7 +33,7 @@ export default function(state, action) {
 
     case actions.LOAD_SCENARIO:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.time = 23*60;
+      newState.time = JSON.parse(decodeURI(action.data)).time;
       return newState;
 
     case actions.TICK:
