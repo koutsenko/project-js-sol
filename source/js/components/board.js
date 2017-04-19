@@ -18,33 +18,33 @@ class Board extends React.Component {
       return null;
     }
     let id = array.shift();
-    let card = this.props.cards[id];
+    let card = this.props.board.cards[id];
     return (
       <Card singleClickHandler={this.props.cardClick} doubleClickHandler={this.props.cardDoubleClick} children={this.stackCards(array)} card={card}/>
     );
   }
 
   render() {
-    var deckCards = this.stackCards.call(this, this.props.deck);
-    var openCards = this.stackCards.call(this, this.props.open);
+    var deckCards = this.stackCards.call(this, this.props.board.deck);
+    var openCards = this.stackCards.call(this, this.props.board.open);
     var homesCards = [
-      this.stackCards.call(this, this.props.homes[0]),
-      this.stackCards.call(this, this.props.homes[1]),
-      this.stackCards.call(this, this.props.homes[2]),
-      this.stackCards.call(this, this.props.homes[3])
+      this.stackCards.call(this, this.props.board.homes[0]),
+      this.stackCards.call(this, this.props.board.homes[1]),
+      this.stackCards.call(this, this.props.board.homes[2]),
+      this.stackCards.call(this, this.props.board.homes[3])
     ];
     var stacksCards = [
-      this.stackCards.call(this, this.props.stacks[0]),
-      this.stackCards.call(this, this.props.stacks[1]),
-      this.stackCards.call(this, this.props.stacks[2]),
-      this.stackCards.call(this, this.props.stacks[3]),
-      this.stackCards.call(this, this.props.stacks[4]),
-      this.stackCards.call(this, this.props.stacks[5]),
-      this.stackCards.call(this, this.props.stacks[6])
+      this.stackCards.call(this, this.props.board.stacks[0]),
+      this.stackCards.call(this, this.props.board.stacks[1]),
+      this.stackCards.call(this, this.props.board.stacks[2]),
+      this.stackCards.call(this, this.props.board.stacks[3]),
+      this.stackCards.call(this, this.props.board.stacks[4]),
+      this.stackCards.call(this, this.props.board.stacks[5]),
+      this.stackCards.call(this, this.props.board.stacks[6])
     ];
 
     return (
-      <div id="board">
+      <div id="board" className={this.props.disabled ? "disabled" : null}>
         <div className="row">
           <Deck handler={this.props.deckClick}>
             {deckCards}
@@ -72,7 +72,10 @@ class Board extends React.Component {
 }
 
 const mapStateToProps = function(state) {
-  return state.board;
+  return {
+    board     : state.board,
+    disabled  : !state.access.controlsEnabled
+  };
 }
 
 const mapDispatchToProps = function(dispatch) {

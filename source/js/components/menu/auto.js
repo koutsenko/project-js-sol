@@ -21,7 +21,7 @@ class ButtonAuto extends MenuButton {
 
 const mapStateToProps = function(state) {
   return {
-    canComplete: state.menu.canComplete
+    canComplete: state.access.canComplete
   };
 };
 
