@@ -156,7 +156,6 @@ export default {
             }
           }
         }.bind(this));
-
       } while(!isGameEnd(getState().board.cards));
     }.bind(this);
   },

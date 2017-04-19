@@ -39,5 +39,9 @@
     "build": "./node_modules/.bin/webpack --config webpack.config.js",
     "test": "jest",
     "test:watch": "npm test -- --watch"
+  },
+  "jest": {
+    "setupFiles": [ "./__tests__/window-env.js" ],
+    "testPathIgnorePatterns": [ "./__tests__"]
   }
 }

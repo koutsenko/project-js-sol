@@ -320,3 +320,6 @@ const buildCard = function(id, flipped, placeType, placeIndex, indexInPlace) {
     }
   };
 };
+
+// FIXME - генерация случайной колоды это должна быть часть некоего модуля tools/cards.
+export { buildDeck, loadBoard };
