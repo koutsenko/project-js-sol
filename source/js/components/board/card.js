@@ -50,8 +50,8 @@ class Card extends React.Component {
         interaction.start({ name: 'drag' }, event.interactable, this.clone);
       }
     }.bind(this));
-    ir.on(['doubleclick', 'doubletap'], this.handleDoubleClick.bind(this));
-    ir.on(['click', 'tap'], this.handleSingleClick.bind(this));
+    ir.on(['doubletap'], this.handleDoubleClick.bind(this));
+    ir.on(['tap'], this.handleSingleClick.bind(this));
   }
 
   componentDidUpdate(prevProps) {

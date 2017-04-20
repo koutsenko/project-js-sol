@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import interact from 'interact.js';
+
 import aboutActions from '../../actions/about';
 
 class Status extends React.Component {
@@ -16,11 +18,22 @@ class Status extends React.Component {
     }
   };
 
+  componentDidMount() {
+    let ir = interact(this.refs["aboutBtn"]);
+    ir.on(['tap'], this.handleOpenAbout.bind(this));
+  }
+
+  handleOpenAbout(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    this.props.openAbout();
+  }
 
   render() {
     return (
       <div className="status">
-        <div className="btn-about" onClick={this.props.openAbout}>
+        <div className="btn-about" ref="aboutBtn">
           "Косынка"<br />классика <br />
           <span style={{fontSize: '1.5em', lineHeight: '1em'}}>
           {this.props.mini ? ('mini') : ('©')}

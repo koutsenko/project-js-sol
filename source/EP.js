@@ -40,9 +40,12 @@ window.onload = function() {
   }
 
   // выключаем браузерные жесты на iPhone кроме history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
-  document.body.ongesturestart = document.body.ongesturechange = document.body.ongestureend = function(event) {
-    event.preventDefault();
-  }
+  ["gesturestart", "gesturechange", "gestureend", "touchstart", "touchmove", "touchend"].forEach(function(eventName) {
+    document.body.addEventListener(eventName, function(event) {
+      event.preventDefault();
+    });
+  });
+
   ReactDOM.render((
     <Provider store={store}>
       <App />
