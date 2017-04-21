@@ -23,11 +23,11 @@ export default {
         [places.STACK]  : state.board.stacks[owner_index],
         [places.HOME]   : state.board.homes[owner_index]
       }[target.place.owner.type];
-      let last = state.board.cards[owner[owner.length-1]];
-      if (last.id === drag_card_id) {
-        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+      if (owner.indexOf(drag_card_id)+1) {
+        console.log('похоже пролетаем над предком - ничего не диспатчим');
         return;
       }
+      let last = state.board.cards[owner[owner.length-1]];
       console.log('нашли верхнюю карту в том месте где накрытая и на нее диспатчим');
       dispatch({
         source: source,
@@ -51,11 +51,11 @@ export default {
         [places.STACK]  : state.board.stacks[owner_index],
         [places.HOME]   : state.board.homes[owner_index]
       }[target.place.owner.type];
-      let last = state.board.cards[owner[owner.length-1]];
-      if (last.id === drag_card_id) {
-        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+      if (owner.indexOf(drag_card_id)+1) {
+        console.log('похоже пролетаем над предком - ничего не диспатчим');
         return;
       }
+      let last = state.board.cards[owner[owner.length-1]];
       console.log('нашли верхнюю карту в том месте где накрытая и на нее диспатчим');
       dispatch({
         source: source,
@@ -69,7 +69,7 @@ export default {
       let state = getState();
       let card = state.board.cards[id];
       if ((card.place.owner.type === places.HOME) && (card.place.owner.index === index)) {
-        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        console.log('похоже нашли самих себя - ничего не диспатчим');
         return;
       }
       dispatch({
@@ -85,7 +85,7 @@ export default {
       let owner = state.board.homes[index];
       let card = state.board.cards[id];
       if ((card.place.owner.type === places.HOME) && (card.place.owner.index === index)) {
-        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        console.log('похоже нашли самих себя - ничего не диспатчим');
         return;
       }
       dispatch({
@@ -99,7 +99,7 @@ export default {
       let state = getState();
       let card = state.board.cards[id];
       if ((card.place.owner.type === places.STACK) && (card.place.owner.index === index)) {
-        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        console.log('похоже нашли самих себя - ничего не диспатчим');
         return;
       }
       dispatch({
@@ -114,7 +114,7 @@ export default {
       let state = getState();
       let card = state.board.cards[id];
       if ((card.place.owner.type === places.STACK) && (card.place.owner.index === index)) {
-        console.log('похоже нашли самих себя скрытых - ничего не диспатчим');
+        console.log('похоже нашли самих себя - ничего не диспатчим');
         return;
       }
       dispatch({

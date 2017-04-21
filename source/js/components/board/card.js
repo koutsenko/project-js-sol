@@ -36,18 +36,10 @@ class Card extends React.Component {
     ir.on('move', function(event) {
       let interaction = event.interaction;
       if (interaction.pointerIsDown && !interaction.interacting() && this.dndEnabled()) {
-        let rect = event.currentTarget.getBoundingClientRect();
-        this.clone = event.currentTarget.cloneNode(true);
-        this.clone.className += " moving";
-        this.clone.style.width = rect.right - rect.left + 'px';
-        this.clone.style.height = rect.bottom - rect.top + 'px';
-        this.clone.style.webkitTransform = this.clone.style.transform = 'translate(' + rect.left + 'px, ' + rect.top + 'px)';
-        this.clone.setAttribute('data-x', rect.left);
-        this.clone.setAttribute('data-y', rect.top);
-        document.body.appendChild(this.clone);
-        this.origin = event.currentTarget;
-        this.origin.style.display = 'none';
-        interaction.start({ name: 'drag' }, event.interactable, this.clone);
+        this.holder = event.currentTarget;
+        while ((this.holder = this.holder.parentElement) && !this.holder.classList.contains('holder'));
+        this.holder.style.zIndex = 2;
+        interaction.start({ name: 'drag' }, event.interactable, event.currentTarget);
       }
     }.bind(this));
     ir.on(['doubletap'], this.handleDoubleClick.bind(this));
@@ -73,8 +65,11 @@ class Card extends React.Component {
   }
 
   onDragEnd(event) {
-    document.body.removeChild(this.clone);
-    this.origin.style.display = null;
+    var target = event.target;
+    target.style.webkitTransform = target.style.transform = null;  
+    target.removeAttribute('data-x');
+    target.removeAttribute('data-y');
+    this.holder.style.zIndex = null;
     this.props.dragEndCard();
   }
 
