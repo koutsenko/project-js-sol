@@ -10,10 +10,20 @@ import { canAcceptDropToStack } from '../tools/rules'       ;
 
 export default function(state, action) {
   if (state === undefined) {
-    state = buildHighlights();
+    state = {
+      card_highlights  : {},      // ассоциативный массив подсветок карт
+      home_highlights  : {},      // ассоциативный массив подсветок домов
+      stack_highlights : {},      // ассоциативный массив подсветок стопок
+      mini             : false    // флаг работы на маленьком экране
+    }
   }
 
   switch (action.type) {
+    case actions.FX_MINI:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.mini = true;
+      return newState;
+
     case actions.DRAG_ENTER_INTO_CARD:
       var newState = JSON.parse(JSON.stringify(state));
       if (action.target.place.owner.type === places.STACK) {
@@ -37,7 +47,11 @@ export default function(state, action) {
     case actions.DRAG_LEAVE_FROM_CARD:
     case actions.DRAG_LEAVE_FROM_HOME:
     case actions.DRAG_LEAVE_FROM_STACK:
-      return buildHighlights();
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.card_highlights   = {};     // ассоциативный массив подсветок карт
+      newState.home_highlights   = {};     // ассоциативный массив подсветок домов
+      newState.stack_highlights  = {};     // ассоциативный массив подсветок стопок
+      return newState;
   }
 
   return state;
@@ -45,8 +59,6 @@ export default function(state, action) {
 
 const buildHighlights = function() {
   return {
-    card_highlights   : {},     // ассоциативный массив подсветок карт
-    home_highlights   : {},     // ассоциативный массив подсветок домов
-    stack_highlights  : {}      // ассоциативный массив подсветок стопок
+
   };
 };

@@ -16,6 +16,7 @@ export default {
   DRAG_LEAVE_FROM_HOME      : 'DRAG_LEAVE_FROM_HOME'      ,
   DRAG_LEAVE_FROM_STACK     : 'DRAG_LEAVE_FROM_STACK'     ,
   DROP_TO_STACK             : 'DROP_TO_STACK'             ,
+  FX_MINI                   : 'FX_MINI'                   ,
   GAME_CREATED              : 'GAME_CREATED'              , /** Сигнал о создании игры и начале раздачи карт */
   GAME_END                  : 'GAME_END'                  ,
   GAME_START                : 'GAME_START'                ,

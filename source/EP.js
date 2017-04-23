@@ -21,7 +21,10 @@ import rootMiddleware from './js/middlewares/_root' ;
 import rootReducer    from './js/reducers/_root'    ;
 import recordActions  from './js/actions/records'   ;
 import gameActions    from './js/actions/games'     ;
+import actionConstants from './js/constants/actions';
 import { composeWithDevTools } from 'redux-devtools-extension';
+
+import MobileDetect from 'mobile-detect';
 
 const composeEnhancers = composeWithDevTools({
   maxAge: 5000  // 5000 actions in redux-devtools history instead of default 50
@@ -29,6 +32,13 @@ const composeEnhancers = composeWithDevTools({
 const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
 
 window.onload = function() {
+  let md = new MobileDetect(window.navigator.userAgent);
+  if (md.phone()) {
+    store.dispatch({
+      type: actionConstants.FX_MINI
+    });
+  }
+
   // выключаем браузерные жесты на iPhone кроме history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
   document.body.ongesturestart = document.body.ongesturechange = document.body.ongestureend = function(event) {
     event.preventDefault();

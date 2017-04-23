@@ -21,7 +21,10 @@ class Status extends React.Component {
     return (
       <div className="status">
         <div className="btn-about" onClick={this.props.openAbout}>
-          "Косынка"<br />классика <br />©
+          "Косынка"<br />классика <br />
+          <span style={{fontSize: '1.5em', lineHeight: '1em'}}>
+          {this.props.mini ? ('mini') : ('©')}
+          </span>
         </div>
         <div className="counter">
           ход {this.props.counter}
@@ -36,6 +39,7 @@ class Status extends React.Component {
 const mapStateToProps = function(state) {
   return {
     counter : state.board.index,
+    mini    : state.fx.mini,
     time    : state.game.time
   };
 };
