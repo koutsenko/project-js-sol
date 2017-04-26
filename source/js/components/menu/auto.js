@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import MenuButton from '../../controls/menu/button';
 
-class ButtonAuto extends MenuButton {
+class ButtonAuto extends React.Component {
   render() {
     return (
       <MenuButton

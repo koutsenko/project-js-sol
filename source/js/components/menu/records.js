@@ -6,10 +6,11 @@ import actions from '../../actions/records';
 
 import MenuButton from '../../controls/menu/button';
   
-class ButtonRecords extends MenuButton {
+class ButtonRecords extends React.Component {
   render() {
     return (
       <MenuButton
+        disabled={false}
         hint="Авторизация, статистика, рекорды"
         role="btn5"
         text="Рекорды"

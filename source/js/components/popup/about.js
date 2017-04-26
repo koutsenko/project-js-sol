@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import actions from '../../actions/about';
 import Popup from '../../controls/popup';
 
-class Rules extends Popup {
+class Rules extends React.Component {
   wrapUrl(url, desc) {
     return (
       <a href={url} target="_blank">{desc}</a>

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import actions from '../../actions/records';
 import Popup from '../../controls/popup';
 
-class Records extends Popup {
+class Records extends React.Component {
   buildTable() {
     var records = this.props.records;
     var result = this.props.result;

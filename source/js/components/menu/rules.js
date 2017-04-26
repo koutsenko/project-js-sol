@@ -6,10 +6,11 @@ import actions from '../../actions/rules';
 
 import MenuButton from '../../controls/menu/button';
   
-class ButtonRules extends MenuButton {
+class ButtonRules extends React.Component {
   render() {
     return (
       <MenuButton
+        disabled={false}
         hint="Как играть в пасьянс-косынку"
         role="btn4"
         text="Правила"

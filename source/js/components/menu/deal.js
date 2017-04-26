@@ -7,7 +7,7 @@ import { getHashCmd, getHashParm } from '../../tools/hash';
 
 import MenuButton from '../../controls/menu/button';
 
-class ButtonDeal extends MenuButton {
+class ButtonDeal extends React.Component {
   generateNewGame() {
     if (getHashCmd() === 'deal') {
       this.props.newGame(getHashParm() || Date.now());

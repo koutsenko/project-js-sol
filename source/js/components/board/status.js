@@ -20,14 +20,9 @@ class Status extends React.Component {
 
   componentDidMount() {
     let ir = interact(this.refs["aboutBtn"]);
-    ir.on(['tap'], this.handleOpenAbout.bind(this));
-  }
-
-  handleOpenAbout(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    
-    this.props.openAbout();
+    ir.styleCursor(false);
+    ir.preventDefault('always');
+    ir.on('tap', this.props.openAbout);
   }
 
   render() {

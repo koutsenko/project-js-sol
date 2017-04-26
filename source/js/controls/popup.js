@@ -6,14 +6,9 @@ import interact from 'interact.js';
 class Popup extends React.Component {
   componentDidMount() {
     let ir = interact(this.refs["closeButton"]);
-    ir.on(['tap'], this.handleCloseButtonClick.bind(this));
-  }
-
-  handleCloseButtonClick(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    
-    this.props.handler();
+    ir.styleCursor(false);
+    ir.preventDefault('always');
+    ir.on('tap', this.props.handler);
   }
 
   render() {
@@ -30,13 +25,4 @@ Popup.propTypes = {
   handler: React.PropTypes.func.isRequired
 };
 
-const mapStateToProps = function(state) {
-  return state;
-};
-
-const mapDispatchToProps = function(dispatch) {
-  return {
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Popup);
+export default Popup;

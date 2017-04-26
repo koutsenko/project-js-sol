@@ -4,7 +4,7 @@ import interact from 'interact.js';
 
 class MenuButton extends React.Component {
   constructor(props) {
-    super();
+    super(props);
     this.state = {
       pressed: false
     }
@@ -12,13 +12,12 @@ class MenuButton extends React.Component {
 
   componentDidMount() {
     let ir = interact(this.refs[this.props.role]);
-    ir.on(['tap'], this.handlePress.bind(this));
+    ir.styleCursor(false);
+    ir.preventDefault('always');
+    ir.on('tap', this.handlePress.bind(this));
   }
 
   handlePress(event) {
-    event.preventDefault();
-    event.stopPropagation();
-
     if (this.props.disabled) {
       return;
     }
@@ -42,5 +41,13 @@ class MenuButton extends React.Component {
     );
   }
 }
+
+MenuButton.propTypes = {
+  disabled  : React.PropTypes.bool.isRequired,
+  handler   : React.PropTypes.func.isRequired,
+  hint      : React.PropTypes.string.isRequired,
+  role      : React.PropTypes.string.isRequired,
+  text      : React.PropTypes.string.isRequired
+};
 
 export default MenuButton;
