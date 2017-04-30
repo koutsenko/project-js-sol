@@ -108,7 +108,8 @@ class Board extends React.Component {
       }
       
       // нет, роллинг продолжается
-      let delta = Math.round(7*dy/event.target.clientHeight);
+      let multiplier = this.props.mini ? 4 : 7;
+      let delta = Math.round(multiplier*dy/event.target.clientHeight);
       if (this.props.interact_holder.dYroll !== delta) {
         // карта сменилась, надо записать изменения в состояние fx
         this.props.rollChange(delta);

@@ -1,3 +1,100 @@
+.mini {
+  .card {
+    &:not(.flipped) {
+      background-image: none !important;
+
+      &:after {
+        content     : '';
+        font-size   : 1em;
+        height      : 1em;
+        left        : 0;
+        line-height : 0.5em;
+        opacity     : 0.2;
+        top         : 4em;
+        width       : 100%;
+      }
+      &[class*='D'],
+      &[class*='H'] { 
+        &:after {
+          background: red;
+        }
+      }
+      &[class*='S'],
+      &[class*='C'] { 
+        &:after {
+          background: black;
+        }
+      }
+      
+      &:before {
+        font-size: 2.3em;
+        line-height: 1em;      
+      }
+      &:before:not(::first-line) {
+        display: none;
+      }
+      /**
+      * corners
+      */
+      &._\2S:before { content: '2\2660'; }
+      &._\3S:before { content: '3\2660'; }
+      &._\4S:before { content: '4\2660'; }
+      &._\5S:before { content: '5\2660'; }
+      &._\6S:before { content: '6\2660'; }
+      &._\7S:before { content: '7\2660'; }
+      &._\8S:before { content: '8\2660'; }
+      &._\9S:before { content: '9\2660'; }
+      &._\=S:before { content: '=\2660'; }
+      &._\JS:before { content: 'В\2660'; }
+      &._\QS:before { content: 'Д\2660'; }
+      &._\KS:before { content: 'К\2660'; }
+      &._\AS:before { content: 'Т\2660'; }
+
+      &._\2H:before { content: '2\2665'; }
+      &._\3H:before { content: '3\2665'; }
+      &._\4H:before { content: '4\2665'; }
+      &._\5H:before { content: '5\2665'; }
+      &._\6H:before { content: '6\2665'; }
+      &._\7H:before { content: '7\2665'; }
+      &._\8H:before { content: '8\2665'; }
+      &._\9H:before { content: '9\2665'; }
+      &._\=H:before { content: '=\2665'; }
+      &._\JH:before { content: 'В\2665'; }
+      &._\QH:before { content: 'Д\2665'; }
+      &._\KH:before { content: 'К\2665'; }
+      &._\AH:before { content: 'Т\2665'; }
+
+      &._\2C:before { content: '2\2663'; }
+      &._\3C:before { content: '3\2663'; }
+      &._\4C:before { content: '4\2663'; }
+      &._\5C:before { content: '5\2663'; }
+      &._\6C:before { content: '6\2663'; }
+      &._\7C:before { content: '7\2663'; }
+      &._\8C:before { content: '8\2663'; }
+      &._\9C:before { content: '9\2663'; }
+      &._\=C:before { content: '=\2663'; }
+      &._\JC:before { content: 'В\2663'; }
+      &._\QC:before { content: 'Д\2663'; }
+      &._\KC:before { content: 'К\2663'; }
+      &._\AC:before { content: 'Т\2663'; }
+
+      &._\2D:before { content: '2\2666'; }
+      &._\3D:before { content: '3\2666'; }
+      &._\4D:before { content: '4\2666'; }
+      &._\5D:before { content: '5\2666'; }
+      &._\6D:before { content: '6\2666'; }
+      &._\7D:before { content: '7\2666'; }
+      &._\8D:before { content: '8\2666'; }
+      &._\9D:before { content: '9\2666'; }
+      &._\=D:before { content: '=\2666'; }
+      &._\JD:before { content: 'В\2666'; }
+      &._\QD:before { content: 'Д\2666'; }
+      &._\KD:before { content: 'К\2666'; }
+      &._\AD:before { content: 'Т\2666'; }
+    }
+  }
+}
+
 .card {
 
   &.darkened {

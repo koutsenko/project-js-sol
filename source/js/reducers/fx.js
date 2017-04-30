@@ -15,7 +15,7 @@ export default function(state, action) {
       home_highlights     : {},       // ассоциативный массив подсветок домов
       stack_highlights    : {},       // ассоциативный массив подсветок стопок
       maskVisible         : false,    // видимость маски вьюпорта для роллинга и для попапов
-      mini                : true,     // флаг работы на маленьком экране, временно всегда true
+      mini                : false,    // признак работы на маленьком экране
       interact_holder     : {
         dYroll    : 0,                    // тeкущий индекс роллера
         startId   : undefined,            // id верхней открытой карты роллера
