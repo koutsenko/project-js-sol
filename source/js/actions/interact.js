@@ -3,6 +3,14 @@ import { places } from '../constants/app';
 import   gamesAC  from './games';
 
 export default {
+  dragStartCard: function(type, index, id) {
+    return {
+      htype   : type,
+      hindex  : index,
+      id      : id,
+      type    : actions.DRAG_START_CARD
+    };
+  },
   dragEndCard: function() {
     return {
       type  : actions.DRAG_END_CARD
@@ -10,7 +18,6 @@ export default {
   },
   dragEnterCard: function(drag_card_id, drop_card_id) {
     return function(dispatch, getState) {
-      console.log('карту накрыло');
       let state = getState();
       let target = state.board.cards[drop_card_id];
       if ((target.place.owner.type === places.DECK) || (target.place.owner.type === places.OPEN)) {
@@ -24,11 +31,9 @@ export default {
         [places.HOME]   : state.board.homes[owner_index]
       }[target.place.owner.type];
       if (owner.indexOf(drag_card_id)+1) {
-        console.log('похоже пролетаем над предком - ничего не диспатчим');
         return;
       }
       let last = state.board.cards[owner[owner.length-1]];
-      console.log('нашли верхнюю карту в том месте где накрытая и на нее диспатчим');
       dispatch({
         source: source,
         target: last,
@@ -38,7 +43,6 @@ export default {
   },
   dragLeaveCard: function(drag_card_id, drop_card_id) {
     return function(dispatch, getState) {
-      console.log('карту отпустило');
       let state = getState();
       let target = state.board.cards[drop_card_id];
       if ((target.place.owner.type === places.DECK) || (target.place.owner.type === places.OPEN)) {
@@ -52,11 +56,9 @@ export default {
         [places.HOME]   : state.board.homes[owner_index]
       }[target.place.owner.type];
       if (owner.indexOf(drag_card_id)+1) {
-        console.log('похоже пролетаем над предком - ничего не диспатчим');
         return;
       }
       let last = state.board.cards[owner[owner.length-1]];
-      console.log('нашли верхнюю карту в том месте где накрытая и на нее диспатчим');
       dispatch({
         source: source,
         target: last,
@@ -69,7 +71,6 @@ export default {
       let state = getState();
       let card = state.board.cards[id];
       if ((card.place.owner.type === places.HOME) && (card.place.owner.index === index)) {
-        console.log('похоже нашли самих себя - ничего не диспатчим');
         return;
       }
       dispatch({
@@ -85,7 +86,6 @@ export default {
       let owner = state.board.homes[index];
       let card = state.board.cards[id];
       if ((card.place.owner.type === places.HOME) && (card.place.owner.index === index)) {
-        console.log('похоже нашли самих себя - ничего не диспатчим');
         return;
       }
       dispatch({
@@ -99,7 +99,6 @@ export default {
       let state = getState();
       let card = state.board.cards[id];
       if ((card.place.owner.type === places.STACK) && (card.place.owner.index === index)) {
-        console.log('похоже нашли самих себя - ничего не диспатчим');
         return;
       }
       dispatch({
@@ -114,7 +113,6 @@ export default {
       let state = getState();
       let card = state.board.cards[id];
       if ((card.place.owner.type === places.STACK) && (card.place.owner.index === index)) {
-        console.log('похоже нашли самих себя - ничего не диспатчим');
         return;
       }
       dispatch({

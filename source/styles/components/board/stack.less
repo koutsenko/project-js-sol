@@ -1,4 +1,4 @@
-[class*="stack"] {
+.stack {
   & .card .card {
     top: 10%;
   }
@@ -9,5 +9,21 @@
   &:before {
     content           : 'K';
     background-image  : data-uri('../../../res/back_stack.png');
+  }
+
+  &.magnified,
+  &.magnified:before {
+    visibility: hidden;
+  }
+  &.magnified:after {
+    visibility: visible; // на время
+    content: '';
+    width: 200vw;
+    height: 200vh;
+    display: inline-block;
+    left: -100vw;
+    top: -100vh;
+    position: absolute;
+    // background-color: rgba(0,255,0,0.5);  //debug
   }
 }

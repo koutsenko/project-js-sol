@@ -2,40 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import interactActions from '../../../actions/interact';
-
-import { places } from '../../../constants/app';
-
-import interact from 'interact.js';
 import getFxHighlight from '../fx/highlight';
 
 class Home extends React.Component {
-  onDragEnter(event) {
-    this.props.dragEnterHome(event.relatedTarget.dataset['id'], this.props.index);
-  }
-
-  onDragLeave(event) {
-    this.props.dragLeaveHome(event.relatedTarget.dataset['id'], this.props.index);
-  }
-
-  onDrop(event) {
-    this.props.cardDropHandler(event.relatedTarget.dataset['id'], places.HOME, this.props.index);
-  }
-
-  componentDidMount() {
-    interact(this.refs["home"]).dropzone({
-      accept: '.card',
-      overlap: 0.1,
-      ondragenter       : this.onDragEnter.bind(this),
-      ondragleave       : this.onDragLeave.bind(this),
-      ondrop            : this.onDrop.bind(this)
-
-    });
-  }
-
   render() {
     return (
-      <div ref="home" className={"home" + this.props.index + " holder " + getFxHighlight(this.props.highlights[this.props.index])}>
+      <div ref="home" data-index={this.props.index} className={"home holder " + getFxHighlight(this.props.highlights[this.props.index]) + (this.props.risen ? " raised" : "")}>
         {this.props.children}
       </div>
     );
@@ -43,8 +15,9 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-  cardDropHandler: React.PropTypes.func.isRequired
-};
+  index: React.PropTypes.number.isRequired,
+  risen: React.PropTypes.bool.isRequired
+}
 
 const mapStateToProps = function(state) {
   return {
@@ -52,11 +25,4 @@ const mapStateToProps = function(state) {
   };
 }
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    dragEnterHome : bindActionCreators(interactActions.dragEnterHome, dispatch),
-    dragLeaveHome : bindActionCreators(interactActions.dragLeaveHome, dispatch)
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);

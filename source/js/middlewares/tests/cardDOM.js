@@ -25,15 +25,15 @@ const performTests = function(state) {
 
   lastError = lastError || testCards(state.board.cards);
 
-  lastError = lastError || testDOM(places.DECK, '#app .deck', cardSelector, state.board.deck, state.board.cards, undefined);
-  lastError = lastError || testDOM(places.OPEN, '#app .open', cardSelector, state.board.open, state.board.cards, undefined);
+  lastError = lastError || testDOM(places.DECK, '#app .deck', 0, cardSelector, state.board.deck, state.board.cards, undefined);
+  lastError = lastError || testDOM(places.OPEN, '#app .open', 0, cardSelector, state.board.open, state.board.cards, undefined);
   lastError = lastError || testOpenCards(state.board.open, state.board.cards);
   for (var i = 0; i < 4; i++) {
-    lastError = lastError || testDOM(places.HOME, '#app .home'+i, cardSelector, state.board.homes[i], state.board.cards, i);
+    lastError = lastError || testDOM(places.HOME, '#app .home', i, cardSelector, state.board.homes[i], state.board.cards, i);
     lastError = lastError || testHomeCards(state.board.homes[i], state.board.cards);
   }
   for (var i = 0; i < 7; i++) {
-    lastError = lastError || testDOM(places.STACK, '#app .stack'+i, cardSelector, state.board.stacks[i], state.board.cards, i);
+    lastError = lastError || testDOM(places.STACK, '#app .stack', i, cardSelector, state.board.stacks[i], state.board.cards, i);
     lastError = lastError || testStackOpenedCards(state.board.stacks[i], state.board.cards);
   }
 
@@ -67,10 +67,11 @@ const testCards = function(cards) {
   return lastError;
 };
 
-const testDOM = function(placeType, holderSelector, cardSelector, holderRef, cardsRef, ownerIndex) {
+const testDOM = function(placeType, holderSelector, holderIndex, cardSelector, holderRef, cardsRef, ownerIndex) {
   let lastError;
 
-  let holderEl = document.body.querySelector(holderSelector);
+  let holderEl = document.body.querySelectorAll(holderSelector)[holderIndex];
+
   let cardEls = holderEl.querySelectorAll(cardSelector);
 
   cardEls.forEach(function(cardEl, index) {

@@ -1,11 +1,17 @@
 import React from 'react';
 
-export default class Open extends React.Component {
+class Open extends React.Component {
   render() {
     return (
-      <div className="open holder">
+      <div className={"open holder" + (this.props.risen ? " raised": "")}>
         {this.props.children}
       </div>
     );
   }
 }
+
+Open.propTypes = {
+  risen: React.PropTypes.bool.isRequired
+};
+
+export default Open;
