@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import interact from 'interactjs';
 
 import rollActions from '../actions/rollstack';
 import interactActions from '../actions/interact';
@@ -27,26 +26,26 @@ class Board extends React.Component {
   }
 
   componentDidMount() {
-    let ir = interact('.holder ,.card');
-    ir.styleCursor(false);
-    ir.preventDefault('always');
-    ir.dropzone({
-      accept      : '.card',
-      overlap     : 0.1,
-      ondragenter : this.onDragEnter.bind(this),
-      ondragleave : this.onDragLeave.bind(this),
-      ondrop      : this.onDrop.bind(this)
-    });
-    ir.draggable({
-      onmove      : this.onDragMove.bind(this),
-      onend       : this.onDragEnd.bind(this),
-      manualStart : true
-    });
-    ir.on('tap'       , this.handleSingleClick.bind(this));
-    ir.on('doubletap' , this.handleDoubleClick.bind(this));
-    ir.on('move'      , this.handleRolling.bind(this));
-    ir.on('down'      , this.handleCursorDown.bind(this));
-    ir.on('up'        , this.handleCursorRelease.bind(this));
+    // let ir = interact('.holder ,.card');
+    // ir.styleCursor(false);
+    // ir.preventDefault('always');
+    // ir.dropzone({
+    //   accept      : '.card',
+    //   overlap     : 0.1,
+    //   ondragenter : this.onDragEnter.bind(this),
+    //   ondragleave : this.onDragLeave.bind(this),
+    //   ondrop      : this.onDrop.bind(this)
+    // });
+    // ir.draggable({
+    //   onmove      : this.onDragMove.bind(this),
+    //   onend       : this.onDragEnd.bind(this),
+    //   manualStart : true
+    // });
+    // ir.on('tap'       , this.handleSingleClick.bind(this));
+    // ir.on('doubletap' , this.handleDoubleClick.bind(this));
+    // ir.on('move'      , this.handleRolling.bind(this));
+    // ir.on('down'      , this.handleCursorDown.bind(this));
+    // ir.on('up'        , this.handleCursorRelease.bind(this));
   }
 
   handleCursorDown(event) {

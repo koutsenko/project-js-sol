@@ -2,8 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import interact from 'interactjs';
-
 import aboutActions from '../../actions/about';
 
 class Status extends React.Component {
@@ -19,10 +17,10 @@ class Status extends React.Component {
   };
 
   componentDidMount() {
-    let ir = interact(this.refs["aboutBtn"]);
-    ir.styleCursor(false);
-    ir.preventDefault('always');
-    ir.on('tap', this.props.openAbout);
+    // let ir = interact(this.refs["aboutBtn"]);
+    // ir.styleCursor(false);
+    // ir.preventDefault('always');
+    // ir.on('tap', this.props.openAbout);
   }
 
   render() {

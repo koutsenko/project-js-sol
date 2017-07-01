@@ -1,14 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import interact from 'interactjs';
-
 class Popup extends React.Component {
   componentDidMount() {
-    let ir = interact(this.refs["closeButton"]);
-    ir.styleCursor(false);
-    ir.preventDefault('always');
-    ir.on('tap', this.props.handler);
+    // let ir = interact(this.refs["closeButton"]);
+    // ir.styleCursor(false);
+    // ir.preventDefault('always');
+    // ir.on('tap', this.props.handler);
   }
 
   render() {

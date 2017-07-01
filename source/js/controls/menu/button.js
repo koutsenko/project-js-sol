@@ -1,7 +1,5 @@
 import React from 'react';
 
-import interact from 'interactjs';
-
 class MenuButton extends React.Component {
   constructor(props) {
     super(props);
@@ -11,10 +9,10 @@ class MenuButton extends React.Component {
   }
 
   componentDidMount() {
-    let ir = interact(this.refs[this.props.role]);
-    ir.styleCursor(false);
-    ir.preventDefault('always');
-    ir.on('tap', this.handlePress.bind(this));
+    // let ir = interact(this.refs[this.props.role]);
+    // ir.styleCursor(false);
+    // ir.preventDefault('always');
+    // ir.on('tap', this.handlePress.bind(this));
   }
 
   handlePress(event) {
