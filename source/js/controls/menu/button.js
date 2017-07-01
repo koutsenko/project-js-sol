@@ -1,6 +1,6 @@
 import React from 'react';
 
-import interact from 'interact.js';
+import interact from 'interactjs';
 
 class MenuButton extends React.Component {
   constructor(props) {

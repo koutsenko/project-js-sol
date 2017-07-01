@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import interact from 'interact.js';
+import interact from 'interactjs';
 
 import rollActions from '../actions/rollstack';
 import interactActions from '../actions/interact';

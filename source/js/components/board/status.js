@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import interact from 'interact.js';
+import interact from 'interactjs';
 
 import aboutActions from '../../actions/about';
 
