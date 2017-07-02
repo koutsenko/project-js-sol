@@ -1,4 +1,5 @@
 import React from 'react';
+import Hammer from 'react-hammerjs';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -16,22 +17,17 @@ class Status extends React.Component {
     }
   };
 
-  componentDidMount() {
-    // let ir = interact(this.refs["aboutBtn"]);
-    // ir.styleCursor(false);
-    // ir.preventDefault('always');
-    // ir.on('tap', this.props.openAbout);
-  }
-
   render() {
     return (
       <div className="status">
-        <div className="btn-about" ref="aboutBtn">
-          "Косынка"<br />классика <br />
-          <span style={{fontSize: '1.5em', lineHeight: '1em'}}>
-          {this.props.mini ? ('mini') : ('©')}
-          </span>
-        </div>
+        <Hammer onTap={this.props.openAbout.bind(this)}>
+          <div className="btn-about" ref="aboutBtn">
+            "Косынка"<br />классика <br />
+            <span style={{fontSize: '1.5em', lineHeight: '1em'}}>
+            {this.props.mini ? ('mini') : ('©')}
+            </span>
+          </div>
+        </Hammer>
         <div className="counter">
           ход {this.props.counter}
           <br/>

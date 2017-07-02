@@ -8,7 +8,7 @@ import getFxHighlight from './fx/highlight';
 class Card extends React.Component {
   render() {
     return (
-      <div ref="card" data-id={this.props.card.id} className={"card _"+this.props.card.id + (this.props.card.flip ? ' flipped ' : ' ') + getFxHighlight(this.props.highlights[this.props.card.id]) + (this.props.darkened ? " darkened" : "")}>
+      <div ref="card" data-id={this.props.card.id} className={"card _"+this.props.card.id + (this.props.card.flip ? ' flipped ' : ' ') + getFxHighlight(this.props.highlights[this.props.card.id])}>
         {this.props.children}
       </div>
     );

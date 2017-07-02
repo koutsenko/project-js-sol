@@ -7,8 +7,30 @@ import { places } from '../constants/app';
 import { canAcceptDropToStack, canAcceptDropToHome } from '../tools/rules';
 
 export default {
+  cardSelectCancel: function() {
+    return function(dispatch, getState) {
+      dispatch({
+        type: actions.CARD_SELECT_CANCEL_BY_PLAYER
+      });
+    };
+  },
+  cardSelectOk: function(card) {
+    return function(dispatch, getState) {
+      dispatch({
+        id: card.id,
+        type: actions.CARD_SELECT_OK_BY_PLAYER
+      });
+    };
+  },
+  cardSelectFail: function(card) {
+    return function(dispatch, getState) {
+      dispatch({
+        id: card.id,
+        type: actions.CARD_SELECT_FAIL_BY_PLAYER
+      });
+    };
+  },
   cardDrop: function(id, target_type, target_index) {
-    // console.log('card drop');
     return function(dispatch, getState) {
       // Дроп мог осуществлен на карту в деке или опен - фильтруем сразу
       if ((target_type === places.OPEN) || (target_type === places.DECK)) {
@@ -34,15 +56,13 @@ export default {
     };
   },
   deckClick: function() {
-    // console.log('single deck click');
     return function(dispatch, getState) {
       dispatch({
         type: actions.CARD_BACK_BY_PLAYER
       });
     };
   },
-  cardClick: function() {
-    // console.log('single card click');
+  deckCardClick: function() {
     return function(dispatch, getState) {
       dispatch({
         type: actions.CARD_OPEN_BY_PLAYER
@@ -50,7 +70,6 @@ export default {
     };
   },
   cardDoubleClick: function(id) {
-    // console.log('double card click');
     return function(dispatch, getState) {
       dispatch({
         source_id   : id,

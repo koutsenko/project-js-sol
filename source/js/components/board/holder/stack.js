@@ -7,7 +7,7 @@ import getFxHighlight from '../fx/highlight';
 class Stack extends React.Component {
   render() {
     return (
-      <div ref="stack" data-index={this.props.index} className={"stack holder " + getFxHighlight(this.props.highlights[this.props.index]) + (this.props.risen ? " raised" : "") + (this.props.magnified ? " magnified" : "")}>
+      <div ref="stack" data-index={this.props.index} className={"stack holder " + getFxHighlight(this.props.highlights[this.props.index])}>
         {this.props.children}
       </div>
     );
@@ -15,8 +15,7 @@ class Stack extends React.Component {
 }
 
 Stack.propTypes = {
-  index: React.PropTypes.number.isRequired,
-  risen: React.PropTypes.bool.isRequired
+  index: React.PropTypes.number.isRequired
 };
 
 const mapStateToProps = function(state) {

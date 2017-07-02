@@ -13,6 +13,21 @@ export default function(state, action) {
   }
 
   switch(action.type) {
+    case actions.CARD_SELECT_CANCEL_BY_PLAYER:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.selected = undefined;
+      return newState;
+
+    case actions.CARD_SELECT_OK_BY_PLAYER:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.selected = action.id;
+      return newState;
+
+    case actions.CARD_SELECT_FAIL_BY_PLAYER:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.selected = undefined;
+      return newState;
+
     case actions.REVERT:
       var newState = JSON.parse(JSON.stringify(state.previous));
       newState.index    = newState.index + 2;
@@ -125,7 +140,7 @@ export default function(state, action) {
         var last = newState.cards[source[source.length-1]]
         last.flip = false;
       }
-
+      newState.selected = undefined;
       newState.previous = JSON.parse(JSON.stringify(state));
       newState.index++;
       return newState;
@@ -178,6 +193,7 @@ export default function(state, action) {
             },
           };
 
+          newState.selected = undefined;
           newState.previous = JSON.parse(JSON.stringify(state));
           newState.index++;
           break;
@@ -197,6 +213,7 @@ const buildBoard = function(seed) {
   let cards = buildCards(deck);
 
   return {
+    selected  : undefined,  // выбранная в данный момент карта
     index     : 0,          // этот ход имеет определенный номер в игре.
     previous  : undefined,  // ссылка на копию самого себя (кроме previous - память ограничена 1-м ходом назад)
     cards     : cards,      // ассоциативный массив объектов карт

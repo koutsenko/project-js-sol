@@ -1,20 +1,17 @@
 import React from 'react';
+import Hammer from 'react-hammerjs';
 import { connect } from 'react-redux';
 
 class Popup extends React.Component {
-  componentDidMount() {
-    // let ir = interact(this.refs["closeButton"]);
-    // ir.styleCursor(false);
-    // ir.preventDefault('always');
-    // ir.on('tap', this.props.handler);
-  }
 
   render() {
     return (
-      <div className={this.props.role + ' window' + (this.props.visible ? ' visible' : '')} ref={this.props.role}>
-        {this.props.children}
-        <div className="close" ref="closeButton">&times;</div>
-      </div>
+      <Hammer onTap={this.props.handler.bind(this)}>
+        <div className={this.props.role + ' window' + (this.props.visible ? ' visible' : '')} ref={this.props.role}>
+          {this.props.children}
+          <div className="close" ref="closeButton">&times;</div>
+        </div>
+      </Hammer>
     );
   }
 };

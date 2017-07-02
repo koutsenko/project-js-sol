@@ -1,18 +1,12 @@
 import React from 'react';
+import Hammer from 'react-hammerjs';
 
 class MenuButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       pressed: false
-    }
-  }
-
-  componentDidMount() {
-    // let ir = interact(this.refs[this.props.role]);
-    // ir.styleCursor(false);
-    // ir.preventDefault('always');
-    // ir.on('tap', this.handlePress.bind(this));
+    };
   }
 
   handlePress(event) {
@@ -33,9 +27,11 @@ class MenuButton extends React.Component {
 
   render() {
     return (
-      <div title={this.props.hint} className={this.props.role + " button" + (this.props.disabled ? ' disabled' : '') + (this.state.pressed ? ' pressed' : '')} ref={this.props.role}>
-        <div>{this.props.text}</div>
-      </div>
+      <Hammer onTap={this.handlePress.bind(this)}>
+        <div title={this.props.hint} className={this.props.role + " button" + (this.props.disabled ? ' disabled' : '') + (this.state.pressed ? ' pressed' : '')} ref={this.props.role}>
+          <div>{this.props.text}</div>
+        </div>
+      </Hammer>
     );
   }
 }
