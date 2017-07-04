@@ -31,12 +31,33 @@ const composeEnhancers = composeWithDevTools({
 });
 const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
 
+let throttled = false;
+window.onresize = function() {
+  let w = Math.max(document.documentElement.clientWidth , window.innerWidth   || 0);
+  let h = Math.max(document.documentElement.clientHeight, window.innerHeight  || 0);
+  let m = store.getState().fx.mini;
+
+  if (!m && ((w < 480) || (h < 480))) {
+    store.dispatch({ type: actionConstants.FX_MINI      });
+  } else if (m && ((w >= 480) && (h >= 480))) {
+    store.dispatch({ type: actionConstants.FX_NOT_MINI  });
+  }
+}
+
 window.onload = function() {
   let md = new MobileDetect(window.navigator.userAgent);
   if (md.phone()) {
     store.dispatch({
       type: actionConstants.FX_MINI
     });
+  } else {
+    let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
+    let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+    if ((w < 480) || (h < 480)) {
+      store.dispatch({
+        type: actionConstants.FX_MINI
+      });
+    }
   }
 
   // выключаем браузерные жесты на iPhone кроме history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none

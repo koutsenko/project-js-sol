@@ -39,6 +39,11 @@ export default function(state, action) {
       newState.mini = true;
       return newState;
 
+    case actions.FX_NOT_MINI:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.mini = false;
+      return newState;
+
     case actions.CARD_MOVE_BY_PLAYER:
     case actions.CARD_TRY_HOME_BY_PLAYER:
     case actions.CARD_SELECT_CANCEL_BY_PLAYER:

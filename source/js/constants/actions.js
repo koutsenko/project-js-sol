@@ -12,6 +12,7 @@ export default {
   CLOSE_RULES                   : 'CLOSE_RULES'                   ,
   DECK_SHOW                     : 'DECK_SHOW'                     ,
   FX_MINI                       : 'FX_MINI'                       ,
+  FX_NOT_MINI                   : 'FX_NOT_MINI'                   ,
   GAME_CREATED                  : 'GAME_CREATED'                  , /** Сигнал о создании игры и начале раздачи карт */
   GAME_END                      : 'GAME_END'                      ,
   GAME_START                    : 'GAME_START'                    ,
