@@ -14,11 +14,9 @@ export default function(store) {
         for (var i = 0; i < 4; i++) {
           for (var j = state.board.homes[i].length; j > 0; j--) {
             batch.push({
+              card_id       : state.board.homes[i][j-1],
               flip          : true,
-              source        : places.HOME,
-              source_index  : i,
-              target        : places.DECK,
-              target_index  : undefined,
+              target_type   : places.DECK,
               type          : actions.CARD_MOVE_BY_ENGINE
             });
           }

@@ -45,7 +45,6 @@ export default function(state, action) {
       return newState;
 
     case actions.CARD_MOVE_BY_PLAYER:
-    case actions.CARD_TRY_HOME_BY_PLAYER:
     case actions.CARD_SELECT_CANCEL_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
       newState.card_highlights = {};

@@ -12,22 +12,23 @@ export default {
   },
   deal: function(seed) {
     return function(dispatch, getState) {
-      var batch = [];
-
-      // Даем сигнал о старте раздачи карт
-      batch.push({
+      // Даем сигнал о старте раздачи карт - это подготовит колоду
+      dispatch({
         seed  : seed,
         type  : actions.GAME_CREATED
       });
+
+      let state   = getState();
+      let batch   = [];
+      let source  = state.board.deck.slice();
 
       // Раскладываем карты по стекам
       for (var i = 0; i < 7; i++) {
         for (var j = 0; j <= i; j++) {
           batch.push({
+            card_id       : source.pop(),
             flip          : i !== j,
-            source        : places.DECK,
-            source_index  : undefined,
-            target        : places.STACK,
+            target_type   : places.STACK,
             target_index  : i,
             type          : actions.CARD_MOVE_BY_ENGINE
           });
@@ -36,10 +37,9 @@ export default {
 
       // Кладем одну в open
       batch.push({
-        source        : places.DECK,
-        source_index  : undefined,
-        target        : places.OPEN,
-        target_index  : undefined,
+        card_id       : source.pop(),
+        flip          : false,
+        target_type   : places.OPEN,
         type          : actions.CARD_MOVE_BY_ENGINE
       });
 
@@ -128,7 +128,9 @@ export default {
         let board = getState().board;
         if (board.deck.length) {
           dispatch({
-            type: actions.CARD_OPEN_BY_PLAYER
+            card_id     : board.deck[board.deck.length - 1],
+            target_type : places.OPEN,
+            type        : actions.CARD_MOVE_BY_PLAYER
           });
         } else if (board.open.length) {
           dispatch({

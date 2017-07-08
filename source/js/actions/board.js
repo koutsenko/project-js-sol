@@ -64,17 +64,33 @@ export default {
   },
   deckCardClick: function() {
     return function(dispatch, getState) {
+      let state = getState();
+      let card_id = state.board.deck[state.board.deck.length - 1];
       dispatch({
-        type: actions.CARD_OPEN_BY_PLAYER
+        card_id     : card_id,
+        target_type : places.OPEN,
+        type        : actions.CARD_MOVE_BY_PLAYER
       });
     };
   },
   cardDoubleClick: function(id) {
     return function(dispatch, getState) {
-      dispatch({
-        source_id   : id,
-        type        : actions.CARD_TRY_HOME_BY_PLAYER
-      });
-    };
+      let state = getState();
+      for (var i = 0; i < 4; i++) {
+        let source = state.board.cards[id];
+        let target_index = i;
+        let target_holder = state.board.homes[target_index];
+        let target = target_holder.length ? state.board.cards[target_holder[target_holder.length - 1]] : undefined;
+        if (canAcceptDropToHome(source, target)) {
+          dispatch({
+            card_id       : id,
+            target_index  : target_index,
+            target_type   : places.HOME,
+            type          : actions.CARD_MOVE_BY_PLAYER
+          });
+          break;
+        }
+      }
+    }
   }
 }

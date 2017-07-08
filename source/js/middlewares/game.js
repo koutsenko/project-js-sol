@@ -22,9 +22,7 @@ export default function(store) {
         case actions.LOAD_SCENARIO:
         // FIXME эта четверка действий может и не случиться, если хакнутый клиент пришлет невовремя или не с теми параметрами. И что? Походу просто лишняя нагрузка на сервер...
         case actions.CARD_BACK_BY_PLAYER:
-        case actions.CARD_OPEN_BY_PLAYER:
         case actions.CARD_MOVE_BY_PLAYER:
-        case actions.CARD_TRY_HOME_BY_PLAYER:
         case actions.REVERT:
           // TODO возможно это станет единым событием, накладывающим "маску запрета" на все контролы игры
           // TODO хотя щас я уже думаю что "масок запрета" должно быть две - на игровое поле и на меню

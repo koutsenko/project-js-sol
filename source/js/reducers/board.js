@@ -4,6 +4,51 @@ import { canAcceptDropToStack } from '../tools/rules'       ;
 import { places }               from '../constants/app'     ;
 import   shuffleSeed            from 'knuth-shuffle-seeded' ;
 
+function getHolder(state, place_type, place_index) {
+  let map = {
+    [places.DECK]   : 'deck',
+    [places.STACK]  : 'stacks',
+    [places.HOME]   : 'homes' ,
+    [places.OPEN]   : 'open'
+  };
+  let pointer = state[map[place_type]];
+
+  return (place_index !== undefined) ? pointer[place_index] : pointer; 
+}
+
+function cardMove(action, newState, raw) {
+  var source_card     = newState.cards[action.card_id];
+  var source_type     = source_card.place.owner.type;
+  var source_index    = source_card.place.owner.index;
+  var source_holder   = getHolder(newState, source_type, source_index);
+
+  var target_type     = action.target_type;
+  var target_index    = action.target_index;
+  var target_holder   = getHolder(newState, target_type, target_index);
+  
+  var card_ids = (source_type === places.STACK) ? source_holder.slice(source_card.place.index, source_holder.length) : [action.card_id];
+  card_ids.forEach(function(id) {
+    var card = newState.cards[id];
+    card.touched = !raw ? true : card.touched;
+    card.place = {
+      index : target_holder.length,
+      owner : {
+        type  : target_type,
+        index : target_index
+      }
+    };
+    card.flip = raw ? action.flip : ((target_type === places.OPEN) ? false : card.flip);
+    source_holder.splice(source_holder.indexOf(id), 1);
+    target_holder.push(id);
+  });
+
+  if (!raw && (source_type === places.STACK) && source_holder.length) {
+    newState.cards[source_holder[source_holder.length-1]].flip = false;
+  }
+
+  return newState;
+}
+
 /**
  * Редьюсер, работающий с состоянием игры (игрового поля, она же доска) в данный ход.
  */
@@ -65,144 +110,14 @@ export default function(state, action) {
 
     case actions.CARD_MOVE_BY_ENGINE:
       var newState = JSON.parse(JSON.stringify(state));
-      var map = {
-        [places.DECK]   : 'deck'  ,
-        [places.STACK]  : 'stacks',
-        [places.HOME]   : 'homes' ,
-        [places.OPEN]   : 'open'
-      };
-
-      var source_pointer = newState[map[action.source]];
-      var target_pointer = newState[map[action.target]];
-      var source = action.source_index !== undefined ? source_pointer[action.source_index] : source_pointer;
-      var target = action.target_index !== undefined ? target_pointer[action.target_index] : target_pointer;
-
-      var id = source.pop();
-      newState.cards[id].place = {
-        index : target.length,
-        owner : {
-          index : action.target_index,
-          type  : action.target
-        }
-      }
-      newState.cards[id].flip = action.flip || false;
-      target.push(id);
-
-      return newState;
+      return cardMove(action, newState, true);
 
     case actions.CARD_MOVE_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
-      var map = {
-        [places.STACK]  : 'stacks',
-        [places.HOME]   : 'homes' ,
-        [places.OPEN]   : 'open'
-      };
-      var target        = newState[map[action.target_type]][action.target_index];
-      var source_card   = newState.cards[action.card_id];
-      var source_type   = source_card.place.owner.type;
-      var source_index  = source_card.place.owner.index;
-      var source        = (source_card.place.owner.index === undefined) ? newState[map[source_type]] : newState[map[source_type]][source_index];
-      // определяем, сколько карт мы дропаем на самом деле
-      var card_ids;
-      if (source_type === places.STACK) {
-        // источник - стек, надо взять все id стека, между текущим и последним
-        card_ids = source.slice(source_card.place.index, source.length);
-      } else {
-        card_ids = [action.card_id];
-      }
-
-      // дроп обратно в свою же зону не обрабатываем как ход!
-      if ((source_type === action.target_type) && (source_index === action.target_index)) {
-        return state;
-      }
-
-      // дроп нескольких карт разрешен только в стек!
-      // FIXME а как мы вообще его допустили!? Должна была быть красная дропзона...
-      if ((card_ids.length > 1) && (action.target_type !== places.STACK)) {
-        return state;
-      }
-
-      card_ids.forEach(function(id) {
-        var card = newState.cards[id];
-        card.touched = true;
-        card.place = {
-          index : target.length,
-          owner : {
-            type  : action.target_type,
-            index : action.target_index
-          },
-        };
-        source.splice(source.indexOf(id), 1);
-        target.push(id);
-      });
-
-      if ((source_type === places.STACK) && source.length) {
-        var last = newState.cards[source[source.length-1]]
-        last.flip = false;
-      }
+      newState.previous = JSON.parse(JSON.stringify(state));
       newState.selected = undefined;
-      newState.previous = JSON.parse(JSON.stringify(state));
       newState.index++;
-      return newState;
-
-    case actions.CARD_OPEN_BY_PLAYER:
-      var newState = JSON.parse(JSON.stringify(state));
-      var deck = newState.deck;
-      var open = newState.open;
-      var id = deck.pop();
-      var card = newState.cards[id];
-      card.flip = false;
-      card.touched = true;
-      card.place = {
-        index : open.length,
-        owner : {
-          index : undefined,
-          type  : places.OPEN
-        }
-      };
-      open.push(id);
-      newState.previous = JSON.parse(JSON.stringify(state));
-      newState.index++;
-      return newState;
-
-    case actions.CARD_TRY_HOME_BY_PLAYER:
-      var newState = JSON.parse(JSON.stringify(state));
-      for (var i = 0; i < 4; i++) {
-        var home              = newState.homes[i];
-        var source_card       = newState.cards[action.source_id];
-        var target_last_card  = home.length ? newState.cards[home[home.length-1]] : undefined;
-        if (canAcceptDropToHome(source_card, target_last_card)) {
-          var map = {
-            [places.DECK]   : 'deck'  ,
-            [places.STACK]  : 'stacks',
-            [places.HOME]   : 'homes' ,
-            [places.OPEN]   : 'open'
-          };
-          var source = (source_card.place.owner.index === undefined) ? newState[map[source_card.place.owner.type]] : newState[map[source_card.place.owner.type]][source_card.place.owner.index];
-          source.pop();
-          if (source.length) {
-            newState.cards[source[source.length-1]].flip = false;
-          }
-          newState.homes[i].push(action.source_id);
-          source_card.touched = true;
-          source_card.place = {
-            index : newState.homes[i].length - 1,
-            owner : {
-              index : i,
-              type  : places.HOME
-            },
-          };
-
-          newState.selected = undefined;
-          newState.previous = JSON.parse(JSON.stringify(state));
-          newState.index++;
-          break;
-        }
-      }
-
-      // TEST здесь я всегда возвращаю newState, даже если не найдется дом в который можно положить карту.
-      // если после старта игры в тесте вызвать этот метод миллион раз, не потечет ли память?
-      return newState;
+      return cardMove(action, newState);
   }
 
   return state;
