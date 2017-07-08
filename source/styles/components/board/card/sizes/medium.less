@@ -1,0 +1,194 @@
+#app:not(.mini) {
+  .card {
+    /**
+     * Уголки с мастью/значением для всех карт
+     */
+    &[data-id="2S"] .face:before { content: '2\2660\A\2660\A'; }
+    &[data-id="3S"] .face:before { content: '3\2660\A\2660\A'; }
+    &[data-id="4S"] .face:before { content: '4\2660\A\2660\A'; }
+    &[data-id="5S"] .face:before { content: '5\2660\A\2660\A'; }
+    &[data-id="6S"] .face:before { content: '6\2660\A\2660\A'; }
+    &[data-id="7S"] .face:before { content: '7\2660\A\2660\A'; }
+    &[data-id="8S"] .face:before { content: '8\2660\A\2660\A'; }
+    &[data-id="9S"] .face:before { content: '9\2660\A\2660\A'; }
+    &[data-id="=S"] .face:before { content: '=\2660\A\2660\A'; }
+    &[data-id="JS"] .face:before { content: 'В\2660\A\2660\A'; }
+    &[data-id="QS"] .face:before { content: 'Д\2660\A\2660\A'; }
+    &[data-id="KS"] .face:before { content: 'К\2660\A\2660\A'; }
+    &[data-id="AS"] .face:before { content: 'Т\2660\A\2660\A'; }
+
+    &[data-id="2H"] .face:before { content: '2\2665\A\2665\A'; }
+    &[data-id="3H"] .face:before { content: '3\2665\A\2665\A'; }
+    &[data-id="4H"] .face:before { content: '4\2665\A\2665\A'; }
+    &[data-id="5H"] .face:before { content: '5\2665\A\2665\A'; }
+    &[data-id="6H"] .face:before { content: '6\2665\A\2665\A'; }
+    &[data-id="7H"] .face:before { content: '7\2665\A\2665\A'; }
+    &[data-id="8H"] .face:before { content: '8\2665\A\2665\A'; }
+    &[data-id="9H"] .face:before { content: '9\2665\A\2665\A'; }
+    &[data-id="=H"] .face:before { content: '=\2665\A\2665\A'; }
+    &[data-id="JH"] .face:before { content: 'В\2665\A\2665\A'; }
+    &[data-id="QH"] .face:before { content: 'Д\2665\A\2665\A'; }
+    &[data-id="KH"] .face:before { content: 'К\2665\A\2665\A'; }
+    &[data-id="AH"] .face:before { content: 'Т\2665\A\2665\A'; }
+
+    &[data-id="2C"] .face:before { content: '2\2663\A\2663\A'; }
+    &[data-id="3C"] .face:before { content: '3\2663\A\2663\A'; }
+    &[data-id="4C"] .face:before { content: '4\2663\A\2663\A'; }
+    &[data-id="5C"] .face:before { content: '5\2663\A\2663\A'; }
+    &[data-id="6C"] .face:before { content: '6\2663\A\2663\A'; }
+    &[data-id="7C"] .face:before { content: '7\2663\A\2663\A'; }
+    &[data-id="8C"] .face:before { content: '8\2663\A\2663\A'; }
+    &[data-id="9C"] .face:before { content: '9\2663\A\2663\A'; }
+    &[data-id="=C"] .face:before { content: '=\2663\A\2663\A'; }
+    &[data-id="JC"] .face:before { content: 'В\2663\A\2663\A'; }
+    &[data-id="QC"] .face:before { content: 'Д\2663\A\2663\A'; }
+    &[data-id="KC"] .face:before { content: 'К\2663\A\2663\A'; }
+    &[data-id="AC"] .face:before { content: 'Т\2663\A\2663\A'; }
+
+    &[data-id="2D"] .face:before { content: '2\2666\A\2666\A'; }
+    &[data-id="3D"] .face:before { content: '3\2666\A\2666\A'; }
+    &[data-id="4D"] .face:before { content: '4\2666\A\2666\A'; }
+    &[data-id="5D"] .face:before { content: '5\2666\A\2666\A'; }
+    &[data-id="6D"] .face:before { content: '6\2666\A\2666\A'; }
+    &[data-id="7D"] .face:before { content: '7\2666\A\2666\A'; }
+    &[data-id="8D"] .face:before { content: '8\2666\A\2666\A'; }
+    &[data-id="9D"] .face:before { content: '9\2666\A\2666\A'; }
+    &[data-id="=D"] .face:before { content: '=\2666\A\2666\A'; }
+    &[data-id="JD"] .face:before { content: 'В\2666\A\2666\A'; }
+    &[data-id="QD"] .face:before { content: 'Д\2666\A\2666\A'; }
+    &[data-id="KD"] .face:before { content: 'К\2666\A\2666\A'; }
+    &[data-id="AD"] .face:before { content: 'Т\2666\A\2666\A'; }
+
+    /**
+     * Центр карты - картинки на лицах вальтов, королей, тузов
+     */
+    &[data-id*="K"] .face:after,
+    &[data-id*="Q"] .face:after,
+    &[data-id*="J"] .face:after {
+      content   : '';
+      width     : 100%;
+      height    : 100%;
+    }
+    &[data-id="KC"] .face:after { background-image: data-uri('../../../../../res/face_CK.png'); background-size: cover; }
+    &[data-id="QC"] .face:after { background-image: data-uri('../../../../../res/face_CQ.png'); background-size: cover; }
+    &[data-id="JC"] .face:after { background-image: data-uri('../../../../../res/face_CJ.png'); background-size: cover; }
+    &[data-id="KD"] .face:after { background-image: data-uri('../../../../../res/face_DK.png'); background-size: cover; }
+    &[data-id="QD"] .face:after { background-image: data-uri('../../../../../res/face_DQ.png'); background-size: cover; }
+    &[data-id="JD"] .face:after { background-image: data-uri('../../../../../res/face_DJ.png'); background-size: cover; }
+    &[data-id="KH"] .face:after { background-image: data-uri('../../../../../res/face_HK.png'); background-size: cover; }
+    &[data-id="QH"] .face:after { background-image: data-uri('../../../../../res/face_HQ.png'); background-size: cover; }
+    &[data-id="JH"] .face:after { background-image: data-uri('../../../../../res/face_HJ.png'); background-size: cover; }
+    &[data-id="KS"] .face:after { background-image: data-uri('../../../../../res/face_SK.png'); background-size: cover; }
+    &[data-id="QS"] .face:after { background-image: data-uri('../../../../../res/face_SQ.png'); background-size: cover; }
+    &[data-id="JS"] .face:after { background-image: data-uri('../../../../../res/face_SJ.png'); background-size: cover; }
+  
+    /**
+    * Центр карты - символы масти на лицах туза и младших карт
+    */
+    &[data-id*="A"] .face:after { 
+      font-size : 3em;
+      left      : 0.4em;
+      top       : 0.6em;
+    }
+    &[data-id="AH"] .face:after { content: '\2665'; }
+    &[data-id="AS"] .face:after { content: '\2660'; }
+    &[data-id="AC"] .face:after { content: '\2663'; }
+    &[data-id="AD"] .face:after { content: '\2666'; }
+
+    &[data-id*="2"] .face:after { 
+      font-size : 2em;
+      left      : 1.1em;
+      top       : 0.25em;
+    }
+    &[data-id="2H"] .face:after { content: '\2665\A\2665'; }
+    &[data-id="2S"] .face:after { content: '\2660\A\2660'; }
+    &[data-id="2C"] .face:after { content: '\2663\A\2663'; }
+    &[data-id="2D"] .face:after { content: '\2666\A\2666'; }
+
+    &[data-id*="3"] .face:after { 
+      font-size : 1.3em;
+      left      : 2em;
+      top       : 0.5em;
+    }
+    &[data-id="3H"] .face:after { content: '\2665\A\2665\A\2665'; }
+    &[data-id="3S"] .face:after { content: '\2660\A\2660\A\2660'; }
+    &[data-id="3C"] .face:after { content: '\2663\A\2663\A\2663'; }
+    &[data-id="3D"] .face:after { content: '\2666\A\2666\A\2666'; }
+    
+    &[data-id*="4"] .face:after { 
+      font-size : 1.4em;
+      left      : 1.3em;
+      top       : 1.2em;
+    }
+    &[data-id="4H"] .face:after { content: '\2665\2665\A\2665\2665'; }
+    &[data-id="4S"] .face:after { content: '\2660\2660\A\2660\2660'; }
+    &[data-id="4C"] .face:after { content: '\2663\2663\A\2663\2663'; }
+    &[data-id="4D"] .face:after { content: '\2666\2666\A\2666\2666'; }
+
+    &[data-id*="5"] .face:after { 
+      font-size   : 1.4em;
+      left        : 1.3em;
+      line-height : 0.9em;
+      top         : 1em;
+    }
+    &[data-id="5H"] .face:after { content: '\2665\2665\A\2665\A\2665\2665'; }
+    &[data-id="5S"] .face:after { content: '\2660\2660\A\2660\A\2660\2660'; }
+    &[data-id="5C"] .face:after { content: '\2663\2663\A\2663\A\2663\2663'; }
+    &[data-id="5D"] .face:after { content: '\2666\2666\A\2666\A\2666\2666'; }
+
+    &[data-id*="6"] .face:after { 
+      font-size   : 1.4em;
+      left        : 1.3em;
+      line-height : 0.9em;
+      top         : 1em;
+    }
+    &[data-id="6H"] .face:after { content: '\2665\2665\A\2665\2665\A\2665\2665'; }
+    &[data-id="6S"] .face:after { content: '\2660\2660\A\2660\2660\A\2660\2660'; }
+    &[data-id="6C"] .face:after { content: '\2663\2663\A\2663\2663\A\2663\2663'; }
+    &[data-id="6D"] .face:after { content: '\2666\2666\A\2666\2666\A\2666\2666'; }
+
+    &[data-id*="7"] .face:after {
+      font-size   : 1.1em;
+      left        : 2em;
+      line-height : 0.9em;
+      top         : 1em;
+    }
+    &[data-id="7H"] .face:after { content: '\2665\2665\A\2665\A\2665\2665\A\2665\2665'; }
+    &[data-id="7S"] .face:after { content: '\2660\2660\A\2660\A\2660\2660\A\2660\2660'; }
+    &[data-id="7C"] .face:after { content: '\2663\2663\A\2663\A\2663\2663\A\2663\2663'; }
+    &[data-id="7D"] .face:after { content: '\2666\2666\A\2666\A\2666\2666\A\2666\2666'; }
+
+    &[data-id*="8"] .face:after {
+      font-size   : 1.1em;
+      left        : 2em;
+      line-height : 0.9em;
+      top         : 1em;
+    }
+    &[data-id="8H"] .face:after { content: '\2665\2665\A\2665\2665\A\2665\2665\A\2665\2665'; }
+    &[data-id="8S"] .face:after { content: '\2660\2660\A\2660\2660\A\2660\2660\A\2660\2660'; }
+    &[data-id="8C"] .face:after { content: '\2663\2663\A\2663\2663\A\2663\2663\A\2663\2663'; }
+    &[data-id="8D"] .face:after { content: '\2666\2666\A\2666\2666\A\2666\2666\A\2666\2666'; }
+
+    &[data-id*="9"] .face:after {
+      font-size   : 1.1em;
+      left        : 2em;
+      line-height : 0.9em;
+      top         : 0.4em;
+    }
+    &[data-id="9H"] .face:after { content: '\2665\2665\A\2665\A\2665\2665\A\2665\2665\A\2665\2665'; }
+    &[data-id="9S"] .face:after { content: '\2660\2660\A\2660\A\2660\2660\A\2660\2660\A\2660\2660'; }
+    &[data-id="9C"] .face:after { content: '\2663\2663\A\2663\A\2663\2663\A\2663\2663\A\2663\2663'; }
+    &[data-id="9D"] .face:after { content: '\2666\2666\A\2666\A\2666\2666\A\2666\2666\A\2666\2666'; }
+
+    &[data-id*="="] .face:after {
+      font-size   : 1.1em;
+      left        : 2em;
+      line-height : 0.9em;
+      top         : 0.4em;
+    }
+    &[data-id="=H"] .face:after { content: '\2665\2665\A\2665\2665\A\2665\2665\A\2665\2665\A\2665\2665'; }
+    &[data-id="=S"] .face:after { content: '\2660\2660\A\2660\2660\A\2660\2660\A\2660\2660\A\2660\2660'; }
+    &[data-id="=C"] .face:after { content: '\2663\2663\A\2663\2663\A\2663\2663\A\2663\2663\A\2663\2663'; }
+    &[data-id="=D"] .face:after { content: '\2666\2666\A\2666\2666\A\2666\2666\A\2666\2666\A\2666\2666'; }
+  }
+}

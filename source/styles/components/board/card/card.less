@@ -1,0 +1,61 @@
+.card {
+  border-radius : 0.5em;
+  font-family   : m3w-card;
+  left          : 0;
+  perspective   : 60em;
+  position      : absolute;
+  top           : 0;
+
+  & .face,
+  & .back {
+    background-color    : #ffa;
+    backface-visibility : hidden;
+    border-radius       : 0.4em;
+    box-shadow          : 0 0 0.25em 0.1em black;
+    height              : 100%;
+    pointer-events      : none;
+    position            : absolute;
+    width               : 100%;
+  }
+
+  /**
+   * TODO Фон пока общий, вероятно для mini нужно упрощенную версию.
+   * Так как рисунок рубашки сливается в одно черное пятно.
+   * В таком случае вынести код в medium/mini.less.
+   */
+  & .back {
+    background-size   : cover;
+    background-image  : data-uri('../../../../res/back_back.png');
+  }
+
+  /**
+   * Общие моменты текстовой верстки уголков и центра фейса 
+   */
+  & .face:before,
+  & .face:after {
+    position    : absolute;
+    white-space : pre;
+  }
+
+  /**
+   * Тюнинг текстового отступа уголков
+   */
+  & .face:before { 
+    margin-left : 0.1em;
+    text-indent : 0.1em;
+  }
+
+  /**
+   * Выравнивание по центру символьных рисунков
+   */
+  & .face:after {
+    text-align  : center;
+  }
+
+  &[data-id*='D'],
+  &[data-id*='H'] {
+    & .face {
+      color     : red;
+    }
+  }
+}

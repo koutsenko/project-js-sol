@@ -1,0 +1,92 @@
+#app.mini {
+  .card {
+    /**
+    * Уголки с мастью/значением для всех карт
+    */    
+    & .face:before {
+      font-size: 2.3em;
+    }
+
+    &[data-id="2S"] .face:before { content: '2\2660'; }
+    &[data-id="3S"] .face:before { content: '3\2660'; }
+    &[data-id="4S"] .face:before { content: '4\2660'; }
+    &[data-id="5S"] .face:before { content: '5\2660'; }
+    &[data-id="6S"] .face:before { content: '6\2660'; }
+    &[data-id="7S"] .face:before { content: '7\2660'; }
+    &[data-id="8S"] .face:before { content: '8\2660'; }
+    &[data-id="9S"] .face:before { content: '9\2660'; }
+    &[data-id="=S"] .face:before { content: '=\2660'; }
+    &[data-id="JS"] .face:before { content: 'В\2660'; }
+    &[data-id="QS"] .face:before { content: 'Д\2660'; }
+    &[data-id="KS"] .face:before { content: 'К\2660'; }
+    &[data-id="AS"] .face:before { content: 'Т\2660'; }
+
+    &[data-id="2H"] .face:before { content: '2\2665'; }
+    &[data-id="3H"] .face:before { content: '3\2665'; }
+    &[data-id="4H"] .face:before { content: '4\2665'; }
+    &[data-id="5H"] .face:before { content: '5\2665'; }
+    &[data-id="6H"] .face:before { content: '6\2665'; }
+    &[data-id="7H"] .face:before { content: '7\2665'; }
+    &[data-id="8H"] .face:before { content: '8\2665'; }
+    &[data-id="9H"] .face:before { content: '9\2665'; }
+    &[data-id="=H"] .face:before { content: '=\2665'; }
+    &[data-id="JH"] .face:before { content: 'В\2665'; }
+    &[data-id="QH"] .face:before { content: 'Д\2665'; }
+    &[data-id="KH"] .face:before { content: 'К\2665'; }
+    &[data-id="AH"] .face:before { content: 'Т\2665'; }
+
+    &[data-id="2C"] .face:before { content: '2\2663'; }
+    &[data-id="3C"] .face:before { content: '3\2663'; }
+    &[data-id="4C"] .face:before { content: '4\2663'; }
+    &[data-id="5C"] .face:before { content: '5\2663'; }
+    &[data-id="6C"] .face:before { content: '6\2663'; }
+    &[data-id="7C"] .face:before { content: '7\2663'; }
+    &[data-id="8C"] .face:before { content: '8\2663'; }
+    &[data-id="9C"] .face:before { content: '9\2663'; }
+    &[data-id="=C"] .face:before { content: '=\2663'; }
+    &[data-id="JC"] .face:before { content: 'В\2663'; }
+    &[data-id="QC"] .face:before { content: 'Д\2663'; }
+    &[data-id="KC"] .face:before { content: 'К\2663'; }
+    &[data-id="AC"] .face:before { content: 'Т\2663'; }
+
+    &[data-id="2D"] .face:before { content: '2\2666'; }
+    &[data-id="3D"] .face:before { content: '3\2666'; }
+    &[data-id="4D"] .face:before { content: '4\2666'; }
+    &[data-id="5D"] .face:before { content: '5\2666'; }
+    &[data-id="6D"] .face:before { content: '6\2666'; }
+    &[data-id="7D"] .face:before { content: '7\2666'; }
+    &[data-id="8D"] .face:before { content: '8\2666'; }
+    &[data-id="9D"] .face:before { content: '9\2666'; }
+    &[data-id="=D"] .face:before { content: '=\2666'; }
+    &[data-id="JD"] .face:before { content: 'В\2666'; }
+    &[data-id="QD"] .face:before { content: 'Д\2666'; }
+    &[data-id="KD"] .face:before { content: 'К\2666'; }
+    &[data-id="AD"] .face:before { content: 'Т\2666'; }
+
+    /**
+     * Центр карты - просто цветная полоска...
+     */
+    & .face:after {
+      content     : '';
+      font-size   : 1em;
+      height      : 1em;
+      left        : 0;
+      line-height : 0.5em;
+      opacity     : 0.2;
+      top         : 4em;
+      width       : 100%;
+    }
+    &[data-id*='D'],
+    &[data-id*='H'] { 
+      & .face:after {
+        background-color: red;
+      }
+    }
+    &[data-id*='S'],
+    &[data-id*='C'] { 
+      & .face:after {
+        background-color: black;
+      }
+    }
+  }
+}

@@ -2,32 +2,36 @@ import React from 'react';
 import Hammer from 'react-hammerjs';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
-import { places } from '../constants/app';
+import { highlights, places } from '../constants/app';
 import boardActions from '../actions/board';
 import Card   from './board/card';
-import Deck   from './board/holder/deck';
-import Home   from './board/holder/home';
-import Open   from './board/holder/open';
-import Stack  from './board/holder/stack';
+import Holder from './board/holder';
+
 import Status from './board/status';
 
+const flatten = function(array2d) {
+  return [].concat.apply([], array2d);
+};
 
 class Board extends React.Component {
-  onTargetSelect(target) {
-    if (target.classList.contains('card')) {
-      let targetCard = this.props.board.cards[target.dataset['id']];
-      this.props.cardDrop(this.props.board.selected, targetCard.place.owner.type, targetCard.place.owner.index);
-    } else if (target.classList.contains('stack')) {
-      this.props.cardDrop(this.props.board.selected, places.STACK, parseInt(target.dataset['index']));
-    } else if (target.classList.contains('home')) {
-      this.props.cardDrop(this.props.board.selected, places.HOME, parseInt(target.dataset['index']));
-    }
-  }
+  getDeckRef(component) { this.deckRef = component ? component.getWrappedInstance().Ref : null }
+  getOpenRef(component) { this.openRef = component ? component.getWrappedInstance().Ref : null } 
+  getStackRef(index)    { return function(component) { this['stack'+index+'Ref']  = component ? component.getWrappedInstance().Ref : null }}
+  getHomeRef(index)     { return function(component) { this['home'+index+'Ref']   = component ? component.getWrappedInstance().Ref : null }}  
 
   handleClick(event) {
     let target = event.target;
-    if (this.props.board.selected === undefined) {
+    // FIXME топорный поиск выбранной карты...
+    let selectedIds   = Object.keys(this.props.board.selected);
+    let selectedId;
+    for (var i = 0; i < selectedIds.length; i++) {
+      if (this.props.board.selected[selectedIds[i]] === highlights.ACCEPT) {
+        selectedId = selectedIds[i];
+        break;
+      }
+    }
+
+    if (!selectedId) {
       if (target.classList.contains('card')) {
         let card = this.props.board.cards[target.dataset['id']];
         if (card.place.owner.type === places.DECK) {
@@ -45,12 +49,14 @@ class Board extends React.Component {
         this.props.deckClick();
       }
     } else {
-      if (target.dataset['id'] === this.props.board.selected) {
+      if (this.props.board.selected[target.dataset['id']] === highlights.ACCEPT) {
         console.log('повторный клик на выбранную карту - раньше это был дабл-клик хэндлер');
         this.handleDoubleClick(event);
+      } else if (this.props.board.selected[target.dataset['id']] === highlights.DENY) {
+        console.log('игнорируем клик в уже неверную карту');
       } else if (target.classList.contains('card') || target.classList.contains('holder')) {
         console.log('что-то уже было выбрано и был клик на  потенциальную цель, думаем - ок и дроп куда-то ИЛИ фэйл..');
-        this.onTargetSelect(target);
+        this.props.cardDrop(target.dataset['id']);
       } else {
         console.log('отмена выбора');
         this.props.cardSelectCancel();
@@ -74,66 +80,73 @@ class Board extends React.Component {
     }
   }
 
-  stackCards(source) {
-    let array = source.slice();
-    if (!array.length) {
-      return null;
-    }
-    let id = array.shift();
-    let card = this.props.board.cards[id];
-    
-    return (
-      <Card 
-        card={card}
-        children={this.stackCards(array)}
-      />
-    );
+  buildCards(source, ref, isStack) {
+    return source.map(function(id, index) {
+      let card = this.props.board.cards[id];
+      return (
+        <Card 
+          card={card}
+          mini={this.props.fx.mini}
+          isStack={isStack}
+          parentElement={ref}
+          index={index}
+          key={card.id}
+          flip={!card.flip}
+          id={card.id}
+        />
+      );
+    }.bind(this));
   }
 
   render() {
-    var deckCards   = this.stackCards.call(this, this.props.board.deck);
-    var openCards   = this.stackCards.call(this, this.props.board.open);
+    var deckCards   = this.buildCards(this.props.board.deck, this.deckRef);
+    var openCards   = this.buildCards(this.props.board.open, this.openRef);
     var homesCards  = [];
     var stacksCards = [];
     
     for (var i = 0; i < 4; i++) {
-      homesCards.push(this.stackCards.call(this, this.props.board.homes[i]));
+      homesCards.push(this.buildCards(this.props.board.homes[i], this["home"+i+"Ref"]));
     }
     for (var i = 0; i < 7; i++) {
-      stacksCards.push(this.stackCards.call(this, this.props.board.stacks[i]));
+      stacksCards.push(this.buildCards(this.props.board.stacks[i], this["stack"+i+"Ref"], true));
     }
+
+    let cards = []
+      .concat(deckCards)
+      .concat(openCards)
+      .concat(flatten(homesCards))
+      .concat(flatten(stacksCards))
+    ;
+
+    cards.sort(function(a, b) {
+      return a.props.id < b.props.id;
+    });
+
+
 
     return (
       <Hammer onTap={this.handleClick.bind(this)}>
         <div id="board" ref="board" className={this.props.disabled ? "disabled" : null}>
           <div className="row">
-            <Deck>
-              {deckCards}
-            </Deck>
-            <Open>
-              {openCards}
-            </Open>
+            <Holder ref={this.getDeckRef.bind(this)} id="d" className="deck"/>
+            <Holder ref={this.getOpenRef.bind(this)} id="o" className="open"/>
             <Status />
-            {homesCards.map(function(home, index) {
-              return (
-                <Home 
-                  children        = {home}
-                  index           = {index} 
-                  key             = {index} 
-                />
-              );
-            }.bind(this))}
+            <Holder ref={this.getHomeRef(0).bind(this)} id="h0" className="home"/>
+            <Holder ref={this.getHomeRef(1).bind(this)} id="h1" className="home"/>
+            <Holder ref={this.getHomeRef(2).bind(this)} id="h2" className="home"/>
+            <Holder ref={this.getHomeRef(3).bind(this)} id="h3" className="home"/>
           </div>
           <div className="row">
-            {stacksCards.map(function(stack, index) {
-              return (
-                <Stack 
-                  children        = {stack}
-                  index           = {index}
-                  key             = {index}
-                />
-              );
-            }.bind(this))}
+            <Holder ref={this.getStackRef(0).bind(this)} id="s0" className="stack"/>
+            <Holder ref={this.getStackRef(1).bind(this)} id="s1" className="stack"/>
+            <Holder ref={this.getStackRef(2).bind(this)} id="s2" className="stack"/>
+            <Holder ref={this.getStackRef(3).bind(this)} id="s3" className="stack"/>
+            <Holder ref={this.getStackRef(4).bind(this)} id="s4" className="stack"/>
+            <Holder ref={this.getStackRef(5).bind(this)} id="s5" className="stack"/>
+            <Holder ref={this.getStackRef(6).bind(this)} id="s6" className="stack"/>
+          </div>
+          <div className="cards">
+            {cards}
           </div>
         </div>
       </Hammer>
@@ -143,6 +156,7 @@ class Board extends React.Component {
 
 const mapStateToProps = function(state) {
   return {
+    fx              : state.fx,
     board           : state.board,
     disabled        : !state.access.controlsEnabled
   };
@@ -150,13 +164,13 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    deckCardClick   : bindActionCreators(boardActions.deckCardClick     , dispatch),
-    cardDoubleClick : bindActionCreators(boardActions.cardDoubleClick   , dispatch),
-    cardDrop        : bindActionCreators(boardActions.cardDrop          , dispatch),
-    cardSelectCancel: bindActionCreators(boardActions.cardSelectCancel  , dispatch),
-    deckClick       : bindActionCreators(boardActions.deckClick         , dispatch),
-    cardSelectOk    : bindActionCreators(boardActions.cardSelectOk      , dispatch),
-    cardSelectFail  : bindActionCreators(boardActions.cardSelectFail    , dispatch)
+    deckCardClick    : bindActionCreators(boardActions.deckCardClick     , dispatch),
+    cardDoubleClick  : bindActionCreators(boardActions.cardDoubleClick   , dispatch),
+    cardDrop         : bindActionCreators(boardActions.cardDrop          , dispatch),
+    cardSelectCancel : bindActionCreators(boardActions.cardSelectCancel  , dispatch),
+    deckClick        : bindActionCreators(boardActions.deckClick         , dispatch),
+    cardSelectOk     : bindActionCreators(boardActions.cardSelectOk      , dispatch),
+    cardSelectFail   : bindActionCreators(boardActions.cardSelectFail    , dispatch)
   };
 };
 

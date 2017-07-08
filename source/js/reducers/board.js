@@ -1,7 +1,7 @@
 import   actions                from '../constants/actions' ;
 import { canAcceptDropToHome }  from '../tools/rules'       ;
 import { canAcceptDropToStack } from '../tools/rules'       ;
-import { places }               from '../constants/app'     ;
+import { places, highlights }    from '../constants/app'    ;
 import   shuffleSeed            from 'knuth-shuffle-seeded' ;
 
 function getHolder(state, place_type, place_index) {
@@ -60,19 +60,34 @@ export default function(state, action) {
   switch(action.type) {
     case actions.CARD_SELECT_CANCEL_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.selected = undefined;
+      newState.selected = {};
       return newState;
 
     case actions.CARD_SELECT_OK_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.selected = action.id;
+      newState.selected[action.id] = highlights.ACCEPT;
       return newState;
 
     case actions.CARD_SELECT_FAIL_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.selected = undefined;
+      newState.selected[action.id] = highlights.DENY;
       return newState;
 
+    case actions.CARD_TARGET_WRONG_BY_PLAYER:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.declined = action.holder_id;
+      return newState;
+
+    case actions.FLUSH_DECLINE:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.declined = undefined;
+      return newState;
+
+    case actions.FLUSH_WRONG_HIGHLIGHT:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.selected = {};
+      return newState;
+    
     case actions.REVERT:
       var newState = JSON.parse(JSON.stringify(state.previous));
       newState.index    = newState.index + 2;
@@ -115,7 +130,7 @@ export default function(state, action) {
     case actions.CARD_MOVE_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
       newState.previous = JSON.parse(JSON.stringify(state));
-      newState.selected = undefined;
+      newState.selected = {};
       newState.index++;
       return cardMove(action, newState);
   }
@@ -128,7 +143,8 @@ const buildBoard = function(seed) {
   let cards = buildCards(deck);
 
   return {
-    selected  : undefined,  // выбранная в данный момент карта
+    declined  : undefined,  // карта или холдер, которые хотели выбрать, но не получилось...
+    selected  : {},         // корректно и некорректно выбранные карты
     index     : 0,          // этот ход имеет определенный номер в игре.
     previous  : undefined,  // ссылка на копию самого себя (кроме previous - память ограничена 1-м ходом назад)
     cards     : cards,      // ассоциативный массив объектов карт
