@@ -1,12 +1,12 @@
-import thunk from 'redux-thunk';
-import { applyMiddleware } from 'redux';
+import   thunk              from 'redux-thunk'                ;
+import { applyMiddleware }  from 'redux'                      ;
 
-import animations   from './animations'     ;
-import cardDOMTest  from './tests/cardDOM'  ;
-import game         from './game'           ;
-import logger       from './logger'         ;
-import storage      from './storage'        ;
-import timer        from './timer'          ;
+import   animations         from 'middlewares/animations'     ;
+import   cardDOMTest        from 'middlewares/tests/cardDOM'  ;
+import   game               from 'middlewares/game'           ;
+import   logger             from 'middlewares/logger'         ;
+import   storage            from 'middlewares/storage'        ;
+import   timer              from 'middlewares/timer'          ;
 
 export default applyMiddleware(
   thunk       , // Первый, чтобы воспринимать thunk вместо объектов

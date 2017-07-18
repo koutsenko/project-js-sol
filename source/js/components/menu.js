@@ -1,10 +1,10 @@
-import React from 'react';
+import React          from 'react'                    ;
 
-import ButtonDeal     from './menu/deal'    ;
-import ButtonUndo     from './menu/undo'    ;
-import ButtonAuto     from './menu/auto'    ;
-import ButtonRules    from './menu/rules'   ;
-import ButtonRecords  from './menu/records' ;
+import ButtonDeal     from 'components/menu/deal'     ;
+import ButtonUndo     from 'components/menu/undo'     ;
+import ButtonAuto     from 'components/menu/auto'     ;
+import ButtonRules    from 'components/menu/rules'    ;
+import ButtonRecords  from 'components/menu/records'  ;
 
 export default class Menu extends React.Component {
   render() {

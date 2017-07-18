@@ -1,6 +1,6 @@
-import constantsActions from '../constants/actions' ;
-import constantsBoard   from '../constants/board'   ;
-import toolsRules       from '../tools/rules'       ;
+import constantsActions from 'constants/actions' ;
+import constantsBoard   from 'constants/board'   ;
+import toolsRules       from 'tools/rules'       ;
 
 let flushWrongHighlight = function() {
   return function(dispatch, getState) {

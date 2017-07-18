@@ -1,10 +1,10 @@
-import   React                from 'react'                ;
-import   Hammer               from 'react-hammerjs'       ;
-import { connect }            from 'react-redux'          ;
-import { bindActionCreators } from 'redux'                ; 
+import   React                from 'react'            ;
+import   Hammer               from 'react-hammerjs'   ;
+import { connect }            from 'react-redux'      ;
+import { bindActionCreators } from 'redux'            ; 
 
-import   gameSelectors        from '../../selectors/game' ;
-import   aboutActions         from '../../actions/about'  ;
+import   gameSelectors        from 'selectors/game'   ;
+import   aboutActions         from 'actions/about'    ;
 
 class Status extends React.Component {
   calculateElapsedTime() {

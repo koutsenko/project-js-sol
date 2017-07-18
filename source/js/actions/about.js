@@ -1,4 +1,4 @@
-import constantsActions from '../constants/actions';
+import constantsActions from 'constants/actions';
 
 export default {
   open: function() {

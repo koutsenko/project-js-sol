@@ -1,6 +1,6 @@
-import constantsActions from '../constants/actions' ;
-import actionsRecords   from '../actions/records'   ;
-import toolsRules       from '../tools/rules'       ;
+import constantsActions from 'constants/actions' ;
+import actionsRecords   from 'actions/records'   ;
+import toolsRules       from 'tools/rules'       ;
 
 export default function(store) {
   var getState = store.getState;

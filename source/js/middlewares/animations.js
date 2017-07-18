@@ -1,6 +1,6 @@
-import constantsActions from '../constants/actions' ;
-import constantsBoard   from '../constants/board'   ;
-import selectorsGame    from '../selectors/game'    ;
+import constantsActions from 'constants/actions' ;
+import constantsBoard   from 'constants/board'   ;
+import selectorsGame    from 'selectors/game'    ;
 
 export default function(store) {
   var getState = store.getState;

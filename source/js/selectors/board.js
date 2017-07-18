@@ -1,6 +1,6 @@
-import { createSelector } from 'reselect'           ;
+import { createSelector } from 'reselect'         ;
 
-import   constantsBoard   from '../constants/board' ;
+import   constantsBoard   from 'constants/board'  ;
 
 const getCards = (state) => state.board.cards.byId;
 

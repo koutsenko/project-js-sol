@@ -1,10 +1,10 @@
-import { combineReducers } from 'redux';
+import { combineReducers }  from 'redux'            ;
 
-import board    from './board'    ;
-import fx       from './fx'       ;
-import game     from './game'     ;
-import popup    from './popup'    ;
-import stats    from './stats'    ;
+import   board              from 'reducers/board'   ;
+import   fx                 from 'reducers/fx'      ;
+import   game               from 'reducers/game'    ;
+import   popup              from 'reducers/popup'   ;
+import   stats              from 'reducers/stats'   ;
 
 export default combineReducers({
   board     ,

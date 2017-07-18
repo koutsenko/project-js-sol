@@ -1,13 +1,13 @@
-import   React                from 'react'                      ;
-import { connect }            from 'react-redux'                ;
-import { bindActionCreators } from 'redux'                      ;
+import   React                from 'react'                ;
+import { connect }            from 'react-redux'          ;
+import { bindActionCreators } from 'redux'                ;
 
-import   MenuButton           from '../../controls/menu/button' ;
+import   MenuButton           from 'controls/menu/button' ;
 
-import   actionsGame          from '../../actions/games'        ;
-import   constantsGame        from '../../constants/game'       ;
-import   selectorsGame        from '../../selectors/game'       ;
-import   toolsRules           from '../../tools/rules'          ;
+import   actionsGame          from 'actions/games'        ;
+import   constantsGame        from 'constants/game'       ;
+import   selectorsGame        from 'selectors/game'       ;
+import   toolsRules           from 'tools/rules'          ;
 
 class ButtonAuto extends React.Component {
   render() {

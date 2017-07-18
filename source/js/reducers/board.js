@@ -1,7 +1,7 @@
 import shuffleSeed      from 'knuth-shuffle-seeded' ;
 
-import constantsActions from '../constants/actions' ;
-import constantsBoard   from '../constants/board'   ;
+import constantsActions from 'constants/actions'    ;
+import constantsBoard   from 'constants/board'      ;
 
 function cardMove(action, newState, raw) {
   var source_card     = newState.cards.byId[action.card_id];

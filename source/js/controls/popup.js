@@ -1,6 +1,6 @@
-import React from 'react';
-import Hammer from 'react-hammerjs';
-import { connect } from 'react-redux';
+import   React      from 'react'          ;
+import   Hammer     from 'react-hammerjs' ;
+import { connect }  from 'react-redux'    ;
 
 class Popup extends React.Component {
 

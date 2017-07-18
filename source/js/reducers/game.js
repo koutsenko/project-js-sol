@@ -1,7 +1,7 @@
-import tsRandom         from 'uuid/v1'              ;
+import tsRandom         from 'uuid/v1'            ;
 
-import constantsActions from '../constants/actions' ;
-import gameConstants    from '../constants/game'    ;
+import constantsActions from 'constants/actions'  ;
+import gameConstants    from 'constants/game'     ;
 
 export default function(state, action) {
   if (state === undefined) {

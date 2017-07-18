@@ -1,10 +1,10 @@
-import   React                from 'react'                  ;
-import { Motion, spring }     from 'react-motion'           ;
-import { connect }            from 'react-redux'            ;
-import { bindActionCreators } from 'redux'                  ;
+import   React                from 'react'            ;
+import { Motion, spring }     from 'react-motion'     ;
+import { connect }            from 'react-redux'      ;
+import { bindActionCreators } from 'redux'            ;
 
-import   constantsBoard       from '../../constants/board'  ;
-import   boardActions         from '../../actions/board'    ;
+import   constantsBoard       from 'constants/board'  ;
+import   boardActions         from 'actions/board'    ;
 
 function randomize(dispersion) {
   return Math.round((Math.random()-0.5) * dispersion);

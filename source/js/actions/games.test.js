@@ -2,12 +2,12 @@ import configureMockStore   from 'redux-mock-store'   ;
 import thunk                from 'redux-thunk'        ;
 import { createStore }      from 'redux'              ;
 
-import toolsMath            from '../tools/math'      ;
+import toolsMath            from 'tools/math'         ;
 
-import actionsGames         from '../actions/games'   ;
+import actionsGames         from 'actions/games'      ;
 
-import rootReducer          from '../reducers/_root'  ;
-import rootMiddleware       from '../middlewares/_root';
+import rootReducer          from 'reducers/_root'     ;
+import rootMiddleware       from 'middlewares/_root'  ;
 
 let generateAlmostWinnedSave = function(c, deckCount, openCount, homeCount, stackCount) {
   let cards = c.slice();

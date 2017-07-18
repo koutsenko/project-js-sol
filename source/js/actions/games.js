@@ -1,8 +1,8 @@
-import constantsActions from '../constants/actions' ;
-import constantsBoard   from '../constants/board'   ;
-import selectorsBoard   from '../selectors/board'   ;
-import selectorsGame    from '../selectors/game'    ;
-import toolsRules       from '../tools/rules'       ;
+import constantsActions from 'constants/actions' ;
+import constantsBoard   from 'constants/board'   ;
+import selectorsBoard   from 'selectors/board'   ;
+import selectorsGame    from 'selectors/game'    ;
+import toolsRules       from 'tools/rules'       ;
 
 export default {
   load: function(data) {

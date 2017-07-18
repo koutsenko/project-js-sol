@@ -1,5 +1,5 @@
-import React from 'react';
-import Hammer from 'react-hammerjs';
+import React  from 'react'          ;
+import Hammer from 'react-hammerjs' ;
 
 class MenuButton extends React.Component {
   constructor(props) {

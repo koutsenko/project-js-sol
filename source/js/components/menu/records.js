@@ -1,10 +1,10 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import   React                from 'react'                  ;
+import { bindActionCreators } from 'redux'                  ;
+import { connect }            from 'react-redux'            ;
 
-import actions from '../../actions/records';
+import   actions              from 'actions/records'        ;
 
-import MenuButton from '../../controls/menu/button';
+import   MenuButton           from 'controls/menu/button'   ;
   
 class ButtonRecords extends React.Component {
   render() {

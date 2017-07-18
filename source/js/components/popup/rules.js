@@ -1,9 +1,9 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import   React                from 'react'          ;
+import { bindActionCreators } from 'redux'          ;
+import { connect }            from 'react-redux'    ;
 
-import actions from '../../actions/rules';
-import Popup from '../../controls/popup';
+import   actions              from 'actions/rules'  ;
+import   Popup                from 'controls/popup' ;
 
 class Rules extends React.Component {
   render() {

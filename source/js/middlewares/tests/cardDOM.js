@@ -1,5 +1,5 @@
-import constantsBoard from '../../constants/board'  ;
-import toolsRules     from '../../tools/rules'      ;
+import constantsBoard from 'constants/board'  ;
+import toolsRules     from 'tools/rules'      ;
 
 export default function(store) {
   let getState = store.getState;

@@ -1,17 +1,17 @@
-import React      from 'react';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import   React                from 'react'                    ;
+import { connect }            from 'react-redux'              ;
+import { bindActionCreators } from 'redux'                    ;
 
-import hashTools from '../tools/hash';
+import   hashTools            from 'tools/hash'               ;
 
-import Board      from './board';
-import Menu       from './menu';
-import About      from './popup/about';
-import Records    from './popup/records';
-import Rules      from './popup/rules';
-import Mask       from './mask';
+import   Board                from 'components/board'         ;
+import   Menu                 from 'components/menu'          ;
+import   About                from 'components/popup/about'   ;
+import   Records              from 'components/popup/records' ;
+import   Rules                from 'components/popup/rules'   ;
+import   Mask                 from 'components/mask'          ;
 
-import gameActions from '../actions/games';
+import   gameActions          from 'actions/games'            ;
 
 class App extends React.Component {
   onHashChange(event) {

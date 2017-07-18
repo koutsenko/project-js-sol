@@ -1,4 +1,4 @@
-import constantsBoard from '../constants/board';
+import constantsBoard from 'constants/board';
 
 const canComplete = function(cards) {
   return !cards.allIds.some(function(key) {

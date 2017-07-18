@@ -1,16 +1,16 @@
-import   React                from 'react'              ;
-import   Hammer               from 'react-hammerjs'     ;
-import { bindActionCreators } from 'redux'              ;
-import { connect }            from 'react-redux'        ;
+import   React                from 'react'                    ;
+import   Hammer               from 'react-hammerjs'           ;
+import { bindActionCreators } from 'redux'                    ;
+import { connect }            from 'react-redux'              ;
 
-import   Card                 from './board/card'       ;
-import   Holder               from './board/holder'     ;
-import   Status               from './board/status'     ;
+import   Card                 from 'components/board/card'    ;
+import   Holder               from 'components/board/holder'  ;
+import   Status               from 'components/board/status'  ;
 
-import   actionsBoard         from '../actions/board'   ;
-import   constantsBoard       from '../constants/board' ;
-import   selectorsBoard       from '../selectors/board' ;
-import   selectorsGame        from '../selectors/game'  ;
+import   actionsBoard         from 'actions/board'            ;
+import   constantsBoard       from 'constants/board'          ;
+import   selectorsBoard       from 'selectors/board'          ;
+import   selectorsGame        from 'selectors/game'           ;
 
 const flatten = function(array2d) {
   return [].concat.apply([], array2d);

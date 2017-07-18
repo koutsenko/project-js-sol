@@ -3,6 +3,12 @@ const webpack = require('webpack');
 const path = require('path');
 
 module.exports = {
+  resolve: {
+    modules: [
+      path.join(__dirname, 'source', 'js'),
+      'node_modules'
+    ]
+  },
   entry: [
     path.join(__dirname, 'source', 'EP.less'),
     path.join(__dirname, 'source', 'EP.js')

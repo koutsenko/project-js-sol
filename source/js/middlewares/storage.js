@@ -1,4 +1,4 @@
-import actions from '../constants/actions';
+import actions from 'constants/actions';
 
 export default function(store) {
   var getState = store.getState;

@@ -1,10 +1,10 @@
-import   React                from 'react'                  ;
-import { bindActionCreators } from 'redux'                  ;
-import { connect }            from 'react-redux'            ;
+import   React                from 'react'            ;
+import { bindActionCreators } from 'redux'            ;
+import { connect }            from 'react-redux'      ;
 
-import   actionsRecords       from '../../actions/records'  ;
-import   Popup                from '../../controls/popup'   ;
-import   gameSelectors        from '../../selectors/game'   ;
+import   actionsRecords       from 'actions/records'  ;
+import   Popup                from 'controls/popup'   ;
+import   gameSelectors        from 'selectors/game'   ;
 
 class Records extends React.Component {
   buildTable() {
