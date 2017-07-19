@@ -90,7 +90,7 @@ class Card extends React.Component {
             let highlight = {
               [constantsBoard.highlights.ACCEPT]   : `0 0 0.1em 0.3em rgba(32,  255, 0, ${interpolatingStyle.do})`,
               [constantsBoard.highlights.DENY]     : `0 0 0.1em 0.3em rgba(255, 0,   0, ${interpolatingStyle.do})`,
-            }[this.props.highlight];
+            }[this.props.highlight] || null;
 
             let style = {
               boxShadow       : highlight,

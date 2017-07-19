@@ -48,5 +48,9 @@
     "testPathIgnorePatterns": [
       "./__tests__"
     ]
+  },
+  "dependencies": {
+    "preact": "^8.2.1",
+    "preact-compat": "^3.16.0"
   }
 }

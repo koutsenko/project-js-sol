@@ -11,8 +11,8 @@ class Holder extends React.Component {
     this.timeout = null;
   }
 
-  getRef(motion) {
-    this.Ref = motion ? motion.refs['holder'] : null;
+  getRef(element) {
+    this.Ref = element;
   }
 
   componentWillReceiveProps(nextProps) {
@@ -26,7 +26,7 @@ class Holder extends React.Component {
 
   render() {
     return (
-      <Motion ref={this.getRef.bind(this)} defaultStyle={{
+      <Motion defaultStyle={{
         dColor: this.props.isDeclined ? 1 : 0
       }} style={{
         dColor: spring(this.props.isDeclined ? 1 : 0)
@@ -38,7 +38,7 @@ class Holder extends React.Component {
             } : {};
 
             return (
-              <div style={style} ref="holder" data-index={this.props.index} data-id={this.props.id} className={this.props.className + " holder"}/>
+              <div ref={this.getRef.bind(this)} style={style} data-index={this.props.index} data-id={this.props.id} className={this.props.className + " holder"}/>
             );
           }.bind(this)
         }

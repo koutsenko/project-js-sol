@@ -1,40 +1,30 @@
-if (!window.requestAnimationFrame) {
-  window.requestAnimationFrame = (function() {
-    for (var i = 0, prefixes = ['webkit', 'moz', 'o', 'ms'], name; i < prefixes.length; i++) {
-      name = prefixes[i] + 'RequestAnimationFrame';
-      if (typeof window[name] === 'Function') {
-        return window[name];
-      }
-    }
-    return function(callback) {
-      window.setTimeout(callback, 1000 / 60);
-    };
-  } ());
-}
+import   React            from 'react'                    ;
+import   ReactDOM         from 'react-dom'                ;
+import { Provider }       from 'react-redux'              ;
+import { createStore }    from 'redux'                    ;
+import   MobileDetect     from 'mobile-detect'            ;
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, compose } from 'redux';
-import App from './js/components/app';
-import rootMiddleware from './js/middlewares/_root' ;
-import rootReducer    from './js/reducers/_root'    ;
-import recordActions  from './js/actions/records'   ;
-import gameActions    from './js/actions/games'     ;
-import actionConstants from './js/constants/actions';
-import { composeWithDevTools } from 'redux-devtools-extension';
+import   App              from 'components/app'           ;
+import   rootMiddleware   from 'middlewares/_root'        ;
+import   rootReducer      from 'reducers/_root'           ;
+import   actionConstants  from 'constants/actions'        ;
 
-import MobileDetect from 'mobile-detect';
+// import { composeWithDevTools }  from 'redux-devtools-extension' ;
+// const composeEnhancers = composeWithDevTools({
+//   maxAge: 5000  // 5000 actions in redux-devtools history instead of default 50
+// });
+// const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
+const store = createStore(rootReducer, rootMiddleware);
 
-const composeEnhancers = composeWithDevTools({
-  maxAge: 5000  // 5000 actions in redux-devtools history instead of default 50
-});
-const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
-
-let throttled = false;
-window.onresize = function() {
+const getWH = function() {
   let w = Math.max(document.documentElement.clientWidth , window.innerWidth   || 0);
   let h = Math.max(document.documentElement.clientHeight, window.innerHeight  || 0);
+
+  return {w, h};
+}
+
+window.onresize = function() {
+  let {w, h} = getWH();
   let m = store.getState().fx.mini;
 
   if (!m && ((w < 480) || (h < 480))) {
@@ -42,25 +32,18 @@ window.onresize = function() {
   } else if (m && ((w >= 480) && (h >= 480))) {
     store.dispatch({ type: actionConstants.FX_NOT_MINI  });
   }
-}
+};
 
 window.onload = function() {
-  let md = new MobileDetect(window.navigator.userAgent);
-  if (md.phone()) {
+  let md      = new MobileDetect(window.navigator.userAgent);
+  let {w, h}  = getWH();
+  if (md.phone() || (w < 480) || (h < 480)) {
     store.dispatch({
       type: actionConstants.FX_MINI
     });
-  } else {
-    let w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-    let h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-    if ((w < 480) || (h < 480)) {
-      store.dispatch({
-        type: actionConstants.FX_MINI
-      });
-    }
   }
 
-  // выключаем браузерные жесты на iPhone кроме history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
+  // выключаем браузерные жесты на iPhone кроме неотключаемого history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
   ["gesturestart", "gesturechange", "gestureend", "touchstart", "touchmove", "touchend"].forEach(function(eventName) {
     document.body.addEventListener(eventName, function(event) {
       event.preventDefault();
@@ -72,4 +55,4 @@ window.onload = function() {
       <App />
     </Provider>
   ), document.getElementById('root'));
-}
+};

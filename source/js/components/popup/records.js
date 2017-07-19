@@ -17,49 +17,49 @@ class Records extends React.Component {
     // Собираем верстку таблицы по кусочкам...
     var layout = {};
     layout.head = [
-      <span key="h1" className="number head" >#       </span> ,
-      <span key="h2" className="login head"  >игрок   </span> ,
-      <span key="h3" className="move head"   >ходы    </span> ,
-      <span key="h4" className="time head"   >время   </span> ,
-      <br   key="h5"/>
+      <span className="number head" >#       </span> ,
+      <span className="login head"  >игрок   </span> ,
+      <span className="move head"   >ходы    </span> ,
+      <span className="time head"   >время   </span> ,
+      <br   />
     ];
     layout.records = recordsDisplayed.map(function(r, index) {
       var highlight = this.props.resultIndex === index ? ' your' : '';
       var displayIndex = index + 1;
       return [
-        <span key={"r1_"+index} className={"number" + highlight}>{displayIndex} </span>  ,
-        <span key={"r2_"+index} className={"login"  + highlight}>{r.nick}       </span>  ,
-        <span key={"r3_"+index} className={"move"   + highlight}>{r.moves}      </span>  ,
-        <span key={"r4_"+index} className={"time"   + highlight}>{r.time}       </span>  ,
-        <br   key={"r5_"+index}/>
+        <span className={"number" + highlight}>{displayIndex} </span>  ,
+        <span className={"login"  + highlight}>{r.nick}       </span>  ,
+        <span className={"move"   + highlight}>{r.moves}      </span>  ,
+        <span className={"time"   + highlight}>{r.time}       </span>  ,
+        <br   />
       ];
     }.bind(this));
     layout.empties = Array.apply(null, Array(emptiesCount)).map(function(item, index) {
       var displayIndex = index + 1 + recordsCount;
       return [
-        <span key={"e1_"+index} className="number">{displayIndex} </span>  ,
-        <span key={"e2_"+index} className="login" >{"-"}          </span>  ,
-        <span key={"e3_"+index} className="move"  >{"-"}          </span>  ,
-        <span key={"e4_"+index} className="time"  >{"-"}          </span>  ,
-        <br   key={"e5_"+index}/>
+        <span className="number">{displayIndex} </span>  ,
+        <span className="login" >{"-"}          </span>  ,
+        <span className="move"  >{"-"}          </span>  ,
+        <span className="time"  >{"-"}          </span>  ,
+        <br   />
       ];
     }, this);
     layout.fill = [
-      <span key="f1" className="fill" style={{lineHeight: '0.1em'}}>...</span>,
-      <br   key="f2" />
+      <span className="fill" style={{lineHeight: '0.1em'}}>...</span>,
+      <br   />
     ];
     layout.weak = this.props.resultIndex === 5 ? [
-      <span key="w1" className="number your">  ?            </span> ,
-      <span key="w2" className="login  your">  {this.props.result.nick}  </span> ,
-      <span key="w3" className="move   your">  {this.props.result.moves} </span> ,
-      <span key="w4" className="time   your">  {this.props.result.time}  </span> ,
-      <br   key="w5"/>
+      <span className="number your">  ?            </span> ,
+      <span className="login  your">  {this.props.result.nick}  </span> ,
+      <span className="move   your">  {this.props.result.moves} </span> ,
+      <span className="time   your">  {this.props.result.time}  </span> ,
+      <br   />
     ] : [
-      <span key="h1" className="number" >-</span> ,
-      <span key="h2" className="login"  >-</span> ,
-      <span key="h3" className="move"   >-</span> ,
-      <span key="h4" className="time"   >-</span> ,
-      <br   key="h5"/>
+      <span className="number" >-</span> ,
+      <span className="login"  >-</span> ,
+      <span className="move"   >-</span> ,
+      <span className="time"   >-</span> ,
+      <br   />
     ];
 
     return (
@@ -88,7 +88,6 @@ class Records extends React.Component {
   }
 
   render() {
-    // console.log('рендеринг таблицы рекордов');
     return (
       <Popup role="records" visible={this.props.recordsVisible} handler={this.props.closeRecords}>
         <div style={{position: 'absolute', left: 0, right: 0, color: 'black', backgroundColor: 'yellow', textAlign: 'center', top: '-2.75em'}}>{this.props.recordsCongrats ? 'поздравляем, пасьянс сложился!' : ''}</div>

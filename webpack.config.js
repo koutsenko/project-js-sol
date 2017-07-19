@@ -7,7 +7,11 @@ module.exports = {
     modules: [
       path.join(__dirname, 'source', 'js'),
       'node_modules'
-    ]
+    ],
+    alias: {
+      "react": "preact-compat",
+      "react-dom": "preact-compat"
+    }
   },
   entry: [
     path.join(__dirname, 'source', 'EP.less'),
@@ -28,6 +32,7 @@ module.exports = {
     rules: [{
       test : /\.jsx?/,
       loader : 'babel-loader',
+      exclude: /node_modules/,
       query: {
         presets: ['react', 'es2015']
       }
@@ -65,6 +70,11 @@ module.exports = {
     }]
   },
   plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production')
+      }
+    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false,
