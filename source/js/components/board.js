@@ -17,9 +17,73 @@ const flatten = function(array2d) {
 };
 
 class Board extends React.Component {
+  disableDnd() {
+    // https://github.com/taye/interact.js/issues/404#issuecomment-238871672
+    console.log('выключаем dnd');
+
+    this.ir.ondragenter = null;
+    this.ir.ondragleave = null;
+    this.ir.ondrop      = null;
+    this.ir.dropzone(false);
+
+    this.ir.onmove      = null;
+    this.ir.onend       = null;
+    this.ir.draggable(false);
+  }
+
+  enableDnd() {
+    this.ir.dropzone({
+      accept      : '.card',
+      overlap     : 0.1,
+      ondragenter : this.onDragEnter.bind(this),
+      ondragleave : this.onDragLeave.bind(this),
+      ondrop      : this.onDrop.bind(this)
+    });
+    this.ir.draggable({
+      onmove      : this.onDragMove.bind(this),
+      onend       : this.onDragEnd.bind(this),
+      // manualStart : true
+    });
+  }
+
   componentDidMount() {
-    let ir = interact(this.refs['board']);
-    ir.on('tap', this.handleClick.bind(this));
+    this.ir = interact(this.refs['board']);
+    this.ir.styleCursor(false);
+    this.ir.on('tap', this.handleClick.bind(this));
+
+    if (this.props.fx.dndEnabled) {
+      console.log('board::componentDidMount: включаем dnd');
+      this.enableDnd();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.fx.dndEnabled && !nextProps.fx.dndEnabled) {
+      console.log('board::componentWillReceiveProps: выключаем dnd');
+      this.disableDnd();
+    } else if (!this.props.fx.dndEnabled && nextProps.fx.dndEnabled) {
+      console.log('board::componentWillReceiveProps: включаем dnd');
+      this.enableDnd();
+    }
+  }
+
+  // хэндлеры дропзон
+  onDragEnter() {
+    console.log('в дропзону вошли - будем посвечиваться?');
+  }
+  onDragLeave() {
+    console.log('из дропзоны вышли - чистим подсветку?');
+  }
+  onDrop() {
+    console.log('дроп в дропзону? или отмена?');
+  }
+
+  // хэндлеры драгсурсов
+  onDragMove() {
+    console.log('перетаскиваем... подтягиваем соседей?');
+  }
+  onDragEnd() {
+    console.log('закончили таскать... видимо решаем что делать с анимацией');
   }
 
   getDeckRef(component) { this.deckRef = component ? component.getWrappedInstance().Ref : null }
