@@ -1,5 +1,5 @@
 import   React                from 'react'            ;
-import   Hammer               from 'react-hammerjs'   ;
+import   interact             from 'interactjs'       ;
 import { connect }            from 'react-redux'      ;
 import { bindActionCreators } from 'redux'            ; 
 
@@ -7,6 +7,11 @@ import   gameSelectors        from 'selectors/game'   ;
 import   aboutActions         from 'actions/about'    ;
 
 class Status extends React.Component {
+  componentDidMount() {
+    let ir = interact(this.refs['aboutBtn']);
+    ir.on('tap', this.props.openAbout.bind(this));
+  }
+
   calculateElapsedTime() {
     let elapsedSeconds  = Math.floor(this.props.time);
     let elapsedMinutes  = Math.floor(elapsedSeconds/60);
@@ -21,14 +26,12 @@ class Status extends React.Component {
   render() {
     return (
       <div className="status">
-        <Hammer onTap={this.props.openAbout.bind(this)}>
-          <div className="btn-about" ref="aboutBtn">
-            "Косынка"<br />классика <br />
-            <span style={{fontSize: '1.5em', lineHeight: '1em'}}>
-            {this.props.mini ? ('mini') : ('©')}
-            </span>
-          </div>
-        </Hammer>
+        <div className="btn-about" ref="aboutBtn">
+          "Косынка"<br />классика <br />
+          <span style={{fontSize: '1.5em', lineHeight: '1em'}}>
+          {this.props.mini ? ('mini') : ('©')}
+          </span>
+        </div>
         <div className="counter">
           ход {this.props.counter}
           <br/>

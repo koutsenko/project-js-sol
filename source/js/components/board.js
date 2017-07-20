@@ -1,5 +1,5 @@
 import   React                from 'react'                    ;
-import   Hammer               from 'react-hammerjs'           ;
+import   interact             from 'interactjs'               ;
 import { bindActionCreators } from 'redux'                    ;
 import { connect }            from 'react-redux'              ;
 
@@ -17,6 +17,11 @@ const flatten = function(array2d) {
 };
 
 class Board extends React.Component {
+  componentDidMount() {
+    let ir = interact(this.refs['board']);
+    ir.on('tap', this.handleClick.bind(this));
+  }
+
   getDeckRef(component) { this.deckRef = component ? component.getWrappedInstance().Ref : null }
   getOpenRef(component) { this.openRef = component ? component.getWrappedInstance().Ref : null } 
   getStackRef(index)    { return function(component) { this['stack'+index+'Ref']  = component ? component.getWrappedInstance().Ref : null }}
@@ -127,31 +132,29 @@ class Board extends React.Component {
 
 
     return (
-      <Hammer onTap={this.handleClick.bind(this)}>
-        <div id="board" ref="board" className={this.props.disabled ? "disabled" : null}>
-          <div className="row">
-            <Holder ref={this.getDeckRef.bind(this)} id="d" className="deck"/>
-            <Holder ref={this.getOpenRef.bind(this)} id="o" className="open"/>
-            <Status />
-            <Holder ref={this.getHomeRef(1).bind(this)} id="h1" className="home"/>
-            <Holder ref={this.getHomeRef(2).bind(this)} id="h2" className="home"/>
-            <Holder ref={this.getHomeRef(3).bind(this)} id="h3" className="home"/>
-            <Holder ref={this.getHomeRef(4).bind(this)} id="h4" className="home"/>
-          </div>
-          <div className="row">
-            <Holder ref={this.getStackRef(1).bind(this)} id="s1" className="stack"/>
-            <Holder ref={this.getStackRef(2).bind(this)} id="s2" className="stack"/>
-            <Holder ref={this.getStackRef(3).bind(this)} id="s3" className="stack"/>
-            <Holder ref={this.getStackRef(4).bind(this)} id="s4" className="stack"/>
-            <Holder ref={this.getStackRef(5).bind(this)} id="s5" className="stack"/>
-            <Holder ref={this.getStackRef(6).bind(this)} id="s6" className="stack"/>
-            <Holder ref={this.getStackRef(7).bind(this)} id="s7" className="stack"/>
-          </div>
-          <div className="cards">
-            {cards}
-          </div>
+      <div id="board" ref="board" className={this.props.disabled ? "disabled" : null}>
+        <div className="row">
+          <Holder ref={this.getDeckRef.bind(this)} id="d" className="deck"/>
+          <Holder ref={this.getOpenRef.bind(this)} id="o" className="open"/>
+          <Status />
+          <Holder ref={this.getHomeRef(1).bind(this)} id="h1" className="home"/>
+          <Holder ref={this.getHomeRef(2).bind(this)} id="h2" className="home"/>
+          <Holder ref={this.getHomeRef(3).bind(this)} id="h3" className="home"/>
+          <Holder ref={this.getHomeRef(4).bind(this)} id="h4" className="home"/>
         </div>
-      </Hammer>
+        <div className="row">
+          <Holder ref={this.getStackRef(1).bind(this)} id="s1" className="stack"/>
+          <Holder ref={this.getStackRef(2).bind(this)} id="s2" className="stack"/>
+          <Holder ref={this.getStackRef(3).bind(this)} id="s3" className="stack"/>
+          <Holder ref={this.getStackRef(4).bind(this)} id="s4" className="stack"/>
+          <Holder ref={this.getStackRef(5).bind(this)} id="s5" className="stack"/>
+          <Holder ref={this.getStackRef(6).bind(this)} id="s6" className="stack"/>
+          <Holder ref={this.getStackRef(7).bind(this)} id="s7" className="stack"/>
+        </div>
+        <div className="cards">
+          {cards}
+        </div>
+      </div>
     );
   }
 }
