@@ -1,24 +1,78 @@
-.window {
+.popup {
   background-color  : darkgreen;
-  border            : 0.5em solid green;
+  border            : 0.5em solid black;
   border-radius     : 1em;
   box-shadow        : 0 0 0.5em 0.1em black;
-  color             : yellow;
+  color             : greenyellow;
+  padding           : 2.5em 1em 1em 1em;
+  font-size         : 1.2em;
+  text-align        : center;
+
+  hr {
+    background-color  : yellowgreen;
+    border            : none;
+    height            : 0.1em;
+  }
+
+  .header, .close {
+    color             : yellow;
+    position          : absolute;
+    top               : 0;
+  }
+
+  .header {
+    padding           : 0.25em 1em;
+    border-radius     : 0.5em;
+    font-size         : 1.25em; 
+    display           : inline-block;
+    left              : 0;
+    background-color  : darkgreen;
+  }
 
   .close {
     background-color  : inherit;
-    border            : 0.15em solid green;
-    border-radius     : 2em;
-    box-shadow        : 0 0 0.1em 0.01em black;
+    border            : 0.1em solid green;
+    border-radius     : 0.25em;
     cursor            : pointer;
-    display           : inline-block;
-    font-size         : 2.5em;
-    height            : 1em;
-    line-height       : 1em;
-    position          : absolute;
-    right             : -0.5em;
+    font-size         : 2em;
+    line-height       : 0.8em;
+    right             : 0;
     text-align        : center;
-    top               : -0.5em;
     width             : 1em;
+  }
+
+  .content {
+    text-align        : left;
+    display           : inline-block;
+
+    .block {
+      border-radius     : 0.5em;
+      background-color  : green;
+      margin            : 0.5em;
+      padding           : 0.5em 1em;
+    }
+  }
+
+  .buttonBar {
+    position          : absolute;
+    bottom            : 0;
+    width             : 100%;
+    left              : 0;
+    text-align        : center;
+    padding           : 0.5em 0;
+    font-size         : 1.5em;
+
+    .button {
+      display           : inline-block;
+      padding           : 0.25em 1em;
+      background-color  : inherit;
+      border            : 0.1em solid green;
+      border-radius     : 0.25em;
+      cursor            : pointer;
+      line-height       : 0.8em;
+      bottom            : 0;
+      text-align        : center;
+      margin            : 0 0.5em;
+    }
   }
 }

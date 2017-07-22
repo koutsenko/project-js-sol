@@ -9,9 +9,8 @@ class Rules extends React.Component {
   render() {
     let ps = {textIndent: '1.5em'};
     return (
-      <Popup role="rules" visible={this.props.rulesVisible} handler={this.props.closeRules}>
-        <p style={ps}>Как играть?</p>
-        <p style={ps}>Цель - заполнить все четыре дома картами одной масти, сначала тузы, далее двойки, тройки и так до короля.</p>
+      <Popup role="rules" visible={this.props.rulesVisible} handler={this.props.closeRules} header="Правила">
+        <p style={ps}>Цель игры - заполнить все четыре дома картами одной масти, сначала тузы, далее двойки, тройки и так до короля.</p>
         <div className="image"></div>
         <p style={ps}>Карты берутся из колоды или со стола.
         Открытые карты стола Вы можете перемещать по принципу: короля - на пустую стопку, не короля - на карту выше рангом и другого цвета.</p>

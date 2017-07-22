@@ -10,7 +10,8 @@ class Popup extends React.Component {
 
   render() {
     return (
-      <div className={this.props.role + ' window' + (this.props.visible ? ' visible' : '')} ref={this.props.role}>
+      <div className={this.props.role + ' popup' + (this.props.visible ? ' visible' : '')} ref={this.props.role}>
+        <div className="header">{this.props.header}</div>
         {this.props.children}
         <div className="close" ref="closeButton">&times;</div>
       </div>
@@ -19,7 +20,8 @@ class Popup extends React.Component {
 };
 
 Popup.propTypes = {
-  handler: React.PropTypes.func.isRequired
+  header  : React.PropTypes.string.isRequired,
+  handler : React.PropTypes.func.isRequired
 };
 
 export default Popup;

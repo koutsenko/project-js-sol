@@ -6,11 +6,22 @@ export default function(state, action) {
       aboutVisible    : false,
       recordsVisible  : false,
       recordsCongrats : false,
-      rulesVisible    : false
+      rulesVisible    : false,
+      optionsVisible  : false
     };
   }
 
   switch(action.type) {     
+    case actions.SHOW_OPTIONS:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.optionsVisible = true;
+      return newState;
+
+    case actions.CLOSE_OPTIONS:
+      var newState = JSON.parse(JSON.stringify(state));
+      newState.optionsVisible = false;
+      return newState;
+
     case actions.SHOW_ABOUT:
       var newState = JSON.parse(JSON.stringify(state));
       newState.aboutVisible = true;

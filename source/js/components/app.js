@@ -7,6 +7,7 @@ import   hashTools            from 'tools/hash'               ;
 import   Board                from 'components/board'         ;
 import   Menu                 from 'components/menu'          ;
 import   About                from 'components/popup/about'   ;
+import   Options              from 'components/popup/options' ;
 import   Records              from 'components/popup/records' ;
 import   Rules                from 'components/popup/rules'   ;
 import   Mask                 from 'components/mask'          ;
@@ -53,13 +54,14 @@ class App extends React.Component {
   render() {
     return (
       <div id="app" className={(this.props.fx.mini ? "mini" : "")}>
-        <Board />
-        <Menu />
+        <Board  />
+        <Menu   />
         <div id="popups">
-          <Mask />
-          <About />
-          <Records />
-          <Rules />
+          <Mask     />
+          <About    />
+          <Records  />
+          <Rules    />
+          <Options  />
         </div>
       </div>
     );

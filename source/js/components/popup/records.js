@@ -89,11 +89,10 @@ class Records extends React.Component {
 
   render() {
     return (
-      <Popup role="records" visible={this.props.recordsVisible} handler={this.props.closeRecords}>
+      <Popup role="records" visible={this.props.recordsVisible} handler={this.props.closeRecords} header="Рекорды *">
         <div style={{position: 'absolute', left: 0, right: 0, color: 'black', backgroundColor: 'yellow', textAlign: 'center', top: '-2.75em'}}>{this.props.recordsCongrats ? 'поздравляем, пасьянс сложился!' : ''}</div>
-        <span className="header-top">Рейтинг *</span>
         {this.buildTable()}
-        <span className="header-top">Cтатистика</span>
+        <hr/>
         {this.buildStats()}
         <div className="note">* на данном устройстве</div>
       </Popup>
