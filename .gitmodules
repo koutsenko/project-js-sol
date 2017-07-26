@@ -1,6 +1,6 @@
 [submodule "source/styles/layout"]
 	path = source/styles/layout
-	url = https://github.com/koutsenko/js-sol-layout.git
+	url = https://github.com/koutsenko/m3w-sol-layout.git
 [submodule "source/styles/animations"]
 	path = source/styles/animations
 	url = https://github.com/koutsenko/m3w-sol-animations.git
