@@ -92,9 +92,10 @@ class Card extends React.Component {
               [constantsBoard.highlights.DENY]     : `0 0 0.1em 0.3em rgba(255, 0,   0, ${interpolatingStyle.do})`,
             }[this.props.highlight] || null;
 
+            // Оставили 9 слоев, с запасом - для холдеров и их псевдоэлементов
             let style = {
               boxShadow       : highlight,
-              zIndex          : this.props.index,
+              zIndex          : this.props.index + 10,
               width           : this.props.width  + 'px',
               height          : this.props.height + 'px',
               transform       : `translate(${dx}px,${dy}px) rotate(${dr}deg)`,
