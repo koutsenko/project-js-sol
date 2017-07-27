@@ -3,8 +3,7 @@ import interact from 'interactjs'     ;
 
 class MenuButton extends React.Component {
   componentDidMount() {
-    let ir = interact(this.refs[this.props.role]);
-    ir.on('tap', this.handlePress.bind(this));
+    interact(this.refs[this.props.role]).on('tap', this.handlePress.bind(this));
   }
 
   constructor(props) {

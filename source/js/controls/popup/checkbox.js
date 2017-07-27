@@ -16,8 +16,7 @@ class Checkbox extends React.Component {
   }
 
   componentDidMount() {
-    let ir = interact(this.refs["checkbox"]);
-    ir.on('tap', this.handleCheckboxClick.bind(this));
+    interact(this.refs["checkbox"]).on('tap', this.handleCheckboxClick.bind(this));
   }
 
   handleCheckboxClick() {

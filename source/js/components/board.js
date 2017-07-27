@@ -49,6 +49,7 @@ class Board extends React.Component {
   componentDidMount() {
     this.ir = interact(this.refs['board']);
     this.ir.styleCursor(false);
+    this.ir.ignoreFrom('.status');
     this.ir.on('tap', this.handleClick.bind(this));
 
     if (this.props.fx.dndEnabled) {

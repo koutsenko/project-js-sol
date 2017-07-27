@@ -4,8 +4,7 @@ import { connect }  from 'react-redux'    ;
 
 class Popup extends React.Component {
   componentDidMount() {
-    let ir = interact(this.refs["closeButton"]);
-    ir.on('tap', this.props.handler.bind(this));
+    interact(this.refs["closeButton"]).on('tap', this.props.handler.bind(this));
   }
 
   render() {
