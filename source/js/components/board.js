@@ -26,9 +26,10 @@ class Board extends React.Component {
     this.ir.ondrop      = null;
     this.ir.dropzone(false);
 
-    this.ir.onmove      = null;
-    this.ir.onend       = null;
-    this.ir.draggable(false);
+    this.irDrag.onstart     = null;
+    this.irDrag.onmove      = null;
+    this.irDrag.onend       = null;
+    this.irDrag.draggable(false);
   }
 
   enableDnd() {
@@ -39,18 +40,22 @@ class Board extends React.Component {
       ondragleave : this.onDragLeave.bind(this),
       ondrop      : this.onDrop.bind(this)
     });
-    this.ir.draggable({
+    this.irDrag.draggable({
+      onstart     : this.onDragStart.bind(this),
       onmove      : this.onDragMove.bind(this),
       onend       : this.onDragEnd.bind(this),
-      // manualStart : true
     });
   }
 
   componentDidMount() {
-    this.ir = interact(this.refs['board']);
+    this.ir     = interact(this.refs['board']);
     this.ir.styleCursor(false);
     this.ir.ignoreFrom('.status');
     this.ir.on('tap', this.handleClick.bind(this));
+
+    // дополнительный инстанс ir, который перетянет на себя одеяло по обработке драга карты
+    this.irDrag = interact('.card');
+    this.irDrag.styleCursor(false);
 
     if (this.props.fx.dndEnabled) {
       console.log('board::componentDidMount: включаем dnd');
@@ -80,11 +85,24 @@ class Board extends React.Component {
   }
 
   // хэндлеры драгсурсов
-  onDragMove() {
-    console.log('перетаскиваем... подтягиваем соседей?');
+  onDragStart(event) {
+    console.log('стартуем драг-н-дроп, сохраняем стартовые характеристики элемента', event.target);
+    this.X = parseInt(event.target.dataset['x0']);
+    this.Y = parseInt(event.target.dataset['y0']);
+
+    this.startX = this.X;
+    this.startY = this.Y;
+    this.startR = parseInt(event.target.dataset['r0']);
   }
-  onDragEnd() {
-    console.log('закончили таскать... видимо решаем что делать с анимацией');
+  onDragMove(event) {
+    console.log('наращиваем дельту и двигаем');
+    this.X = this.X + event.dx;
+    this.Y = this.Y + event.dy;
+    event.target.style.transform = event.target.style.webkitTransform = `translate(${this.X + event.dx}px,${this.Y + event.dy}px) rotate(${this.startR}deg)`;
+  }
+  onDragEnd(event) {
+    console.log('закончили двигать, вернули на место');
+    event.target.style.transform = event.target.style.webkitTransform = `translate(${this.startX}px,${this.startY}px) rotate(${this.startR}deg)`;
   }
 
   getDeckRef(component) { this.deckRef = component ? component.getWrappedInstance().Ref : null }

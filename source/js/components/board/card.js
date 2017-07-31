@@ -98,11 +98,19 @@ class Card extends React.Component {
               zIndex          : this.props.index + 10,
               width           : this.props.width  + 'px',
               height          : this.props.height + 'px',
-              transform       : `translate(${dx}px,${dy}px) rotate(${dr}deg)`,
+              webkitTransform : `translate(${dx}px,${dy}px) rotate(${dr}deg)`,
+              transform       : `translate(${dx}px,${dy}px) rotate(${dr}deg)`
             };
 
             return (
-              <div data-id={this.props.id} className="card" style={style}>
+              <div 
+                className = "card" 
+                data-id   = {this.props.id}
+                data-x0   = {dx} 
+                data-y0   = {dy} 
+                data-r0   = {dr}
+                style     = {style}
+              >
                 <div className="face" style={{transform: `rotateY(${interpolatingStyle.drFace}deg)`}}/>
                 <div className="back" style={{transform: `rotateY(${interpolatingStyle.drBack}deg)`}}/>
               </div>
