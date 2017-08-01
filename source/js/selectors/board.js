@@ -41,6 +41,11 @@ const getNonDeckCards   = function(state) {
 
   return cards;
 };
+const getLastCards      = function(boardState) {
+  return boardState.holders.allIds.map(function(holderId) {
+    return boardState.holders.byId[holderId][boardState.holders.byId[holderId].length - 1];
+  });
+};
 
 const resultFunc = (ids, cards) => ids.map((id) => cards[id]);
 
@@ -61,5 +66,6 @@ export default {
   getHome3Cards   : createSelector([getHome3CardIds , getCards ] , resultFunc),
   getHome4Cards   : createSelector([getHome4CardIds , getCards ] , resultFunc),
   getNonDeckCards : createSelector([getNonDeckCards , getCards ] , resultFunc),
-  getHolderId     : createSelector([getHolderId] , resultFunc2)
+  getHolderId     : createSelector([getHolderId]  , resultFunc2),
+  getLastCards    : createSelector([getLastCards] , resultFunc2)
 };

@@ -104,10 +104,10 @@ class Card extends React.Component {
 
             return (
               <div 
-                className = "card" 
+                className = "card"
                 data-id   = {this.props.id}
-                data-x0   = {dx} 
-                data-y0   = {dy} 
+                data-x0   = {dx}
+                data-y0   = {dy}
                 data-r0   = {dr}
                 style     = {style}
               >

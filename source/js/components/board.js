@@ -11,6 +11,7 @@ import   actionsBoard         from 'actions/board'            ;
 import   constantsBoard       from 'constants/board'          ;
 import   selectorsBoard       from 'selectors/board'          ;
 import   selectorsGame        from 'selectors/game'           ;
+import   toolsRules           from 'tools/rules'              ;
 
 const flatten = function(array2d) {
   return [].concat.apply([], array2d);
@@ -86,6 +87,12 @@ class Board extends React.Component {
 
   // хэндлеры драгсурсов
   onDragStart(event) {
+    if (!toolsRules.canStartDrag(event.target.dataset['id'], this.props.board)) {
+      console.log('не можем таскать закрытую карту');
+      interact.stop(event);
+      return;
+    }
+
     console.log('стартуем драг-н-дроп, сохраняем стартовые характеристики элемента', event.target);
     this.X = parseInt(event.target.dataset['x0']);
     this.Y = parseInt(event.target.dataset['y0']);

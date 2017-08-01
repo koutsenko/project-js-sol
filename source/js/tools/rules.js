@@ -7,6 +7,14 @@ const canComplete = function(state) {
   });
 };
 
+const canStartDrag = function(cardId, boardState) {
+  let isVisible   = !boardState.cards.byId[cardId].flip;
+  let insideStack = constantsBoard.isStackPlace(selectorsBoard.getHolderId(cardId, boardState));
+  let isLast      = !!(selectorsBoard.getLastCards(boardState).indexOf(cardId)+1);
+
+  return isVisible && (insideStack || isLast);
+};
+
 const canAcceptDropToStack = function(source, target) {
   if (target === undefined) {
     return source.rank === 'K';
@@ -66,4 +74,11 @@ const getHomeMap = function(state) {
   return map;
 };
 
-export default { canComplete, canAcceptDropToHome, canAcceptDropToStack, isGameEnd, getHomeMap };
+export default { 
+  canAcceptDropToHome   ,
+  canAcceptDropToStack  ,
+  canComplete           , 
+  canStartDrag          ,
+  getHomeMap            ,
+  isGameEnd
+};
