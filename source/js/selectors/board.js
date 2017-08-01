@@ -46,6 +46,21 @@ const getLastCards      = function(boardState) {
     return boardState.holders.byId[holderId][boardState.holders.byId[holderId].length - 1];
   });
 };
+const getChildCards     = function(cardId, boardState) {
+  let result;
+  let holderId = getHolderId(cardId, boardState);
+
+  if (constantsBoard.isStackPlace(holderId)) {
+    let holder      = boardState.holders.byId[holderId]; 
+    let startIndex  = holder.indexOf(cardId);
+    let endIndex    = holder[holder.length];
+    result = holder.slice(startIndex, endIndex);
+  } else {
+    result = [cardId];
+  }
+
+  return result;
+};
 
 const resultFunc = (ids, cards) => ids.map((id) => cards[id]);
 
@@ -66,6 +81,7 @@ export default {
   getHome3Cards   : createSelector([getHome3CardIds , getCards ] , resultFunc),
   getHome4Cards   : createSelector([getHome4CardIds , getCards ] , resultFunc),
   getNonDeckCards : createSelector([getNonDeckCards , getCards ] , resultFunc),
-  getHolderId     : createSelector([getHolderId]  , resultFunc2),
-  getLastCards    : createSelector([getLastCards] , resultFunc2)
+  getHolderId     : createSelector([getHolderId   ] , resultFunc2),
+  getLastCards    : createSelector([getLastCards  ] , resultFunc2),
+  getChildCards   : createSelector([getChildCards ] , resultFunc2)
 };

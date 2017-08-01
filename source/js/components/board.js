@@ -48,6 +48,12 @@ class Board extends React.Component {
     });
   }
 
+  constructor(props) {
+    super(props);
+    this.state        = {};
+    this.state.moving = {};
+  }
+
   componentDidMount() {
     this.ir     = interact(this.refs['board']);
     this.ir.styleCursor(false);
@@ -87,35 +93,57 @@ class Board extends React.Component {
 
   // хэндлеры драгсурсов
   onDragStart(event) {
-    if (!toolsRules.canStartDrag(event.target.dataset['id'], this.props.board)) {
+    let id = event.target.dataset['id'];
+    if (!toolsRules.canStartDrag(id, this.props.board)) {
       console.log('не можем таскать закрытую карту');
       interact.stop(event);
       return;
     }
 
     console.log('стартуем драг-н-дроп, сохраняем стартовые характеристики элемента', event.target);
-    this.X = parseInt(event.target.dataset['x0']);
-    this.Y = parseInt(event.target.dataset['y0']);
+    selectorsBoard.getChildCards(id, this.props.board).forEach(function(cardId) {
+      let el = this['card'+cardId+'Ref'];
 
-    this.startX = this.X;
-    this.startY = this.Y;
-    this.startR = parseInt(event.target.dataset['r0']);
+      this.state.moving[cardId] = {
+        X0 : parseInt(el.dataset['x0']) ,
+        X  : parseInt(el.dataset['x0']) ,
+        Y0 : parseInt(el.dataset['y0']) ,
+        Y  : parseInt(el.dataset['y0']) ,
+        R  : parseInt(el.dataset['r0'])
+      };
+    }.bind(this));
   }
   onDragMove(event) {
     console.log('наращиваем дельту и двигаем');
-    this.X = this.X + event.dx;
-    this.Y = this.Y + event.dy;
-    event.target.style.transform = event.target.style.webkitTransform = `translate(${this.X + event.dx}px,${this.Y + event.dy}px) rotate(${this.startR}deg)`;
+    Object.keys(this.state.moving).forEach(function(cardId) {
+      let el = this['card'+cardId+'Ref'];
+
+      this.state.moving[cardId].X += event.dx;
+      this.state.moving[cardId].Y += event.dy;
+      
+      el.style.transform = el.style.webkitTransform = `translate(${this.state.moving[cardId].X}px,${this.state.moving[cardId].Y}px) rotate(${this.state.moving[cardId].R}deg)`;
+    }.bind(this));
   }
   onDragEnd(event) {
     console.log('закончили двигать, вернули на место');
-    event.target.style.transform = event.target.style.webkitTransform = `translate(${this.startX}px,${this.startY}px) rotate(${this.startR}deg)`;
+
+    Object.keys(this.state.moving).forEach(function(cardId) {
+      let el = this['card'+cardId+'Ref'];
+
+      this.state.moving[cardId].X += event.dx;
+      this.state.moving[cardId].Y += event.dy;
+      
+      el.style.transform = el.style.webkitTransform = `translate(${this.state.moving[cardId].X0}px,${this.state.moving[cardId].Y0}px) rotate(${this.state.moving[cardId].R}deg)`;
+    }.bind(this));
+
+    this.state.moving = {};
   }
 
   getDeckRef(component) { this.deckRef = component ? component.getWrappedInstance().Ref : null }
   getOpenRef(component) { this.openRef = component ? component.getWrappedInstance().Ref : null } 
   getStackRef(index)    { return function(component) { this['stack'+index+'Ref']  = component ? component.getWrappedInstance().Ref : null }}
   getHomeRef(index)     { return function(component) { this['home'+index+'Ref']   = component ? component.getWrappedInstance().Ref : null }}  
+  getCardRef(id)        { return function(component) { this['card'+id+'Ref']      = component ? (component.base || component.getWrappedInstance().Ref) : null }};
 
   handleClick(event) {
     let target = event.target;
@@ -184,14 +212,15 @@ class Board extends React.Component {
     return source.map(function(card, index) {
       return (
         <Card 
-          card={card}
-          mini={this.props.fx.mini}
-          isStack={isStack}
-          parentElement={ref}
-          index={index}
-          key={card.id}
-          flip={!card.flip}
-          id={card.id}
+          card          = {card}
+          flip          = {!card.flip}
+          id            = {card.id}
+          index         = {index}
+          isStack       = {isStack}
+          key           = {card.id}
+          mini          = {this.props.fx.mini}
+          parentElement = {ref}
+          ref           = {this.getCardRef(card.id).bind(this)}
         />
       );
     }.bind(this));

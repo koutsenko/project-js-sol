@@ -155,4 +155,4 @@ const mapDispatchToProps = function(dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Card);
+export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Card);
