@@ -109,6 +109,7 @@ class Card extends React.Component {
                 data-x0   = {dx}
                 data-y0   = {dy}
                 data-r0   = {dr}
+                data-z0   = {style.zIndex}
                 style     = {style}
               >
                 <div className="face" style={{transform: `rotateY(${interpolatingStyle.drFace}deg)`}}/>

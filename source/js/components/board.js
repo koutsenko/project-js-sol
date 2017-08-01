@@ -109,8 +109,11 @@ class Board extends React.Component {
         X  : parseInt(el.dataset['x0']) ,
         Y0 : parseInt(el.dataset['y0']) ,
         Y  : parseInt(el.dataset['y0']) ,
-        R  : parseInt(el.dataset['r0'])
+        R  : parseInt(el.dataset['r0']) ,
+        Z  : parseInt(el.dataset['z0'])
       };
+
+      el.style.zIndex = this.state.moving[cardId].Z + 100;
     }.bind(this));
   }
   onDragMove(event) {
@@ -134,6 +137,7 @@ class Board extends React.Component {
       this.state.moving[cardId].Y += event.dy;
       
       el.style.transform = el.style.webkitTransform = `translate(${this.state.moving[cardId].X0}px,${this.state.moving[cardId].Y0}px) rotate(${this.state.moving[cardId].R}deg)`;
+      el.style.zIndex = this.state.moving[cardId].Z;
     }.bind(this));
 
     this.state.moving = {};
