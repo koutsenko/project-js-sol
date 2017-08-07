@@ -1,9 +1,10 @@
-import React from 'react';
-import Hammer from 'react-hammerjs';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import   React                from 'react'                ;
+import   Hammer               from 'react-hammerjs'       ;
+import { connect }            from 'react-redux'          ;
+import { bindActionCreators } from 'redux'                ; 
 
-import aboutActions from '../../actions/about';
+import   gameSelectors        from '../../selectors/game' ;
+import   aboutActions         from '../../actions/about'  ;
 
 class Status extends React.Component {
   calculateElapsedTime() {
@@ -39,10 +40,12 @@ class Status extends React.Component {
 }
 
 const mapStateToProps = function(state) {
+  let game = gameSelectors.getCurrentGame(state);
+
   return {
     counter : state.board.index,
     mini    : state.fx.mini,
-    time    : state.game.time
+    time    : game !== undefined ? game.time : '00:00'
   };
 };
 

@@ -12,7 +12,7 @@ export default function(store) {
       } else if (action.type === actions.LOAD_SCENARIO) {
         // FIXME а при GAME_START счетчик игра разве не увеличивается?
         localStorage.setItem('m3w-sol-games-count', state.stats.gamesCount);
-      } else if (action.type === actions.GAME_END) {
+      } else if (action.type === actions.GAME_COMPLETE) {
         localStorage.setItem('m3w-sol-wins-count', state.stats.winsCount);
       }
       return returnValue;

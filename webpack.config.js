@@ -27,6 +27,22 @@ module.exports = {
       }
     },
     {
+      test: /\.svg$/,
+      use: [{
+        loader: 'svg-url-loader'
+      },{
+        loader: 'svgo-loader',
+        options: {
+          plugins: [
+            {convertPathData: {floatPrecision: 1, transformPrecision: 1}},
+            {cleanupNumericValues: {floatPrecision: 1}},
+            {removeTitle: true},
+            {removeViewBox: true}
+          ]
+        }
+      }]
+    },
+    {
       test: /\.less$/,
       use: ExtractTextPlugin.extract({
         use: ['css-loader', {
@@ -38,18 +54,19 @@ module.exports = {
       })
     },
     {
-      test: /\.(png|ttf|woff)$/,
+      test: /\.(ttf|woff)$/,
       use: ['url-loader']
     }]
   },
   plugins: [
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false,
-    //     drop_console: true,
-    //     unsafe: true
-    //   }
-    // }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false,
+        drop_console: false,
+        unsafe: true,
+      },
+      sourceMap: true
+    }),
     new ExtractTextPlugin({
       filename: 'app.min.css'
     })

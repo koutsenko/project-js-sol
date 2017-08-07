@@ -28,7 +28,7 @@ export default function(state, action) {
       newState.gamesCount++;
       return newState;
 
-    case actions.GAME_END:
+    case actions.GAME_COMPLETE:
       var newState = JSON.parse(JSON.stringify(state));
       newState.winsCount++;
       return newState;

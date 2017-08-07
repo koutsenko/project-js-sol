@@ -2,7 +2,7 @@ import React      from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getHashCmd, getHashParm } from '../tools/hash';
+import hashTools from '../tools/hash';
 
 import Board      from './board';
 import Menu       from './menu';
@@ -16,8 +16,8 @@ import gameActions from '../actions/games';
 class App extends React.Component {
   onHashChange(event) {
     let oldHash = event.oldURL.split('#')[1];
-    let cmd = getHashCmd();
-    let p1 = getHashParm();
+    let cmd = hashTools.getHashCmd();
+    let p1 = hashTools.getHashParm();
     console.log('hash cmd = ', cmd);
     if (cmd === 'dump') {
       this.props.dump();
@@ -33,8 +33,8 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    let cmd = getHashCmd();
-    let p1 = getHashParm();
+    let cmd = hashTools.getHashCmd();
+    let p1 = hashTools.getHashParm();
 
     if (cmd === 'load') {
       this.props.load(p1);

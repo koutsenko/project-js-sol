@@ -1,49 +1,29 @@
-import   actions                from '../constants/actions' ;
-import { canAcceptDropToHome }  from '../tools/rules'       ;
-import { canAcceptDropToStack } from '../tools/rules'       ;
-import { places, highlights }    from '../constants/app'    ;
-import   shuffleSeed            from 'knuth-shuffle-seeded' ;
+import shuffleSeed      from 'knuth-shuffle-seeded' ;
 
-function getHolder(state, place_type, place_index) {
-  let map = {
-    [places.DECK]   : 'deck',
-    [places.STACK]  : 'stacks',
-    [places.HOME]   : 'homes' ,
-    [places.OPEN]   : 'open'
-  };
-  let pointer = state[map[place_type]];
-
-  return (place_index !== undefined) ? pointer[place_index] : pointer; 
-}
+import constantsActions from '../constants/actions' ;
+import constantsBoard   from '../constants/board'   ;
 
 function cardMove(action, newState, raw) {
-  var source_card     = newState.cards[action.card_id];
-  var source_type     = source_card.place.owner.type;
-  var source_index    = source_card.place.owner.index;
-  var source_holder   = getHolder(newState, source_type, source_index);
+  var source_card     = newState.cards.byId[action.card_id];
+  var source_type     = source_card.holderId;
+  var source_holder   = newState.holders.byId[source_type];
 
   var target_type     = action.target_type;
   var target_index    = action.target_index;
-  var target_holder   = getHolder(newState, target_type, target_index);
+  var target_holder   = newState.holders.byId[target_type];
   
-  var card_ids = (source_type === places.STACK) ? source_holder.slice(source_card.place.index, source_holder.length) : [action.card_id];
+  var card_ids = constantsBoard.isStackPlace(source_type) ? source_holder.slice(source_holder.indexOf(action.card_id), source_holder.length) : [action.card_id];
   card_ids.forEach(function(id) {
-    var card = newState.cards[id];
+    var card = newState.cards.byId[id];
     card.touched = !raw ? true : card.touched;
-    card.place = {
-      index : target_holder.length,
-      owner : {
-        type  : target_type,
-        index : target_index
-      }
-    };
-    card.flip = raw ? action.flip : ((target_type === places.OPEN) ? false : card.flip);
+    card.holderId = target_type;
+    card.flip = raw ? action.flip : ((target_type === constantsBoard.places.OPEN) ? false : card.flip);
     source_holder.splice(source_holder.indexOf(id), 1);
     target_holder.push(id);
   });
 
-  if (!raw && (source_type === places.STACK) && source_holder.length) {
-    newState.cards[source_holder[source_holder.length-1]].flip = false;
+  if (!raw && constantsBoard.isStackPlace(source_type) && source_holder.length) {
+    newState.cards.byId[source_holder[source_holder.length-1]].flip = false;
   }
 
   return newState;
@@ -58,76 +38,69 @@ export default function(state, action) {
   }
 
   switch(action.type) {
-    case actions.CARD_SELECT_CANCEL_BY_PLAYER:
+    case constantsActions.CARD_SELECT_CANCEL_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
       newState.selected = {};
       return newState;
 
-    case actions.CARD_SELECT_OK_BY_PLAYER:
+    case constantsActions.CARD_SELECT_OK_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.selected[action.id] = highlights.ACCEPT;
+      newState.selected[action.id] = constantsBoard.highlights.ACCEPT;
       return newState;
 
-    case actions.CARD_SELECT_FAIL_BY_PLAYER:
+    case constantsActions.CARD_SELECT_FAIL_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.selected[action.id] = highlights.DENY;
+      newState.selected[action.id] = constantsBoard.highlights.DENY;
       return newState;
 
-    case actions.CARD_TARGET_WRONG_BY_PLAYER:
+    case constantsActions.CARD_TARGET_WRONG_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
       newState.declined = action.holder_id;
       return newState;
 
-    case actions.FLUSH_DECLINE:
+    case constantsActions.FLUSH_DECLINE:
       var newState = JSON.parse(JSON.stringify(state));
       newState.declined = undefined;
       return newState;
 
-    case actions.FLUSH_WRONG_HIGHLIGHT:
+    case constantsActions.FLUSH_WRONG_HIGHLIGHT:
       var newState = JSON.parse(JSON.stringify(state));
       newState.selected = {};
       return newState;
     
-    case actions.REVERT:
+    case constantsActions.REVERT:
       var newState = JSON.parse(JSON.stringify(state.previous));
       newState.index    = newState.index + 2;
       newState.previous = undefined;
       return newState;
 
-    case actions.LOAD_SCENARIO:
+    case constantsActions.LOAD_SCENARIO:
       return loadBoard(action.data);
 
-    case actions.GAME_CREATED:
+    case constantsActions.GAME_CREATED:
       return buildBoard(action.seed);
 
-    case actions.CARD_BACK_BY_PLAYER:
+    case constantsActions.CARD_BACK_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
-      var deck = newState.deck;
-      var open = newState.open;
-      var length = newState.open.length;
-      open.forEach(function(id, i) {
-        let card = newState.cards[id];
+      var deck = newState.holders.byId[constantsBoard.places.DECK];
+      var open = newState.holders.byId[constantsBoard.places.OPEN];
+      open.forEach(function(id) {
+        let card = newState.cards.byId[id];
         card.flip = true;
         card.touched = true;
-        card.place = {
-          index : length - i - 1,
-          owner : {
-            index : undefined,
-            type  : places.DECK
-          }
-        };
+        card.holderId = constantsBoard.places.DECK;
         deck.unshift(id);
       }, this);
-      newState.open = [];
+      newState.holders.byId[constantsBoard.places.OPEN] = [];
       newState.previous = JSON.parse(JSON.stringify(state));
       newState.index++;
       return newState;
 
-    case actions.CARD_MOVE_BY_ENGINE:
+    case constantsActions.CARD_MOVE_BY_ENGINE:
       var newState = JSON.parse(JSON.stringify(state));
       return cardMove(action, newState, true);
 
-    case actions.CARD_MOVE_BY_PLAYER:
+    case constantsActions.CARD_MOVE_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
       newState.previous = JSON.parse(JSON.stringify(state));
       newState.selected = {};
@@ -139,8 +112,11 @@ export default function(state, action) {
 };
 
 const buildBoard = function(seed) {
-  let deck  = buildDeck(seed || 'test');
-  let cards = buildCards(deck);
+  let deck = buildDeck(seed || 'test');
+  let holders = buildHolders({
+    [constantsBoard.places.DECK]: deck
+  });
+  let cards   = buildCards(deck);
 
   return {
     declined  : undefined,  // карта или холдер, которые хотели выбрать, но не получилось...
@@ -148,30 +124,37 @@ const buildBoard = function(seed) {
     index     : 0,          // этот ход имеет определенный номер в игре.
     previous  : undefined,  // ссылка на копию самого себя (кроме previous - память ограничена 1-м ходом назад)
     cards     : cards,      // ассоциативный массив объектов карт
-    deck      : deck,       // массив id карт, в данный момент находящихся в деке
-    open      : [],         // массив id карт, в данный момент открытых рядом с декой
-    homes     : [           // двухмерный массив объектов домов с массивами id карт
-      [],
-      [],
-      [],
-      [],
-    ],
-    stacks    : [           // двухмерный массив объектов стопок с массивами id карт
-      [],
-      [],
-      [],
-      [],
-      [],
-      [],
-      []
-    ]
+    holders   : holders     // ассоциативный массив объектов стопок карт
   };
 }
 
+/**
+ * Генератор списка холдеров и id хранящихся в них карт
+ * @param {*} byIds 
+ */
+const buildHolders = function(byIds) {
+  let holders = {
+    byId    : {},
+    allIds  : []
+  };
+
+  holders.allIds = Object.keys(constantsBoard.places);
+  holders.allIds.forEach(function(holder) {
+    holders.byId[holder] = [];
+  });
+  holders.byId = Object.assign(holders.byId, byIds);
+
+  return holders;
+};
+
+/**
+ * Генератор перетасованного списка id карт, для холдера-колоды 
+ * @param {*} seed 
+ */
 const buildDeck = function(seed) {
   let deck = [];
-  let suits = ['H', 'D', 'C', 'S'];
-  let ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
+  let suits = constantsBoard.suits;
+  let ranks = constantsBoard.ranks;
 
   ranks.forEach(function(rank) {
     suits.forEach(function(suit) {
@@ -182,11 +165,19 @@ const buildDeck = function(seed) {
   return shuffleSeed(deck, seed);
 };
 
+/**
+ * Генератор списка и объктов карт 
+ * @param {*} deck 
+ */
 const buildCards = function(deck) {
-  let cards = {};
+  let cards = {
+    byId: {},
+    allIds: {}
+  };
 
-  deck.forEach(function(id, index) {
-    cards[id] = buildCard(id, true, places.DECK, undefined, index);
+  cards.allIds = deck;
+  cards.allIds.forEach(function(id, index) {
+    cards.byId[id] = buildCard(id, true, constantsBoard.places.DECK);
   });
 
   return cards;
@@ -197,77 +188,37 @@ const loadBoard = function(data) {
   let save = JSON.parse(decodeURI(data));
   let board = save.board;
   let opened = save.opened;  // ids открытых карт стеков
-  let stacks = board.stacks;
-  let homes = board.homes;
-  let deck = board.deck;
-  let open = board.open;
+  let holders = board.holders;
   let index = board.index;
 
-  // let stacks = [
-  //   ['KS'],
-  //   [],
-  //   [],
-  //   [],
-  //   [],
-  //   [],
-  //   []
-  // ];
-  // let homes = [
-  //   ['AH', '2H', '3H', '4H', '5H', '6H', '7H', '8H', '9H', '=H', 'JH', 'QH', 'KH'],
-  //   ['AD', '2D', '3D', '4D', '5D', '6D', '7D', '8D', '9D', '=D', 'JD', 'QD', 'KD'],
-  //   ['AC', '2C', '3C', '4C', '5C', '6C', '7C', '8C', '9C', '=C', 'JC', 'QC', 'KC'],
-  //   ['AS', '2S', '3S', '4S', '5S', '6S', '7S', '8S', '9S', '=S', 'JS', 'QS'      ]
-  // ];
-
-  let cards = {};
-  stacks.forEach(function(stack, place_index) {
-    stack.forEach(function(id, index) {
+  let cards = {
+    byId: {},
+    allIds: []
+  };
+  holders.allIds.forEach(function(key) {
+    holders.byId[key].forEach(function(id, index) {
       let flip = opened.indexOf(id) < 0;
-      cards[id] = buildCard(id, flip, places.STACK, place_index, index);
+      cards.byId[id] = buildCard(id, flip, key);
+      cards.allIds.push(id);
     });
-  });
-  homes.forEach(function(home, place_index) {
-    home.forEach(function(id, index) {
-      let flip = opened.indexOf(id) < 0;
-      cards[id] = buildCard(id, flip, places.HOME, place_index, index);
-    });
-  });
-  deck.forEach(function(id, index, all) {
-    let flip = opened.indexOf(id) < 0;
-    cards[id] = buildCard(id, flip, places.DECK, undefined, index);
-  });
-  open.forEach(function(id, index, all) {
-    let flip = opened.indexOf(id) < 0;
-    cards[id] = buildCard(id, flip, places.OPEN, undefined, index);
   });
 
   return {
+    cards     : cards,
+    holders   : holders,
     index     : index,
     previous  : undefined,
-    cards     : cards,
-    deck      : deck,
-    open      : open,
-    homes     : homes,
-    stacks    : stacks
+    selected  : {}
   };
 }
 
-const buildCard = function(id, flipped, placeType, placeIndex, indexInPlace) {
+const buildCard = function(id, flipped, holderId) {
   return {
-    id      : id      ,
-    rank    : id[0]   ,
-    suit    : id[1]   ,
-    flip    : flipped ,
-    touched : false   ,
-    place   : {
-      index : indexInPlace,
-      owner : {
-        index : placeIndex,
-        type  : placeType
-      }
-    }
+    id        : id        ,
+    rank      : id[0]     ,
+    suit      : id[1]     ,
+    flip      : flipped   ,
+    touched   : false     ,
+    holderId  : holderId
   };
 };
-
-// FIXME - генерация случайной колоды это должна быть часть некоего модуля tools/cards.
-export { buildDeck, loadBoard };

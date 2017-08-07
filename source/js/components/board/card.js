@@ -1,10 +1,10 @@
-import   React                from 'react';
-import { bindActionCreators } from 'redux';
-import { connect }            from 'react-redux';
-import { Motion, spring }     from 'react-motion';
-import { places, highlights } from '../../constants/app';
+import   React                from 'react'                  ;
+import { Motion, spring }     from 'react-motion'           ;
+import { connect }            from 'react-redux'            ;
+import { bindActionCreators } from 'redux'                  ;
 
-import boardActions from '../../actions/board';
+import   constantsBoard       from '../../constants/board'  ;
+import   boardActions         from '../../actions/board'    ;
 
 function randomize(dispersion) {
   return Math.round((Math.random()-0.5) * dispersion);
@@ -48,7 +48,7 @@ class Card extends React.Component {
       previousF : this.props.flip
     });
     clearTimeout(this.timeout);
-    if (nextProps.highlight === highlights.DENY) {
+    if (nextProps.highlight === constantsBoard.highlights.DENY) {
       setTimeout(function() {
         this.props.flushWrongHighlight()
       }.bind(this), 500);
@@ -88,8 +88,8 @@ class Card extends React.Component {
             let dr = this.state.deltas.r;
 
             let highlight = {
-              [highlights.ACCEPT]   : `0 0 0.1em 0.3em rgba(32,  255, 0, ${interpolatingStyle.do})`,
-              [highlights.DENY]     : `0 0 0.1em 0.3em rgba(255, 0,   0, ${interpolatingStyle.do})`,
+              [constantsBoard.highlights.ACCEPT]   : `0 0 0.1em 0.3em rgba(32,  255, 0, ${interpolatingStyle.do})`,
+              [constantsBoard.highlights.DENY]     : `0 0 0.1em 0.3em rgba(255, 0,   0, ${interpolatingStyle.do})`,
             }[this.props.highlight];
 
             let style = {

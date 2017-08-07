@@ -16,4 +16,4 @@ const getHashParm = function() {
   return window.location.hash.substr(window.location.hash.indexOf(':')+1);
 };
 
-export { getHashCmd, getHashParm };
+export default { getHashCmd, getHashParm };

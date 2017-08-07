@@ -1,5 +1,5 @@
-import { places } from '../../constants/app';
-import { canAcceptDropToHome, canAcceptDropToStack } from '../../tools/rules';
+import constantsBoard from '../../constants/board'  ;
+import toolsRules     from '../../tools/rules'      ;
 
 export default function(store) {
   let getState = store.getState;
@@ -23,20 +23,20 @@ const performTests = function(state) {
   // let cardSelector = '.card:not(.hidden)';
   let cardSelector = '.card';
 
-  lastError = lastError || testCards(state.board.cards);
+  lastError = lastError || testCards(state.board.cards.allIds);
 
-  lastError = lastError || testDOM(places.DECK, '#app .deck', 0, cardSelector, state.board.deck, state.board.cards, undefined);
-  lastError = lastError || testDOM(places.OPEN, '#app .open', 0, cardSelector, state.board.open, state.board.cards, undefined);
-  lastError = lastError || testOpenCards(state.board.open, state.board.cards);
-  for (var i = 0; i < 4; i++) {
-    lastError = lastError || testDOM(places.HOME, '#app .home', i, cardSelector, state.board.homes[i], state.board.cards, i);
-    lastError = lastError || testHomeCards(state.board.homes[i], state.board.cards);
-  }
-  for (var i = 0; i < 7; i++) {
-    lastError = lastError || testDOM(places.STACK, '#app .stack', i, cardSelector, state.board.stacks[i], state.board.cards, i);
-    lastError = lastError || testStackOpenedCards(state.board.stacks[i], state.board.cards);
-  }
-
+  lastError = lastError || testDOM(constantsBoard.places.DECK, '#app .deck', 0, cardSelector, state.board.holders.byId[constantsBoard.places.DECK], state.board.cards.byId, undefined);
+  lastError = lastError || testDOM(constantsBoard.places.OPEN, '#app .open', 0, cardSelector, state.board.holders.byId[constantsBoard.places.OPEN], state.board.cards.byId, undefined);
+  lastError = lastError || testOpenCards(state.board.holders.byId[constantsBoard.places.OPEN], state.board.cards.byId);
+  constantsBoard.getHomePlaces().forEach(function(place, i) {
+    lastError = lastError || testDOM(constantsBoard.places.HOME, '#app .home', i, cardSelector, state.board.holders.byId[place], state.board.cards.byId, i);
+    lastError = lastError || testHomeCards(state.board.holders.byId[place], state.board.cards.byId);
+  });
+  constantsBoard.getStackPlaces().forEach(function(place, i) {
+    lastError = lastError || testDOM(constantsBoard.places.STACK, '#app .stack', i, cardSelector, state.board.holders.byId[place], state.board.cards.byId, i);
+    lastError = lastError || testStackOpenedCards(state.board.holders.byId[place], state.board.cards.byId);
+  });
+  
   if (lastError) {
     console.log('Новое состояние ошибочное! Последняя из ошибок: ', lastError);
   }
@@ -48,12 +48,10 @@ const testCards = function(cards) {
   let ids = Object.keys(cards);
   let length = ids.length;
   if (length !== 52) {
-    let suits = ['S', 'C', 'H', 'D'];
-    let ranks = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '=', 'J', 'Q', 'K'];
     let missing = [];
     // TODO добавить так же вывод лишних карт
-    suits.forEach(function(suit) {
-      ranks.forEach(function(rank) {
+    constantsBoard.suits.forEach(function(suit) {
+      constantsBoard.ranks.forEach(function(rank) {
         let card = rank+suit;
         if (Object.keys(cards).indexOf(card) < 0) {
           missing.push(card);
@@ -140,11 +138,11 @@ const testStackOpenedCards = function(stack, cards) {
     let target = index === 0 ? undefined : cards[stack[index-1]];
 
     if (target !== undefined) {
-      if (!source.flip && !target.flip && !canAcceptDropToStack(cards[id], target)) {
+      if (!source.flip && !target.flip && !toolsRules.canAcceptDropToStack(cards[id], target)) {
         lastError = 'В стеке есть две открытые карты не по правилам косынки (понижение старшинства и чередование цвета)';
       }
     } else {
-      if (source.touched && !source.flip && !canAcceptDropToStack(cards[id])) {
+      if (source.touched && !source.flip && !toolsRules.canAcceptDropToStack(cards[id])) {
         lastError = 'В стеке есть первая открытая карта не по правилам косынки (не король), при этом это не комп ее туда положил на раздаче';
       }
     }
@@ -171,7 +169,7 @@ const testHomeCards = function(home, cards) {
     let source = cards[id];
     let target = index === 0 ? undefined : cards[home[index-1]];
 
-    if (!canAcceptDropToHome(source, target)) {
+    if (!toolsRules.canAcceptDropToHome(source, target)) {
       lastError = 'В доме есть карта не по правилам косынки';
     };
   });

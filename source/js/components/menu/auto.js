@@ -1,9 +1,13 @@
-import React from 'react';
-import gameActions from '../../actions/games';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import   React                from 'react'                      ;
+import { connect }            from 'react-redux'                ;
+import { bindActionCreators } from 'redux'                      ;
 
-import MenuButton from '../../controls/menu/button';
+import   MenuButton           from '../../controls/menu/button' ;
+
+import   actionsGame          from '../../actions/games'        ;
+import   constantsGame        from '../../constants/game'       ;
+import   selectorsGame        from '../../selectors/game'       ;
+import   toolsRules           from '../../tools/rules'          ;
 
 class ButtonAuto extends React.Component {
   render() {
@@ -13,21 +17,23 @@ class ButtonAuto extends React.Component {
         role="btn3"
         text="Автосбор"
         handler={this.props.completeGame}
-        disabled={!this.props.canComplete}
+        disabled={this.props.disabled}
       />
     );
   }
 }
 
 const mapStateToProps = function(state) {
-  return {
-    canComplete: state.access.canComplete
+  let game = selectorsGame.getCurrentGame(state) || {};
+
+  return { 
+    disabled: (game.status !== constantsGame.gameState.STATE_STARTED) || !toolsRules.canComplete(state.board.cards)
   };
 };
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    completeGame: bindActionCreators(gameActions.completeGame, dispatch)
+    completeGame: bindActionCreators(actionsGame.completeGame, dispatch)
   };
 };
 

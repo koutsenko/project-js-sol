@@ -1,14 +1,14 @@
-import actions from '../constants/actions';
+import constantsActions from '../constants/actions';
 
 export default {
   open: function() {
     return {
-      type: actions.SHOW_RECORDS
+      type: constantsActions.SHOW_RECORDS
     };
   },
   close: function() {
     return {
-      type: actions.CLOSE_RECORDS
+      type: constantsActions.CLOSE_RECORDS
     };
   },
   write: function(record) {
@@ -21,7 +21,7 @@ export default {
           dispatch({
             index   : i,
             record  : record,
-            type    : actions.NEW_RECORD
+            type    : constantsActions.NEW_RECORD
           });
           isWeak = false;
           break;
@@ -32,7 +32,7 @@ export default {
         dispatch({
           index   : state.stats.records.length,
           record  : record,
-          type    : actions.NEW_RECORD
+          type    : constantsActions.NEW_RECORD
         });
         isWeak = false;
       }
@@ -41,7 +41,7 @@ export default {
       if (isWeak) {
         dispatch({
           record  : record,
-          type    : actions.WEAK_RECORD
+          type    : constantsActions.WEAK_RECORD
         });
       }
     };

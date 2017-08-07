@@ -1,14 +1,14 @@
-import actions from '../constants/actions';
+import constantsActions from '../constants/actions';
 
 export default {
   open: function() {
     return {
-      type: actions.SHOW_RULES
+      type: constantsActions.SHOW_RULES
     };
   },
   close: function() {
     return {
-      type: actions.CLOSE_RULES
+      type: constantsActions.CLOSE_RULES
     };
   }
 };

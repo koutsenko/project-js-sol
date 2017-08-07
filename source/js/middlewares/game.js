@@ -1,16 +1,6 @@
-import   actions      from '../constants/actions';
-
-import recordActions from '../actions/records';
-
-import { isGameEnd } from '../tools/rules';
-
-const canComplete = function(board) {
-  return !Object.keys(board.stacks).some(function(key) {
-    return board.stacks[key].some(function(id) {
-      return board.cards[id].flip === true;
-    });
-  });
-}
+import constantsActions from '../constants/actions' ;
+import actionsRecords   from '../actions/records'   ;
+import toolsRules       from '../tools/rules'       ;
 
 export default function(store) {
   var getState = store.getState;
@@ -19,62 +9,27 @@ export default function(store) {
     return function(action) {
       let returnValue = next(action);
       switch (action.type) {
-        case actions.LOAD_SCENARIO:
-        // FIXME эта четверка действий может и не случиться, если хакнутый клиент пришлет невовремя или не с теми параметрами. И что? Походу просто лишняя нагрузка на сервер...
-        case actions.CARD_BACK_BY_PLAYER:
-        case actions.CARD_MOVE_BY_PLAYER:
-        case actions.REVERT:
-          // TODO возможно это станет единым событием, накладывающим "маску запрета" на все контролы игры
-          // TODO хотя щас я уже думаю что "масок запрета" должно быть две - на игровое поле и на меню
-          // попапы в масках запрета не нуждаются
-          let canCompleteValue = canComplete(getState().board);
-          store.dispatch({
-            value : canCompleteValue,
-            type  : actions.MENU_BTN3_STATE
-          });
-          if (isGameEnd(getState().board.cards)) {
+        case constantsActions.CARD_BACK_BY_PLAYER:
+        case constantsActions.CARD_MOVE_BY_PLAYER:
+          if (toolsRules.isGameEnd(getState().board.cards.byId)) {
             store.dispatch({
-              type  : actions.GAME_END
+              type  : constantsActions.GAME_COMPLETE
             });
           }
-          break;
-        case actions.GAME_END:
-          store.dispatch({
-            value : false,
-            type  : actions.MENU_BTN3_STATE
-          });
-          break;
-      }
-
-
-      // отдельные обработки для меню, пока для кнопки Новая игра
-      switch (action.type) {
-        case actions.GAME_CREATED:
-          store.dispatch({
-            type  : actions.MENU_BTN1_STATE,
-            value : false
-          });
-          break;
-
-        // TODO имей в виду, что GAME_LOAD потребует еще и проверки MENU_BTN3_STATE
-        case actions.GAME_START:
-          store.dispatch({
-            type  : actions.MENU_BTN1_STATE,
-            value : true
-          });
           break;
       }
 
       // отдельно обрабатываем конец игры, чтобы показать таблицу рекордов
-      if (action.type === actions.GAME_END) {
+      if (action.type === constantsActions.GAME_COMPLETE) {
         let state = getState();
-        store.dispatch(recordActions.write({
+        store.dispatch(actionsRecords.write({
           moves: state.board.index,
           nick: "тест",
           time: state.game.time
         }));
         store.dispatch({
-          type: actions.SHOW_RECORDS
+          congrats: true,
+          type: constantsActions.SHOW_RECORDS
         });
       }
 

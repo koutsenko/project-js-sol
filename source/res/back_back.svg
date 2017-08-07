@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   version="1.1"
+   width="250"
+   height="300"
+   viewBox="0 0 250 300"
+   id="cards"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="back_back.svg">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="978"
+     id="namedview6787"
+     showgrid="false"
+     inkscape:zoom="1.999698"
+     inkscape:cx="128.24401"
+     inkscape:cy="152.29011"
+     inkscape:window-x="0"
+     inkscape:window-y="1"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="cards"
+     showguides="true"
+     inkscape:guide-bbox="true" />
+  <rect
+     width="249.5"
+     height="299.5"
+     ry="0"
+     x="0.24959999"
+     y="0.20001221"
+     id="rect8231"
+     style="fill:url(#pattern6496);fill-rule:evenodd;stroke:#000000;stroke-width:0.4991;stroke-linecap:butt;stroke-miterlimit:4;stroke-dasharray:none"
+     rx="0" />
+  <defs
+     id="defs2680">
+    <pattern
+       patternTransform="matrix(0.944,0.3287,-0.3287,0.944,74.9,100)"
+       id="pattern6496"
+       xlink:href="#pattern6885" />
+    <pattern
+       id="pattern6885"
+       patternTransform="translate(74.9,100)"
+       height="100.3"
+       width="100.2"
+       patternUnits="userSpaceOnUse">
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 2.06,2.2 98.1,98.2"
+         id="path6759" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 2.06,11.8 88.5,98.2"
+         id="path6761" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 11.66,2.2 98.1,88.6"
+         id="path6763" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 2.06,21.4 78.9,98.2"
+         id="path6765" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 21.26,2.2 98.1,79"
+         id="path6767" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 2.06,88.6 11.66,98.2"
+         id="path6769" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 2.06,79 21.26,98.2"
+         id="path6771" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 88.5,2.2 98.1,11.8"
+         id="path6773" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 78.9,2.2 98.1,21.4"
+         id="path6775" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 98.1,2.2 2.06,98.2"
+         id="path6777" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 98.1,11.8 11.66,98.2"
+         id="path6779" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 88.5,2.2 2.06,88.6"
+         id="path6781" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 98.1,21.4 21.26,98.2"
+         id="path6783" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 78.9,2.2 2.06,79"
+         id="path6785" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 98.1,88.6 88.5,98.2"
+         id="path6787" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 98.1,79 78.9,98.2"
+         id="path6789" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 11.66,2.2 2.06,11.8"
+         id="path6791" />
+      <path
+         style="stroke:#000000;stroke-width:3.841;stroke-linecap:round"
+         d="M 21.26,2.2 2.06,21.4"
+         id="path6793" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 2.06,50.2 50.1,98.2"
+         id="path6795" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 2.06,59.8 40.5,98.2"
+         id="path6797" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 2.06,40.6 59.7,98.2"
+         id="path6799" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 50.1,2.2 98.1,50.2"
+         id="path6801" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 40.5,2.2 98.1,59.8"
+         id="path6803" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 59.7,2.2 98.1,40.6"
+         id="path6805" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 98.1,50.2 50.1,98.2"
+         id="path6807" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 98.1,40.6 40.5,98.2"
+         id="path6809" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 50.1,2.2 2.06,50.2"
+         id="path6811" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 59.7,2.2 2.06,59.8"
+         id="path6813" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 40.5,2.2 2.06,40.6"
+         id="path6815" />
+      <path
+         style="stroke:#000000;stroke-width:1.9205;stroke-linecap:round"
+         d="M 98.1,59.8 59.7,98.2"
+         id="path6817" />
+    </pattern>
+  </defs>
+  <metadata
+     id="metadata97">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

@@ -1,8 +1,4 @@
-/**
- * Редьюсер доп. GUI-опций.
- */
-import   actions                from '../constants/actions' ;
-import { places }               from '../constants/app'     ;
+import constantsActions from '../constants/actions' ;
 
 export default function(state, action) {
   if (state === undefined) {
@@ -13,26 +9,26 @@ export default function(state, action) {
   }
 
   switch (action.type) {
-    case actions.SHOW_ABOUT:
-    case actions.SHOW_RECORDS:
-    case actions.SHOW_RULES:
+    case constantsActions.SHOW_ABOUT:
+    case constantsActions.SHOW_RECORDS:
+    case constantsActions.SHOW_RULES:
       var newState = JSON.parse(JSON.stringify(state));
       newState.maskVisible  = true;
       return newState;
 
-    case actions.CLOSE_ABOUT:
-    case actions.CLOSE_RECORDS:
-    case actions.CLOSE_RULES:
+    case constantsActions.CLOSE_ABOUT:
+    case constantsActions.CLOSE_RECORDS:
+    case constantsActions.CLOSE_RULES:
       var newState = JSON.parse(JSON.stringify(state));
       newState.maskVisible  = false;
       return newState;
 
-    case actions.FX_MINI:
+    case constantsActions.FX_MINI:
       var newState = JSON.parse(JSON.stringify(state));
       newState.mini = true;
       return newState;
 
-    case actions.FX_NOT_MINI:
+    case constantsActions.FX_NOT_MINI:
       var newState = JSON.parse(JSON.stringify(state));
       newState.mini = false;
       return newState;

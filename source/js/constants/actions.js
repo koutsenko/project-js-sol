@@ -15,11 +15,9 @@ export default {
   FLUSH_DECLINE                 : 'FLUSH_DECLINE'                 , /** Через время снимаем пометку неправильного выбора цели */
   FLUSH_WRONG_HIGHLIGHT         : 'FLUSH_WRONG_HIGHLIGHT'         , /** Через время снимаем пометку неправильного выбора карты */
   GAME_CREATED                  : 'GAME_CREATED'                  , /** Сигнал о создании игры и начале раздачи карт */
-  GAME_END                      : 'GAME_END'                      ,
+  GAME_COMPLETE                 : 'GAME_COMPLETE'                 ,
   GAME_START                    : 'GAME_START'                    ,
   LOAD_SCENARIO                 : 'LOAD_SCENARIO'                 ,
-  MENU_BTN1_STATE               : 'MENU_BTN1_STATE'               , // Состояние кнопки "Разложить"
-  MENU_BTN3_STATE               : 'MENU_BTN3_STATE'               , // Состояние кнопки "Автосбор"
   NEW_RECORD                    : 'NEW_RECORD'                    ,
   NOTHING                       : 'NOTHING'                       ,
   REVERT                        : 'REVERT'                        ,

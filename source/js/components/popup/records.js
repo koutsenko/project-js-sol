@@ -1,17 +1,18 @@
-import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import   React                from 'react'                  ;
+import { bindActionCreators } from 'redux'                  ;
+import { connect }            from 'react-redux'            ;
 
-import actions from '../../actions/records';
-import Popup from '../../controls/popup';
+import   actionsRecords       from '../../actions/records'  ;
+import   Popup                from '../../controls/popup'   ;
+import   gameSelectors        from '../../selectors/game'   ;
 
 class Records extends React.Component {
   buildTable() {
-    var records = this.props.records;
-    var result = this.props.result;
-    var recordsCount = Math.min(records.length, 5);
-    var recordsDisplayed = records.slice(0, recordsCount);
-    var emptiesCount = 5 - records.length;
+    var records           = this.props.records;
+    var result            = this.props.result;
+    var recordsCount      = Math.min(records.length, 5);
+    var recordsDisplayed  = records.slice(0, recordsCount);
+    var emptiesCount      = 5 - records.length;
 
     // Собираем верстку таблицы по кусочкам...
     var layout = {};
@@ -90,7 +91,7 @@ class Records extends React.Component {
     // console.log('рендеринг таблицы рекордов');
     return (
       <Popup role="records" visible={this.props.recordsVisible} handler={this.props.closeRecords}>
-        <div style={{position: 'absolute', left: 0, right: 0, color: 'black', backgroundColor: 'yellow', textAlign: 'center', top: '-2.75em'}}>{this.props.result ? 'поздравляем, пасьянс сложился!' : ''}</div>
+        <div style={{position: 'absolute', left: 0, right: 0, color: 'black', backgroundColor: 'yellow', textAlign: 'center', top: '-2.75em'}}>{this.props.recordsCongrats ? 'поздравляем, пасьянс сложился!' : ''}</div>
         <span className="header-top">Рейтинг *</span>
         {this.buildTable()}
         <span className="header-top">Cтатистика</span>
@@ -103,18 +104,21 @@ class Records extends React.Component {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    closeRecords: bindActionCreators(actions.close, dispatch)
+    closeRecords: bindActionCreators(actionsRecords.close, dispatch)
   }
 };
 
 const mapStateToProps = function(state) {
+  let game = gameSelectors.getCurrentGame(state) || {};
+
   return {
-    recordsVisible : state.popup.recordsVisible,  /** Флаг открытости попапа с рекордами */
-    result      : state.game.result,        /** Выигранная только что игра                        */
-    resultIndex : state.game.index,         /** Индекс этой игры в таблице рекордов               */
-    gamesCount  : state.stats.gamesCount,   /** Общее кол-во сыгранных игр на данном устройстве   */
-    records     : state.stats.records,      /** Массив текущих рекордов на данном устройстве      */
-    winsCount   : state.stats.winsCount     /** Кол-во побед среди сыгранных на устройстве игр    */
+    recordsCongrats : state.popup.recordsCongrats ,
+    recordsVisible  : state.popup.recordsVisible  , /** Флаг открытости попапа с рекордами                */
+    result          : game.result                 , /** Текущая или последняя игра                        */
+    resultIndex     : game.index                  , /** Индекс этой игры в таблице рекордов               */
+    gamesCount      : state.stats.gamesCount      , /** Общее кол-во сыгранных игр на данном устройстве   */
+    records         : state.stats.records         , /** Массив текущих рекордов на данном устройстве      */
+    winsCount       : state.stats.winsCount         /** Кол-во побед среди сыгранных на устройстве игр    */
   };
 }
 

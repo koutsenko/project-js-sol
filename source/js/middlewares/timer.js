@@ -1,4 +1,4 @@
-import actions from '../constants/actions';
+import constantsActions from '../constants/actions';
 
 export default function(store) {
   var getState = store.getState;
@@ -8,17 +8,17 @@ export default function(store) {
     return function(action) {
       let returnValue = next(action);
       switch (action.type) {
-        case actions.GAME_START:
-        case actions.LOAD_SCENARIO:
+        case constantsActions.GAME_START:
+        case constantsActions.LOAD_SCENARIO:
           clearInterval(timer);
           timer = setInterval(function() {
             store.dispatch({
-              type: actions.TICK
+              type: constantsActions.TICK
             });
           }, 1000);
           break;
-        case actions.GAME_END:
-        case actions.GAME_CREATED:
+        case constantsActions.GAME_END:
+        case constantsActions.GAME_CREATED:
           clearInterval(timer);
           break;
       }

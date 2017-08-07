@@ -1,9 +1,9 @@
-import React from 'react';
-import { connect }            from 'react-redux';
-import { Motion, spring } from 'react-motion';
-import { bindActionCreators } from 'redux';
+import   React                from 'react'                ;
+import { bindActionCreators } from 'redux'                ;
+import { connect }            from 'react-redux'          ;
+import { Motion, spring }     from 'react-motion'         ;
 
-import boardActions from '../../actions/board';
+import   boardActions         from '../../actions/board'  ;
 
 class Holder extends React.Component {
   constructor(props) {

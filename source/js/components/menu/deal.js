@@ -1,16 +1,18 @@
-import React from 'react';
-import gameActions from '../../actions/games';
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import   React                from 'react'                      ;
+import { connect }            from 'react-redux'                ;
+import { bindActionCreators } from 'redux'                      ;
 
-import { getHashCmd, getHashParm } from '../../tools/hash';
+import   MenuButton           from '../../controls/menu/button' ;
 
-import MenuButton from '../../controls/menu/button';
+import   actionsGames         from '../../actions/games'        ;
+import   constantsGame        from '../../constants/game'       ;
+import   selectorsGame        from '../../selectors/game'       ;
+import   toolsHash            from '../../tools/hash'           ;
 
 class ButtonDeal extends React.Component {
   generateNewGame() {
-    if (getHashCmd() === 'deal') {
-      this.props.newGame(getHashParm() || Date.now());
+    if (toolsHash.getHashCmd() === 'deal') {
+      this.props.newGame(toolsHash.getHashParm() || Date.now());
     } else {
       this.props.newGame(Date.now());
     }
@@ -30,14 +32,16 @@ class ButtonDeal extends React.Component {
 }
 
 const mapStateToProps = function(state) {
+  let game    = selectorsGame.getCurrentGame(state) || {};
+
   return {
-    disabled: !state.access.gameCreateEnabled
+    disabled: !game.status || (game.status === constantsGame.gameState.STATE_CREATED)
   };
 };
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    newGame: bindActionCreators(gameActions.deal, dispatch)
+    newGame: bindActionCreators(actionsGames.deal, dispatch)
   };
 };
 

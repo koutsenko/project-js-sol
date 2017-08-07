@@ -5,6 +5,7 @@ export default function(state, action) {
     state = {
       aboutVisible    : false,
       recordsVisible  : false,
+      recordsCongrats : false,
       rulesVisible    : false
     };
   }
@@ -32,11 +33,13 @@ export default function(state, action) {
 
     case actions.SHOW_RECORDS:
       var newState = JSON.parse(JSON.stringify(state));
+      newState.recordsCongrats = !!action.congrats;
       newState.recordsVisible = true;
       return newState;
 
     case actions.CLOSE_RECORDS:
       var newState = JSON.parse(JSON.stringify(state));
+      newState.recordsCongrats = false;
       newState.recordsVisible = false;
       return newState;
   }
