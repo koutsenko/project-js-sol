@@ -208,6 +208,9 @@ class Board extends React.Component {
     }
   }
 
+  // WARN Из-за недоработки в preact, вместо ключей используем сортировку по id.
+  // Как только в cards появятся ключи, сразу начнутся ремаунты вместо обновлений.
+  // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
   buildCards(source, ref, isStack) {
     return source.map(function(card, index) {
       return (
@@ -217,7 +220,6 @@ class Board extends React.Component {
           id            = {card.id}
           index         = {index}
           isStack       = {isStack}
-          key           = {card.id}
           mini          = {this.props.fx.mini}
           parentElement = {ref}
           ref           = {this.getCardRef(card.id).bind(this)}
@@ -239,18 +241,18 @@ class Board extends React.Component {
       stacksCards.push(this.buildCards(this.props['stack'+i+'Cards'], this['stack'+i+'Ref'], true));
     }
 
+    // WARN Из-за недоработки в preact, вместо ключей используем сортировку по id.
+    // Как только в cards появятся ключи, сразу начнутся ремаунты вместо обновлений.
+    // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
     let cards = []
       .concat(deckCards)
       .concat(openCards)
       .concat(flatten(homesCards))
       .concat(flatten(stacksCards))
-    ;
-
-    cards.sort(function(a, b) {
-      return a.props.id < b.props.id;
-    });
-
-
+      .sort(function(a, b) {
+        return a.props.id.localeCompare(b.props.id);
+      }
+    );
 
     return (
       <div id="board" ref="board" className={this.props.disabled ? "disabled" : null}>
