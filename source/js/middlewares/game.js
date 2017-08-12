@@ -11,7 +11,7 @@ export default function(store) {
       switch (action.type) {
         case constantsActions.CARD_BACK_BY_PLAYER:
         case constantsActions.CARD_MOVE_BY_PLAYER:
-          if (toolsRules.isGameEnd(getState().board.cards.byId)) {
+          if (toolsRules.isGameEnd(getState())) {
             store.dispatch({
               type  : constantsActions.GAME_COMPLETE
             });

@@ -1,5 +1,6 @@
 import constantsActions from 'constants/actions' ;
 import constantsBoard   from 'constants/board'   ;
+import selectorsBoard   from 'selectors/board'   ;
 import toolsRules       from 'tools/rules'       ;
 
 let flushWrongHighlight = function() {
@@ -47,8 +48,8 @@ let cardSelectFail = function(card) {
 let cardDrop = function(id) {
   return function(dispatch, getState) {
     let state         =  getState();
-    let card          = state.board.cards.byId[id];
-    let target_type   = card ? card.holderId : constantsBoard.mapClassToPlace[id];
+    let holderId      = selectorsBoard.getHolderId(id, state.board);
+    let target_type   = holderId || constantsBoard.mapClassToPlace[id];
     let target_holder = state.board.holders.byId[target_type];
 
     // FIXME топорный поиск выбранной карты...

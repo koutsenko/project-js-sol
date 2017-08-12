@@ -1,8 +1,9 @@
 import constantsBoard from 'constants/board';
+import selectorsBoard from 'selectors/board';
 
-const canComplete = function(cards) {
-  return !cards.allIds.some(function(key) {
-    return cards.byId[key].flip && (cards.byId[key].holderId !== constantsBoard.places.DECK);
+const canComplete = function(state) {
+  return !selectorsBoard.getNonDeckCards(state).some(function(card) { 
+    return card.flip;
   });
 };
 
@@ -29,9 +30,10 @@ const canAcceptDropToHome = function(source, target) {
   }
 };
 
-const isGameEnd = function(cards) {
-  return Object.keys(cards).every(function(id) {
-    return constantsBoard.isHomePlace(cards[id].holderId);
+const isGameEnd = function(state) {
+  return Object.keys(state.board.cards.byId).every(function(id) {
+    let holderId = selectorsBoard.getHolderId(id, state.board);
+    return constantsBoard.isHomePlace(holderId);
   });
 };
 

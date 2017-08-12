@@ -3,6 +3,19 @@ import { createSelector } from 'reselect'         ;
 import   constantsBoard   from 'constants/board'  ;
 
 const getCards = (state) => state.board.cards.byId;
+const getHolderId = function(id, boardState) {
+  var holderIds = boardState.holders.allIds;
+  var resultId = null;
+
+  for (var i = 0; i < holderIds.length; i++) {
+    if (boardState.holders.byId[holderIds[i]].indexOf(id)+1) {
+      resultId = holderIds[i];
+      break;
+    }
+  }
+
+  return resultId;
+}
 
 const getDeckCardIds    = (state) => state.board.holders.byId[constantsBoard.places.DECK]   ;
 const getOpenCardIds    = (state) => state.board.holders.byId[constantsBoard.places.OPEN]   ;
@@ -17,21 +30,36 @@ const getHome1CardIds   = (state) => state.board.holders.byId[constantsBoard.pla
 const getHome2CardIds   = (state) => state.board.holders.byId[constantsBoard.places.HOME2]  ;
 const getHome3CardIds   = (state) => state.board.holders.byId[constantsBoard.places.HOME3]  ;
 const getHome4CardIds   = (state) => state.board.holders.byId[constantsBoard.places.HOME4]  ;
+const getNonDeckCards   = function(state) {
+  let holderIds   = state.board.holders.allIds.slice();
+  let cards       = [];
+  
+  holderIds.splice(holderIds.indexOf(constantsBoard.places.DECK), 1);  
+  holderIds.forEach(function(holderId) {
+    cards = cards.concat(state.board.holders.byId[holderId]);
+  });
+
+  return cards;
+};
 
 const resultFunc = (ids, cards) => ids.map((id) => cards[id]);
 
+const resultFunc2 = (id) => id;
+
 export default {
-  getDeckCards    : createSelector([getDeckCardIds  , getCards] , resultFunc),
-  getOpenCards    : createSelector([getOpenCardIds  , getCards] , resultFunc),
-  getStack1Cards  : createSelector([getStack1CardIds, getCards] , resultFunc), 
-  getStack2Cards  : createSelector([getStack2CardIds, getCards] , resultFunc),
-  getStack3Cards  : createSelector([getStack3CardIds, getCards] , resultFunc),
-  getStack4Cards  : createSelector([getStack4CardIds, getCards] , resultFunc), 
-  getStack5Cards  : createSelector([getStack5CardIds, getCards] , resultFunc),
-  getStack6Cards  : createSelector([getStack6CardIds, getCards] , resultFunc),
-  getStack7Cards  : createSelector([getStack7CardIds, getCards] , resultFunc), 
-  getHome1Cards   : createSelector([getHome1CardIds , getCards] , resultFunc), 
-  getHome2Cards   : createSelector([getHome2CardIds , getCards] , resultFunc),
-  getHome3Cards   : createSelector([getHome3CardIds , getCards] , resultFunc),
-  getHome4Cards   : createSelector([getHome4CardIds , getCards] , resultFunc)
+  getDeckCards    : createSelector([getDeckCardIds  , getCards ] , resultFunc),
+  getOpenCards    : createSelector([getOpenCardIds  , getCards ] , resultFunc),
+  getStack1Cards  : createSelector([getStack1CardIds, getCards ] , resultFunc), 
+  getStack2Cards  : createSelector([getStack2CardIds, getCards ] , resultFunc),
+  getStack3Cards  : createSelector([getStack3CardIds, getCards ] , resultFunc),
+  getStack4Cards  : createSelector([getStack4CardIds, getCards ] , resultFunc), 
+  getStack5Cards  : createSelector([getStack5CardIds, getCards ] , resultFunc),
+  getStack6Cards  : createSelector([getStack6CardIds, getCards ] , resultFunc),
+  getStack7Cards  : createSelector([getStack7CardIds, getCards ] , resultFunc), 
+  getHome1Cards   : createSelector([getHome1CardIds , getCards ] , resultFunc), 
+  getHome2Cards   : createSelector([getHome2CardIds , getCards ] , resultFunc),
+  getHome3Cards   : createSelector([getHome3CardIds , getCards ] , resultFunc),
+  getHome4Cards   : createSelector([getHome4CardIds , getCards ] , resultFunc),
+  getNonDeckCards : createSelector([getNonDeckCards , getCards ] , resultFunc),
+  getHolderId     : createSelector([getHolderId] , resultFunc2)
 };

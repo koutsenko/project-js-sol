@@ -2,10 +2,13 @@ import shuffleSeed      from 'knuth-shuffle-seeded' ;
 
 import constantsActions from 'constants/actions'    ;
 import constantsBoard   from 'constants/board'      ;
+import selectorsBoard   from 'selectors/board'      ;
 
-function cardMove(action, newState, raw) {
+//TODO старый state приходится прокидывать из-за использования селектора в редьюсере. Он мутирует на newState. Подумать над адекватным решением.
+function cardMove(action, state, newState, raw) {
   var source_card     = newState.cards.byId[action.card_id];
-  var source_type     = source_card.holderId;
+  var holderId        = selectorsBoard.getHolderId(action.card_id, state);
+  var source_type     = holderId;
   var source_holder   = newState.holders.byId[source_type];
 
   var target_type     = action.target_type;
@@ -16,7 +19,6 @@ function cardMove(action, newState, raw) {
   card_ids.forEach(function(id) {
     var card = newState.cards.byId[id];
     card.touched = !raw ? true : card.touched;
-    card.holderId = target_type;
     card.flip = raw ? action.flip : ((target_type === constantsBoard.places.OPEN) ? false : card.flip);
     source_holder.splice(source_holder.indexOf(id), 1);
     target_holder.push(id);
@@ -88,7 +90,6 @@ export default function(state, action) {
         let card = newState.cards.byId[id];
         card.flip = true;
         card.touched = true;
-        card.holderId = constantsBoard.places.DECK;
         deck.unshift(id);
       }, this);
       newState.holders.byId[constantsBoard.places.OPEN] = [];
@@ -98,14 +99,14 @@ export default function(state, action) {
 
     case constantsActions.CARD_MOVE_BY_ENGINE:
       var newState = JSON.parse(JSON.stringify(state));
-      return cardMove(action, newState, true);
+      return cardMove(action, state, newState, true);
 
     case constantsActions.CARD_MOVE_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
       newState.previous = JSON.parse(JSON.stringify(state));
       newState.selected = {};
       newState.index++;
-      return cardMove(action, newState);
+      return cardMove(action, state, newState);
   }
 
   return state;
@@ -212,13 +213,12 @@ const loadBoard = function(data) {
   };
 }
 
-const buildCard = function(id, flipped, holderId) {
+const buildCard = function(id, flipped) {
   return {
     id        : id        ,
     rank      : id[0]     ,
     suit      : id[1]     ,
     flip      : flipped   ,
-    touched   : false     ,
-    holderId  : holderId
+    touched   : false
   };
 };

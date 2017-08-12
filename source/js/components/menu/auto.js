@@ -27,7 +27,7 @@ const mapStateToProps = function(state) {
   let game = selectorsGame.getCurrentGame(state) || {};
 
   return { 
-    disabled: (game.status !== constantsGame.gameState.STATE_STARTED) || !toolsRules.canComplete(state.board.cards)
+    disabled: (game.status !== constantsGame.gameState.STATE_STARTED) || !toolsRules.canComplete(state)
   };
 };
 

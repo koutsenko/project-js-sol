@@ -42,7 +42,8 @@ class Board extends React.Component {
     if (!selectedId) {
       if (target.classList.contains('card')) {
         let card = this.props.board.cards.byId[target.dataset['id']];
-        if (card.holderId === constantsBoard.places.DECK) {
+        let holderId = selectorsBoard.getHolderId(card.id, this.props.board);
+        if (holderId === constantsBoard.places.DECK) {
           this.props.deckCardClick();
         } else {
           if (!card.flip) {
@@ -83,7 +84,8 @@ class Board extends React.Component {
     };
 
     let card = this.props.board.cards.byId[target.dataset['id']];
-    if (((card.holderId === constantsBoard.places.OPEN) || constantsBoard.isStackPlace(card.holderId)) && (!this.hasChildrenCards(target))) {
+    let holderId = selectorsBoard.getHolderId(card.id, this.props.board);
+    if (((holderId === constantsBoard.places.OPEN) || constantsBoard.isStackPlace(holderId)) && (!this.hasChildrenCards(target))) {
       this.props.cardDoubleClick(card.id);
     }
   }

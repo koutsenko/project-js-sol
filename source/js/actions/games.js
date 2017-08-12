@@ -147,7 +147,7 @@ export default {
             }
           });
         }); 
-      } while(!toolsRules.isGameEnd(getState().board.cards.byId));
+      } while(!toolsRules.isGameEnd(getState()));
     }.bind(this);
   },
   revertTurn: function() {
