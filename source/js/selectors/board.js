@@ -3,18 +3,23 @@ import { createSelector } from 'reselect'         ;
 import   constantsBoard   from 'constants/board'  ;
 
 const getCards = (state) => state.board.cards.byId;
-const getHolderId = function(id, boardState) {
+
+/**
+ * Селектор возвращающий holderId заданной карты.
+ * Вернет undefined, если холдер не нашелся (например такое случится если cardId на самом деле не id карты)
+ */
+const getHolderId = function(cardId, boardState) {
   var holderIds = boardState.holders.allIds;
-  var resultId = null;
+  var holderId;
 
   for (var i = 0; i < holderIds.length; i++) {
-    if (boardState.holders.byId[holderIds[i]].indexOf(id)+1) {
-      resultId = holderIds[i];
+    if (boardState.holders.byId[holderIds[i]].indexOf(cardId)+1) {
+      holderId = holderIds[i];
       break;
     }
   }
 
-  return resultId;
+  return holderId;
 }
 
 const getDeckCardIds    = (state) => state.board.holders.byId[constantsBoard.places.DECK]   ;
@@ -46,6 +51,18 @@ const getLastCards      = function(boardState) {
     return boardState.holders.byId[holderId][boardState.holders.byId[holderId].length - 1];
   });
 };
+/**
+ * Селектор возвращающий самую верхнюю карту холдера или undefined холдер пустой.
+ * На входе id холдера
+ * @param {*} holderId
+ * @param {*} boardState 
+ */
+const getLastCard       = function(holderId, boardState) {
+  let holder = boardState.holders.byId[holderId];
+  
+  return (holder && holder.length) ? holder[holder.length - 1] : undefined;
+};
+
 const getChildCards     = function(cardId, boardState) {
   let result;
   let holderId = getHolderId(cardId, boardState);
@@ -83,5 +100,6 @@ export default {
   getNonDeckCards : createSelector([getNonDeckCards , getCards ] , resultFunc),
   getHolderId     : createSelector([getHolderId   ] , resultFunc2),
   getLastCards    : createSelector([getLastCards  ] , resultFunc2),
+  getLastCard     : createSelector([getLastCard   ] , resultFunc2),
   getChildCards   : createSelector([getChildCards ] , resultFunc2)
 };

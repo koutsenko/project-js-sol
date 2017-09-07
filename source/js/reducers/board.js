@@ -4,33 +4,6 @@ import constantsActions from 'constants/actions'    ;
 import constantsBoard   from 'constants/board'      ;
 import selectorsBoard   from 'selectors/board'      ;
 
-//TODO старый state приходится прокидывать из-за использования селектора в редьюсере. Он мутирует на newState. Подумать над адекватным решением.
-function cardMove(action, state, newState, raw) {
-  var source_card     = newState.cards.byId[action.card_id];
-  var holderId        = selectorsBoard.getHolderId(action.card_id, state);
-  var source_type     = holderId;
-  var source_holder   = newState.holders.byId[source_type];
-
-  var target_type     = action.target_type;
-  var target_index    = action.target_index;
-  var target_holder   = newState.holders.byId[target_type];
-  
-  var card_ids = constantsBoard.isStackPlace(source_type) ? source_holder.slice(source_holder.indexOf(action.card_id), source_holder.length) : [action.card_id];
-  card_ids.forEach(function(id) {
-    var card = newState.cards.byId[id];
-    card.touched = !raw ? true : card.touched;
-    card.flip = raw ? action.flip : ((target_type === constantsBoard.places.OPEN) ? false : card.flip);
-    source_holder.splice(source_holder.indexOf(id), 1);
-    target_holder.push(id);
-  });
-
-  if (!raw && constantsBoard.isStackPlace(source_type) && source_holder.length) {
-    newState.cards.byId[source_holder[source_holder.length-1]].flip = false;
-  }
-
-  return newState;
-}
-
 /**
  * Редьюсер, работающий с состоянием игры (игрового поля, она же доска) в данный ход.
  */
@@ -39,37 +12,7 @@ export default function(state, action) {
     state = buildBoard();
   }
 
-  switch(action.type) {
-    case constantsActions.CARD_SELECT_CANCEL_BY_PLAYER:
-      var newState = JSON.parse(JSON.stringify(state));
-      newState.selected = {};
-      return newState;
-
-    case constantsActions.CARD_SELECT_OK_BY_PLAYER:
-      var newState = JSON.parse(JSON.stringify(state));
-      newState.selected[action.id] = constantsBoard.highlights.ACCEPT;
-      return newState;
-
-    case constantsActions.CARD_SELECT_FAIL_BY_PLAYER:
-      var newState = JSON.parse(JSON.stringify(state));
-      newState.selected[action.id] = constantsBoard.highlights.DENY;
-      return newState;
-
-    case constantsActions.CARD_TARGET_WRONG_BY_PLAYER:
-      var newState = JSON.parse(JSON.stringify(state));
-      newState.declined = action.holder_id;
-      return newState;
-
-    case constantsActions.FLUSH_DECLINE:
-      var newState = JSON.parse(JSON.stringify(state));
-      newState.declined = undefined;
-      return newState;
-
-    case constantsActions.FLUSH_WRONG_HIGHLIGHT:
-      var newState = JSON.parse(JSON.stringify(state));
-      newState.selected = {};
-      return newState;
-    
+  switch(action.type) {   
     case constantsActions.REVERT:
       var newState = JSON.parse(JSON.stringify(state.previous));
       newState.index    = newState.index + 2;
@@ -84,18 +27,9 @@ export default function(state, action) {
 
     case constantsActions.CARD_BACK_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
-      var deck = newState.holders.byId[constantsBoard.places.DECK];
-      var open = newState.holders.byId[constantsBoard.places.OPEN];
-      open.forEach(function(id) {
-        let card = newState.cards.byId[id];
-        card.flip = true;
-        card.touched = true;
-        deck.unshift(id);
-      }, this);
-      newState.holders.byId[constantsBoard.places.OPEN] = [];
       newState.previous = JSON.parse(JSON.stringify(state));
       newState.index++;
-      return newState;
+      return cardBack(newState);
 
     case constantsActions.CARD_MOVE_BY_ENGINE:
       var newState = JSON.parse(JSON.stringify(state));
@@ -104,13 +38,65 @@ export default function(state, action) {
     case constantsActions.CARD_MOVE_BY_PLAYER:
       var newState = JSON.parse(JSON.stringify(state));
       newState.previous = JSON.parse(JSON.stringify(state));
-      newState.selected = {};
       newState.index++;
       return cardMove(action, state, newState);
   }
 
   return state;
 };
+
+const cardBack = function(newState) {
+  var deck = newState.holders.byId[constantsBoard.places.DECK];
+  var open = newState.holders.byId[constantsBoard.places.OPEN];
+  open.forEach(function(id) {
+    let card = newState.cards.byId[id];
+    card.flip = true;
+    card.touched = true;
+    deck.unshift(id);
+  }, this);
+  newState.holders.byId[constantsBoard.places.OPEN] = [];
+
+  return newState;
+}
+
+//TODO старый state приходится прокидывать из-за использования селектора в редьюсере. Он мутирует на newState. Подумать над адекватным решением.
+const cardMove = function(action, state, newState, raw) {
+  var source_card     = newState.cards.byId[action.card_id];
+  var holderId        = selectorsBoard.getHolderId(action.card_id, state);
+  var source_type     = holderId;
+  var source_holder   = newState.holders.byId[source_type];
+
+  var target_type     = action.target_type;
+  var target_index    = action.target_index;
+  var target_holder   = newState.holders.byId[target_type];
+  
+  var card_ids;
+
+  let isOpenToDeck = (source_type === constantsBoard.places.OPEN) && (target_type === constantsBoard.places.DECK);
+  
+  if (constantsBoard.isStackPlace(source_type)) {
+    card_ids = source_holder.slice(source_holder.indexOf(action.card_id), source_holder.length)
+  } else if (isOpenToDeck) {
+    return cardBack(newState);
+    card_ids = source_holder.slice(source_holder.indexOf(action.card_id), source_holder.length)
+  } else {
+    card_ids = [action.card_id]
+  }
+
+  card_ids.forEach(function(id) {
+    var card = newState.cards.byId[id];
+    card.touched = !raw ? true : card.touched;
+    card.flip = raw ? action.flip : ((target_type === constantsBoard.places.OPEN) ? false : card.flip);
+    source_holder.splice(source_holder.indexOf(id), 1);
+    target_holder.push(id);
+  });
+  
+  if (!raw && constantsBoard.isStackPlace(source_type) && source_holder.length) {
+    newState.cards.byId[source_holder[source_holder.length-1]].flip = false;
+  }
+
+  return newState;
+}
 
 const buildBoard = function(seed) {
   let deck = buildDeck(seed || 'test');
@@ -120,8 +106,6 @@ const buildBoard = function(seed) {
   let cards   = buildCards(deck);
 
   return {
-    declined  : undefined,  // карта или холдер, которые хотели выбрать, но не получилось...
-    selected  : {},         // корректно и некорректно выбранные карты
     index     : 0,          // этот ход имеет определенный номер в игре.
     previous  : undefined,  // ссылка на копию самого себя (кроме previous - память ограничена 1-м ходом назад)
     cards     : cards,      // ассоциативный массив объектов карт
@@ -209,7 +193,6 @@ const loadBoard = function(data) {
     holders   : holders,
     index     : index,
     previous  : undefined,
-    selected  : {}
   };
 }
 

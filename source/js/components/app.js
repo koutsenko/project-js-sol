@@ -54,8 +54,8 @@ class App extends React.Component {
   render() {
     return (
       <div id="app" className={(this.props.fx.mini ? "mini" : "")}>
-        <Board  />
-        <Menu   />
+        <Board      />
+        <Menu       />
         <div id="popups">
           <Mask     />
           <About    />

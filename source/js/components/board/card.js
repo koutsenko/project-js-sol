@@ -1,10 +1,10 @@
-import   React                from 'react'            ;
-import { Motion, spring }     from 'react-motion'     ;
-import { connect }            from 'react-redux'      ;
-import { bindActionCreators } from 'redux'            ;
+import   React                from 'react'                            ;
+import { Motion, spring }     from 'react-motion'                     ;
+import { connect }            from 'react-redux'                      ;
+import { bindActionCreators } from 'redux'                            ;
 
-import   constantsBoard       from 'constants/board'  ;
-import   boardActions         from 'actions/board'    ;
+import   constantsBoard       from 'constants/board'                  ;
+import   boardActions         from 'actions/board'                    ;
 
 function randomize(dispersion) {
   return Math.round((Math.random()-0.5) * dispersion);
@@ -28,31 +28,22 @@ function generateDeltas(width) {
 };
 
 class Card extends React.Component {
+  updateState(props, nextProps) {
+    this.setState({
+      deltas    : this.state.deltas === undefined ? generateDeltas(props.width) : (this.state.deltas.e ? generateDeltas(nextProps.width) : scaleDeltas(this.state.deltas, props.width, nextProps.width)),
+      previousX : ( nextProps && nextProps.shifted ) ? nextProps.shifted[0] : props.x,
+      previousY : ( nextProps && nextProps.shifted ) ? nextProps.shifted[1] : props.y,
+      previousF : props.flip
+    });
+  }
+
   constructor(props) {
     super(props);
-    this.state = {
-      debug     : false,
-      deltas    : generateDeltas(this.props.width),
-      previousX : this.props.x,
-      previousY : this.props.y,
-      previousF : this.props.flip
-    };
-    this.timeout = null;
+    this.updateState(props); 
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      deltas    : this.state.deltas.e ? generateDeltas(nextProps.width) : scaleDeltas(this.state.deltas, this.props.width, nextProps.width),
-      previousX : this.props.x,
-      previousY : this.props.y,
-      previousF : this.props.flip
-    });
-    clearTimeout(this.timeout);
-    if (nextProps.highlight === constantsBoard.highlights.DENY) {
-      setTimeout(function() {
-        this.props.flushWrongHighlight()
-      }.bind(this), 500);
-    }
+    this.updateState(this.props, nextProps);
   }
 
   render() {
@@ -67,17 +58,26 @@ class Card extends React.Component {
       stiffness : 300
     };
 
+    /**
+     * N.B. spring ведет себя странно если совпадают начальная и конечные координаты.
+     * Поэтому в таком случае недопускаем spring данного параметра в верстку вообще.
+     */
+    let dx = (this.props.x === this.state.previousX) ? this.props.x : spring(this.props.x, options);
+    let dy = (this.props.y === this.state.previousY) ? this.props.y : spring(this.props.y, options);
+
     return (
       <Motion defaultStyle={{
+        dColor  : +!this.props.declined,
         dx      : this.state.previousX,
         dy      : this.state.previousY,
-        do      : +!this.props.highlight,
+        do      : +!this.props.selected,
         drFace  : this.state.previousF ? rFace : rBack,
         drBack  : this.state.previousF ? rBack : rFace
       }} style={{
-        dx      : spring(this.props.x, options),
-        dy      : spring(this.props.y, options),
-        do      : spring(+!!this.props.highlight, options),
+        dColor  : spring(+!this.props.declined),
+        dx      : dx,
+        dy      : dy,
+        do      : spring(+!!this.props.selected, options),
         drFace  : spring(rFace, options),
         drBack  : spring(rBack, options),
       }}>
@@ -87,14 +87,12 @@ class Card extends React.Component {
             let dy = Math.round(this.state.deltas.y + interpolatingStyle.dy);
             let dr = this.state.deltas.r;
 
-            let highlight = {
-              [constantsBoard.highlights.ACCEPT]   : `0 0 0.1em 0.3em rgba(32,  255, 0, ${interpolatingStyle.do})`,
-              [constantsBoard.highlights.DENY]     : `0 0 0.1em 0.3em rgba(255, 0,   0, ${interpolatingStyle.do})`,
-            }[this.props.highlight] || null;
+            let select = `0 0 0.1em 0.3em rgba(32,  255, 0, ${interpolatingStyle.do})`;
+            let decline = `0 0 0.1em 0.3em rgba(255, 0, 0, ${interpolatingStyle.dColor})`;
 
             // Оставили 9 слоев, с запасом - для холдеров и их псевдоэлементов
             let style = {
-              boxShadow       : highlight,
+              boxShadow       : this.props.declined ? decline : (this.props.selected ? select : null),
               zIndex          : this.props.index + 10,
               width           : this.props.width  + 'px',
               height          : this.props.height + 'px',
@@ -102,9 +100,16 @@ class Card extends React.Component {
               transform       : `translate(${dx}px,${dy}px) rotate(${dr}deg)`
             };
 
+            let className = this.props.className;
+            if (this.props.hovered === constantsBoard.highlights.ACCEPT) {
+              className += ' hovered yes';
+            } else if (this.props.hovered === constantsBoard.highlights.DENY) {
+              className += ' hovered no';
+            }
+
             return (
               <div 
-                className = "card"
+                className = {className}
                 data-id   = {this.props.id}
                 data-x0   = {dx}
                 data-y0   = {dy}
@@ -124,36 +129,41 @@ class Card extends React.Component {
 }
 
 Card.propTypes = {
+  declined      : React.PropTypes.bool.isRequired,
+  className     : React.PropTypes.string.isRequired,
+  dndEnabled    : React.PropTypes.bool.isRequired,
+  holderId      : React.PropTypes.string.isRequired,
   card          : React.PropTypes.object.isRequired,
   id            : React.PropTypes.string.isRequired,
   index         : React.PropTypes.number,
   flip          : React.PropTypes.bool.isRequired,
-  isStack       : React.PropTypes.bool,
-  parentElement : React.PropTypes.object
+  parentElement : React.PropTypes.object,
+  selected      : React.PropTypes.bool.isRequired,
+  hovered       : React.PropTypes.string.isRequired,
+  isUpper       : React.PropTypes.bool.isRequired
 };
 
 const mapStateToProps = function(state, ownProps) {
-  let highlight = state.board.selected[ownProps.id];
   let height    = 0;
   let width     = 0;
   let x         = 0;
   let y         = 0;
 
-  if ((ownProps.parentElement !== null ) && (ownProps.parentElement !== undefined)) {
+  if (ownProps.parentElement) {
     let rect  = ownProps.parentElement.getBoundingClientRect();
     height    = Math.round(rect.bottom - rect.top);
     width     = Math.round(rect.right - rect.left);
-    x         = Math.round(rect.left);
-    y         = Math.round(rect.top + (ownProps.isStack ? ((height/(ownProps.mini ? 3 : 5)) * (ownProps.index)) : 0));
+    if (ownProps.shifted) {
+      x         = ownProps.shifted[0],
+      y         = ownProps.shifted[1]
+    } else {
+      x         = Math.round(rect.left);
+      y         = Math.round(rect.top + (constantsBoard.isStackPlace(ownProps.holderId) ? ((height/(ownProps.mini ? 3 : 5)) * (ownProps.index)) : 0));
+    }
   }
   
-  return { x, y, height, width, highlight };
+  return { x, y, height, width };
 };
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    flushWrongHighlight: bindActionCreators(boardActions.flushWrongHighlight, dispatch)
-  }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Card);
+export default connect(mapStateToProps, null, null, { withRef: true })(Card);

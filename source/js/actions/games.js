@@ -91,7 +91,7 @@ export default {
         }
 
         // ищем карты, подходящие для перемещения в дома
-        let map = toolsRules.getHomeMap(getState());
+        let map = toolsRules.getHomeMap(getState().board);
 
         // смотрим последние карты стеков и open
         let lastCards = constantsBoard.getStackPlaces().map(function(place) {

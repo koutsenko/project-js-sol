@@ -1,9 +1,10 @@
-import   React                from 'react'          ;
-import { bindActionCreators } from 'redux'          ;
-import { connect }            from 'react-redux'    ;
-import { Motion, spring }     from 'react-motion'   ;
+import   React                from 'react'                            ;
+import { bindActionCreators } from 'redux'                            ;
+import { connect }            from 'react-redux'                      ;
+import { Motion, spring }     from 'react-motion'                     ;
 
-import   boardActions         from 'actions/board'  ;
+import   boardActions         from 'actions/board'                    ;
+import   constantsBoard       from 'constants/board'                  ;
 
 class Holder extends React.Component {
   constructor(props) {
@@ -15,30 +16,28 @@ class Holder extends React.Component {
     this.Ref = element;
   }
 
-  componentWillReceiveProps(nextProps) {
-    clearTimeout(this.timeout);
-    if (nextProps.isDeclined && !this.props.isDeclined) {
-      this.timeout = setTimeout(function() {
-        this.props.flushDecline();
-      }.bind(this), 500);
-    }
-  }
-
   render() {
     return (
       <Motion defaultStyle={{
-        dColor: this.props.isDeclined ? 1 : 0
+        dColor: +!this.props.declined
       }} style={{
-        dColor: spring(this.props.isDeclined ? 1 : 0)
+        dColor: spring(+!this.props.declined)
       }}>
         {
           function(interpolatingStyle) {
-            let style = this.props.isDeclined ? {
+            let style = this.props.declined ? {
               boxShadow: `0 0 0.1em 0.3em rgba(255, 0, 0, ${interpolatingStyle.dColor})`
             } : {};
 
+            let className = this.props.className;
+            if (this.props.hovered === constantsBoard.highlights.ACCEPT) {
+              className += ' hovered yes';
+            } else if (this.props.hovered === constantsBoard.highlights.DENY) {
+              className += ' hovered no';
+            }
+
             return (
-              <div ref={this.getRef.bind(this)} style={style} data-index={this.props.index} data-id={this.props.id} className={this.props.className + " holder"}/>
+              <div ref={this.getRef.bind(this)} style={style} data-index={this.props.index} data-id={this.props.id} className={className}/>
             );
           }.bind(this)
         }
@@ -48,21 +47,13 @@ class Holder extends React.Component {
 };
 
 Holder.propTypes = {
-  id            : React.PropTypes.string.isRequired,
-  className     : React.PropTypes.string.isRequired,
-  index         : React.PropTypes.number
+  cards           : React.PropTypes.array.isRequired,
+  dndEnabled      : React.PropTypes.bool.isRequired,
+  id              : React.PropTypes.string.isRequired,
+  className       : React.PropTypes.string.isRequired,
+  declined        : React.PropTypes.bool.isRequired,
+  index           : React.PropTypes.number,
+  cbFlushDeclined : React.PropTypes.func
 };
 
-const mapStateToProps = function(state, ownProps) {
-  return {
-    isDeclined: state.board.declined === ownProps.id
-  };
-}
-
-const mapDispatchToProps = function(dispatch) {
-  return {
-    flushDecline: bindActionCreators(boardActions.flushDecline, dispatch)
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps, null, { withRef: true })(Holder);
+export default Holder;
