@@ -137,9 +137,7 @@ class Target extends React.Component {
       return;
     }
 
-    let rect = event.relatedTarget.getBoundingClientRect();
-
-    this.props.api.cardShift(this.state.source_card_id, rect.left, rect.top);
+    this.props.api.cardShift(event.relatedTarget);
     this.props.api.cardMove(this.state.source_card_id, event.target.dataset['id']);
     // Похоже, react/preact накапливает изменения props.
     // Пока что нам важно сначала применить промежуточное состояние.

@@ -85,17 +85,21 @@ const cardFlush = function(element) {
 /**
  * 
  */
-const cardShift = function(cardId, x, y) {
-  let boardState = this.props.board;  
+const cardShift = function(element) {
+
+  let cardId = element.dataset['id'];
+  let parentEl = element.parentElement;
+
+  let boardState = this.props.board;
   let cardIds = selectorsBoard.getChildCards(cardId, boardState);
   
   cardIds.forEach(function(id, index) {
       console.log(id);
-      // FIXME подумать как все таки приплюсовать дельту высот к дочерним картам
-      //height/(ownProps.mini ? 3 : 5)) * index
+      let el = parentEl.querySelector('[data-id="'+id+'"]');
+      let rect = el.getBoundingClientRect();
       this.setState({
         shifted: Object.assign(this.state.shifted, {
-          [id]: [x, y+index]
+          [id]: [rect.left, rect.top]
         })
       });
   }, this);
