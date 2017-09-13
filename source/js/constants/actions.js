@@ -6,8 +6,7 @@ export default {
   CLOSE_RECORDS                 : 'CLOSE_RECORDS'                 ,
   CLOSE_RULES                   : 'CLOSE_RULES'                   ,
   CLOSE_OPTIONS                 : 'CLOSE_OPTIONS'                 ,
-  FX_MINI                       : 'FX_MINI'                       ,
-  FX_NOT_MINI                   : 'FX_NOT_MINI'                   ,
+  FX_RESIZE                     : 'FX_RESIZE'                     ,
   GAME_CREATED                  : 'GAME_CREATED'                  , /** Сигнал о создании игры и начале раздачи карт */
   GAME_COMPLETE                 : 'GAME_COMPLETE'                 ,
   GAME_START                    : 'GAME_START'                    ,

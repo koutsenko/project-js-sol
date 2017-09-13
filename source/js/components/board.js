@@ -46,11 +46,42 @@ class Board extends React.Component {
     return !!element.querySelector('.card');
   }
 
+  getDimensions(ref) {
+    let height  = 0
+    let width   = 0;
+    let rect;
+
+    if (ref) {
+      rect      = ref.getBoundingClientRect();
+      height    = Math.round(rect.bottom - rect.top);
+      width     = Math.round(rect.right - rect.left);
+    }
+
+    return { rect, width, height };
+  }
+
+  getPos(cardId, rect, height, holderId, index) {
+    let x = 0, y = 0;
+
+    let shifted = this.state.shifted[cardId];
+    if (shifted) {
+      x         = shifted[0],
+      y         = shifted[1]
+    } else if (rect) {
+      x         = Math.round(rect.left);
+      y         = Math.round(rect.top + (constantsBoard.isStackPlace(holderId) ? ((height/(this.props.fx.mini ? 3 : 5)) * index) : 0));
+    }
+
+    return { x, y };
+  }
+
   // WARN Из-за недоработки в preact, вместо ключей используем сортировку по id.
   // Как только в cards появятся ключи, сразу начнутся ремаунты вместо обновлений.
   // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
   buildCards(holderId, source, ref) {
+    let { rect, width, height } = this.getDimensions(ref);
     return source.map(function(card, index, all) {
+      let { x, y } = this.getPos(card.id, rect, height, holderId, index);
       return (
         <Card 
           declined      = {this.state.declined === card.id}
@@ -68,6 +99,10 @@ class Board extends React.Component {
           shifted       = {this.state.shifted[card.id]}
           ref           = {this.getCardRef(card.id).bind(this)}
           selected      = {this.state.selected === card.id}
+          width         = {width}
+          height        = {height}
+          x             = {x}
+          y             = {y}
         />
       );
     }.bind(this));

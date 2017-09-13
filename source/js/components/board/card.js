@@ -33,7 +33,9 @@ class Card extends React.Component {
       deltas    : this.state.deltas === undefined ? generateDeltas(props.width) : (this.state.deltas.e ? generateDeltas(nextProps.width) : scaleDeltas(this.state.deltas, props.width, nextProps.width)),
       previousX : ( nextProps && nextProps.shifted ) ? nextProps.shifted[0] : props.x,
       previousY : ( nextProps && nextProps.shifted ) ? nextProps.shifted[1] : props.y,
-      previousF : props.flip
+      previousF : props.flip,
+      previousW : props.width,
+      previousH : props.height
     });
   }
 
@@ -64,6 +66,14 @@ class Card extends React.Component {
      */
     let dx = (this.props.x === this.state.previousX) ? this.props.x : spring(this.props.x, options);
     let dy = (this.props.y === this.state.previousY) ? this.props.y : spring(this.props.y, options);
+
+    /**
+     * Также выключаем анимацию перемещения если изменились размеры (явно делается ресайз окна)
+     */
+    if ((this.state.previousW !== this.props.width) || (this.state.previousH !== this.props.height)) {
+      dx = this.props.x;
+      dy = this.props.y;
+    }
 
     return (
       <Motion defaultStyle={{
@@ -140,30 +150,11 @@ Card.propTypes = {
   parentElement : React.PropTypes.object,
   selected      : React.PropTypes.bool.isRequired,
   hovered       : React.PropTypes.string.isRequired,
-  isUpper       : React.PropTypes.bool.isRequired
+  isUpper       : React.PropTypes.bool.isRequired,
+  width         : React.PropTypes.number.isRequired,
+  height        : React.PropTypes.number.isRequired,
+  x             : React.PropTypes.number.isRequired,
+  y             : React.PropTypes.number.isRequired
 };
 
-const mapStateToProps = function(state, ownProps) {
-  let height    = 0;
-  let width     = 0;
-  let x         = 0;
-  let y         = 0;
-
-  if (ownProps.parentElement) {
-    let rect  = ownProps.parentElement.getBoundingClientRect();
-    height    = Math.round(rect.bottom - rect.top);
-    width     = Math.round(rect.right - rect.left);
-    if (ownProps.shifted) {
-      x         = ownProps.shifted[0],
-      y         = ownProps.shifted[1]
-    } else {
-      x         = Math.round(rect.left);
-      y         = Math.round(rect.top + (constantsBoard.isStackPlace(ownProps.holderId) ? ((height/(ownProps.mini ? 3 : 5)) * (ownProps.index)) : 0));
-    }
-  }
-  
-  return { x, y, height, width };
-};
-
-
-export default connect(mapStateToProps, null, null, { withRef: true })(Card);
+export default Card;

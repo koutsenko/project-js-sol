@@ -7,7 +7,7 @@ import   MobileDetect     from 'mobile-detect'            ;
 import   App              from 'components/app'           ;
 import   rootMiddleware   from 'middlewares/_root'        ;
 import   rootReducer      from 'reducers/_root'           ;
-import   actionConstants  from 'constants/actions'        ;
+import   constantsActions from 'constants/actions'        ;
 
 // import { composeWithDevTools }  from 'redux-devtools-extension' ;
 // const composeEnhancers = composeWithDevTools({
@@ -23,15 +23,28 @@ const getWH = function() {
   return {w, h};
 }
 
+let resizeTimer;
 window.onresize = function() {
-  let {w, h} = getWH();
-  let m = store.getState().fx.mini;
 
-  if (!m && ((w < 480) || (h < 480))) {
-    store.dispatch({ type: actionConstants.FX_MINI      });
-  } else if (m && ((w >= 480) && (h >= 480))) {
-    store.dispatch({ type: actionConstants.FX_NOT_MINI  });
-  }
+  document.body.style.display = "none";
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function() {
+    document.body.style.display = "";
+    let {w, h} = getWH();
+    let m = store.getState().fx.mini;
+    
+    let mini;
+    if (!m && ((w < 480) || (h < 480))) {
+      mini = true;
+    } else if (m && ((w >= 480) && (h >= 480))) {
+      mini = false;
+    }
+  
+    store.dispatch({ 
+      mini: mini,
+      type: constantsActions.FX_RESIZE      
+    });
+  }, 200);
 };
 
 window.onload = function() {
@@ -39,7 +52,8 @@ window.onload = function() {
   let {w, h}  = getWH();
   if (md.phone() || (w < 480) || (h < 480)) {
     store.dispatch({
-      type: actionConstants.FX_MINI
+      mini: true,
+      type: constantsActions.FX_RESIZE
     });
   }
 

@@ -3,6 +3,7 @@ import constantsActions from 'constants/actions' ;
 export default function(state, action) {
   if (state === undefined) {
     state = {
+      resizes             : 0,        // счетчик для форсированного ресайза
       maskVisible         : false,    // видимость маски вьюпорта
       mini                : false,    // признак работы на маленьком экране
       dndEnabled          : true      // включенность dnd
@@ -31,14 +32,10 @@ export default function(state, action) {
       newState.maskVisible  = false;
       return newState;
 
-    case constantsActions.FX_MINI:
+    case constantsActions.FX_RESIZE:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.mini = true;
-      return newState;
-
-    case constantsActions.FX_NOT_MINI:
-      var newState = JSON.parse(JSON.stringify(state));
-      newState.mini = false;
+      newState.mini = action.mini !== undefined ? action.mini : newState.mini;
+      newState.resizes++;
       return newState;
   }
 
