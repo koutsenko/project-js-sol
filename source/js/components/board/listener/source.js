@@ -128,4 +128,4 @@ const mapStateToProps = function(state) {
   return state;
 };
 
-export default connect(mapStateToProps, null, null, { withRef: true })(Source);
+export default connect(mapStateToProps)(Source);

@@ -7,11 +7,6 @@ import   boardActions         from 'actions/board'                    ;
 import   constantsBoard       from 'constants/board'                  ;
 
 class Holder extends React.Component {
-  constructor(props) {
-    super(props);
-    this.timeout = null;
-  }
-
   getRef(element) {
     this.Ref = element;
   }

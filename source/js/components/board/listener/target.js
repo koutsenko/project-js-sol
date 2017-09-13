@@ -207,4 +207,4 @@ const mapStateToProps = function(state) {
   return state;
 };
 
-export default connect(mapStateToProps, null, null, { withRef: true })(Target);
+export default connect(mapStateToProps)(Target);
