@@ -8,7 +8,9 @@ import   aboutActions         from 'actions/about'    ;
 
 class Status extends React.Component {
   componentDidMount() {
-    interact(this.refs['aboutBtn']).on('tap', this.props.openAbout.bind(this));
+    this.ir = interact(this.refs['aboutBtn']);
+    this.ir.styleCursor(false);
+    this.ir.on('tap', this.props.openAbout.bind(this));
   }
 
   calculateElapsedTime() {
