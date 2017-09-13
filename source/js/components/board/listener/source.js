@@ -26,7 +26,7 @@ class Source extends React.Component {
     this.toggleDnd(this.props.dndEnabled);
 
     this.state = {
-      moving  : {}  // хранилище координат и ссылок на HTMLElement двигаемых карт
+      moving  : []  // хранилище id двигаемых карт
     }; 
   }
   
@@ -59,38 +59,15 @@ class Source extends React.Component {
       return;
     }
 
-    console.log('стартуем драг-н-дроп, сохраняем стартовые характеристики элемента', event.target);
-    
-    let cardIds = selectorsBoard.getChildCards(id, this.props.board);
-    
-    //debugging
-    console.log(cardIds);
-  
-    cardIds.forEach(function(cardId) {
-      let el = event.target.parentElement.querySelector('[data-id="'+cardId+'"]');
-
-      this.state.moving[cardId] = {
-        el : el,
-        X  : parseInt(el.dataset['x0']) ,
-        Y  : parseInt(el.dataset['y0']) ,
-        R  : parseInt(el.dataset['r0']) ,
-        Z  : parseInt(el.dataset['z0'])
-      };
-
-      el.style.zIndex = this.state.moving[cardId].Z + 100;
-    }, this);
+    let cardIds = selectorsBoard.getChildCards(id, this.props.board);   
+    console.log('стартуем драг-н-дроп, двигать будем карты с id', cardIds);
+    this.state.moving = cardIds;
+    this.props.api.cardShift(cardIds, 0, 0);
   }
   
   onDragMove(event) {
     console.log('наращиваем дельту и двигаем');
-    Object.keys(this.state.moving).forEach(function(cardId) {
-      let el = this.state.moving[cardId].el;
-
-      this.state.moving[cardId].X += event.dx;
-      this.state.moving[cardId].Y += event.dy;
-      
-      el.style.transform = el.style.webkitTransform = `translate(${this.state.moving[cardId].X}px,${this.state.moving[cardId].Y}px) rotate(${this.state.moving[cardId].R}deg)`;
-    }.bind(this));
+    this.props.api.cardShift(this.state.moving, event.dx, event.dy);  
   }
 
   onDragEnd(event) {
@@ -98,7 +75,7 @@ class Source extends React.Component {
 
     if (event.interaction.dropTarget === null) {
       console.log('это не дроп - поэтому вручную возвращаем карты');
-      this.props.api.cardFlush(event.target);
+      this.props.api.cardUnshift();
     }
     this.state.moving = {};
   }

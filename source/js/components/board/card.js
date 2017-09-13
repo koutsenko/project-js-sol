@@ -75,6 +75,14 @@ class Card extends React.Component {
       dy = this.props.y;
     }
 
+    /**
+     * Также выключаем анимацию если идет ручное двигание карты 
+     */
+    if (this.props.shifted) {
+      dx = this.props.x;
+      dy = this.props.y;
+    }
+
     return (
       <Motion defaultStyle={{
         dColor  : +!this.props.declined,
@@ -103,7 +111,7 @@ class Card extends React.Component {
             // Оставили 9 слоев, с запасом - для холдеров и их псевдоэлементов
             let style = {
               boxShadow       : this.props.declined ? decline : (this.props.selected ? select : null),
-              zIndex          : this.props.index + 10,
+              zIndex          : this.props.index + 10 + (this.props.shifted ? 100 : 0),
               width           : this.props.width  + 'px',
               height          : this.props.height + 'px',
               webkitTransform : `translate(${dx}px,${dy}px) rotate(${dr}deg)`,
@@ -121,10 +129,6 @@ class Card extends React.Component {
               <div 
                 className = {className}
                 data-id   = {this.props.id}
-                data-x0   = {dx}
-                data-y0   = {dy}
-                data-r0   = {dr}
-                data-z0   = {style.zIndex}
                 style     = {style}
               >
                 <div className="face" style={{transform: `rotateY(${interpolatingStyle.drFace}deg)`}}/>

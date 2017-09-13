@@ -55,57 +55,27 @@ const cardMove = function(source_card_id, target_id) {
 
   this.props.madeMove(source_card_id, target_holder_id);
 };
-
-/**
- * Восстановление z-index и координат карты в соответствие с data-атрибутами.
- * Изменения были в связи с drag-n-drop.
- * Соответственно, восстановление нужно в случаях:
- * - "дропе" в пустую или неигровую область (source.js::L102)
- * - дропе в исходный же холдер (target.js::L120)
- * - дропе в недопустимую цель (target.js::L134)
- * - дропе в допустимую цель (нет, видимо делал отдельно, через cardShift/cardUnshift)
- */
-const cardFlush = function(element) {
-  let boardState = this.props.board;
-  let cardId = element.dataset['id'];
-  let cardIds = selectorsBoard.getChildCards(cardId, boardState);
-
-  cardIds.forEach(function(id) {
-    let el = element.parentElement.querySelector('[data-id="'+id+'"]');
-    let x0 = parseInt(el.dataset['x0']);
-    let y0 = parseInt(el.dataset['y0']);
-    let r  = parseInt(el.dataset['r0']);
-    let z  = parseInt(el.dataset['z0']);
-    
-    el.style.transform = el.style.webkitTransform = `translate(${x0}px,${y0}px) rotate(${r}deg)`;
-    el.style.zIndex = z;
-  });
-};
   
 /**
  * 
  */
-const cardShift = function(element) {
+const cardShift = function(cardIds, dx, dy) {
+  cardIds.forEach(function(id) {
+      let oldx = 0, oldy = 0;
+      if (this.state.shifted[id]) {
+        oldx = this.state.shifted[id][0];
+        oldy = this.state.shifted[id][1];
+      }
 
-  let cardId = element.dataset['id'];
-  let parentEl = element.parentElement;
-
-  let boardState = this.props.board;
-  let cardIds = selectorsBoard.getChildCards(cardId, boardState);
-  
-  cardIds.forEach(function(id, index) {
-      console.log(id);
-      let el = parentEl.querySelector('[data-id="'+id+'"]');
-      let rect = el.getBoundingClientRect();
       this.setState({
         shifted: Object.assign(this.state.shifted, {
-          [id]: [rect.left, rect.top]
+          [id]: [oldx+dx, oldy+dy]
         })
       });
   }, this);
 };
   
-const cardsUnshift = function() {  
+const cardUnshift = function() {  
     this.setState({
       shifted: {}
     });
@@ -142,18 +112,12 @@ export default {
   cardDoubleClick,
   deckCardClick,
   deckClick,
-
   cardSelectCancel,
   cardSelectOk,
-
   cardMove,
-  cardFlush,
   cardShift,
-  cardsUnshift,
-
+  cardUnshift,
   alertFlash,
   targetHover,
   targetUnhover
-
-
 }

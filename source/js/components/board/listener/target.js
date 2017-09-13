@@ -117,7 +117,7 @@ class Target extends React.Component {
     this.updateIds(event.relatedTarget.dataset['id'], event.target.dataset['id']);
     if (this.state.source_holder_id === this.state.target_holder_id) {
       console.log('игнорим, т.к. исходная позиция');
-      this.props.api.cardFlush(event.relatedTarget);
+      this.props.api.cardUnshift();
       return;
     }
     
@@ -131,21 +131,15 @@ class Target extends React.Component {
     if (!acceptable) {
       console.log('игнорим, т.к. недопустимая цель');
       console.log('и почистим подсветку.');
-      this.props.api.cardFlush(event.relatedTarget);
+      this.props.api.cardUnshift();
       this.props.api.targetUnhover();
       this.props.api.alertFlash(this.state.target_card_id || this.state.target_holder_id);
       return;
     }
 
-    this.props.api.cardShift(event.relatedTarget);
     this.props.api.cardMove(this.state.source_card_id, event.target.dataset['id']);
-    // Похоже, react/preact накапливает изменения props.
-    // Пока что нам важно сначала применить промежуточное состояние.
-    // TODO понять в чем дело и отрефакторить, чтобы без костыля setTimeout.
-    setTimeout(function() {
-      this.props.api.cardsUnshift();
-      this.props.api.targetUnhover();
-    }.bind(this), 0);
+    this.props.api.cardUnshift();
+    this.props.api.targetUnhover();
   }
   
   handleDoubleClick(event) {

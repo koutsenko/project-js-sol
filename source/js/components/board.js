@@ -64,12 +64,13 @@ class Board extends React.Component {
     let x = 0, y = 0;
 
     let shifted = this.state.shifted[cardId];
-    if (shifted) {
-      x         = shifted[0],
-      y         = shifted[1]
-    } else if (rect) {
+    if (rect) {
       x         = Math.round(rect.left);
       y         = Math.round(rect.top + (constantsBoard.isStackPlace(holderId) ? ((height/(this.props.fx.mini ? 3 : 5)) * index) : 0));
+    }
+    if (shifted) {
+      x        += shifted[0],
+      y        += shifted[1]
     }
 
     return { x, y };
@@ -153,22 +154,21 @@ class Board extends React.Component {
      */
     let selector = `.${cardClassName} ,.${holderClassName}`;
     let sourceAPI = {
-      cardFlush     : API.cardFlush.bind(this),     // если отпустили карту не в дропзоне, надо вернуть ее на место
-
       // методы надо назвать более APIшно, здесь уже нет кликов/тапов и прочего UI-related
+      cardShift     : API.cardShift.bind(this),
+      cardUnshift   : API.cardUnshift.bind(this),
       deckCardClick : API.deckCardClick.bind(this),
       cardSelectOk  : API.cardSelectOk.bind(this),
-      alertFlash         : API.alertFlash.bind(this),
+      alertFlash    : API.alertFlash.bind(this),
       deckClick     : API.deckClick.bind(this)
     };
     let targetAPI = {
       cardSelectCancel  : API.cardSelectCancel.bind(this),
       cardDoubleClick   : API.cardDoubleClick.bind(this),
       cardMove          : API.cardMove.bind(this),
-      cardFlush         : API.cardFlush.bind(this),     // если отпустили карту в недопустимой дропзоне, надо вернуть ее на место
       cardShift         : API.cardShift.bind(this),
-      cardsUnshift      : API.cardsUnshift.bind(this),
-      alertFlash        : API.alertFlash.bind(this), // 123
+      cardUnshift       : API.cardUnshift.bind(this),
+      alertFlash        : API.alertFlash.bind(this),
       targetHover       : API.targetHover.bind(this),
       targetUnhover     : API.targetUnhover.bind(this),
     };
