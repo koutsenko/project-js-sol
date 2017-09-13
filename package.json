@@ -52,7 +52,7 @@
     ]
   },
   "dependencies": {
-    "preact": "^8.2.1",
-    "preact-compat": "^3.16.0"
+    "preact": "^8.2.5",
+    "preact-compat": "^3.17.0"
   }
 }
