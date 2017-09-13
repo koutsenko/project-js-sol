@@ -31,8 +31,8 @@ class Card extends React.Component {
   updateState(props, nextProps) {
     this.setState({
       deltas    : this.state.deltas === undefined ? generateDeltas(props.width) : (this.state.deltas.e ? generateDeltas(nextProps.width) : scaleDeltas(this.state.deltas, props.width, nextProps.width)),
-      previousX : ( nextProps && nextProps.shifted ) ? nextProps.shifted[0] : props.x,
-      previousY : ( nextProps && nextProps.shifted ) ? nextProps.shifted[1] : props.y,
+      previousX : props.x,
+      previousY : props.y,
       previousF : props.flip,
       previousW : props.width,
       previousH : props.height
@@ -119,6 +119,9 @@ class Card extends React.Component {
             };
 
             let className = this.props.className;
+            if (this.props.shifted) {
+              className += ' moving';
+            }
             if (this.props.hovered === constantsBoard.highlights.ACCEPT) {
               className += ' hovered yes';
             } else if (this.props.hovered === constantsBoard.highlights.DENY) {
@@ -145,16 +148,12 @@ class Card extends React.Component {
 Card.propTypes = {
   declined      : React.PropTypes.bool.isRequired,
   className     : React.PropTypes.string.isRequired,
-  dndEnabled    : React.PropTypes.bool.isRequired,
   holderId      : React.PropTypes.string.isRequired,
-  card          : React.PropTypes.object.isRequired,
   id            : React.PropTypes.string.isRequired,
   index         : React.PropTypes.number,
   flip          : React.PropTypes.bool.isRequired,
-  parentElement : React.PropTypes.object,
   selected      : React.PropTypes.bool.isRequired,
   hovered       : React.PropTypes.string.isRequired,
-  isUpper       : React.PropTypes.bool.isRequired,
   width         : React.PropTypes.number.isRequired,
   height        : React.PropTypes.number.isRequired,
   x             : React.PropTypes.number.isRequired,

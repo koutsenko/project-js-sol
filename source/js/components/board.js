@@ -40,7 +40,6 @@ class Board extends React.Component {
   getOpenRef(component) { this.openRef = component ? component.base : null } 
   getStackRef(index)    { return function(component) { this['stack'+index+'Ref']  = component ? component.base : null }}
   getHomeRef(index)     { return function(component) { this['home'+index+'Ref']   = component ? component.base : null }}  
-  getCardRef(id)        { return function(component) { this['card'+id+'Ref']      = component ? (component.base || component.getWrappedInstance().Ref) : null }};
 
   hasChildrenCards(element) {
     return !!element.querySelector('.card');
@@ -88,17 +87,12 @@ class Board extends React.Component {
           declined      = {this.state.declined === card.id}
           hovered       = {this.state.hovered[card.id] || ''}
           className     = {cardClassName}
-          dndEnabled    = {this.props.fx.dndEnabled}
-          isUpper       = {index === (all.length - 1)}
           holderId      = {holderId}
-          card          = {card}
           flip          = {!card.flip}
           id            = {card.id}
           index         = {index}
           mini          = {this.props.fx.mini}
-          parentElement = {ref}
           shifted       = {this.state.shifted[card.id]}
-          ref           = {this.getCardRef(card.id).bind(this)}
           selected      = {this.state.selected === card.id}
           width         = {width}
           height        = {height}
