@@ -12,21 +12,24 @@ export default function(store) {
         case constantsActions.CARD_BACK_BY_PLAYER:
         case constantsActions.CARD_MOVE_BY_PLAYER:
           if (toolsRules.isGameEnd(getState())) {
+            let state = getState();
+            let gameId = state.game.allIds[state.game.allIds.length-1];
+            let game = state.game.byId[gameId];
             store.dispatch({
-              type  : constantsActions.GAME_COMPLETE
+              result  : {
+                moves: state.board.index,
+                nick: "тест",
+                time: game.time
+              },
+              type    : constantsActions.GAME_COMPLETE
             });
           }
           break;
       }
 
       // отдельно обрабатываем конец игры, чтобы показать таблицу рекордов
-      if (action.type === constantsActions.GAME_COMPLETE) {
-        let state = getState();
-        store.dispatch(actionsRecords.write({
-          moves: state.board.index,
-          nick: "тест",
-          time: state.game.time
-        }));
+      if (action.type === constantsActions.GAME_COMPLETE) {       
+        store.dispatch(actionsRecords.write(action.result));
         store.dispatch({
           congrats: true,
           type: constantsActions.SHOW_RECORDS

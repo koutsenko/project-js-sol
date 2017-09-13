@@ -57,18 +57,17 @@ export default function(state, action) {
     case constantsActions.GAME_COMPLETE:      // конец игры, между играми делать ничего нельзя, TODO - это имеются в виду BOARD controls. Переосмыслить. Вероятно надо делать ч/б затененную доску
       var id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].status  = gameConstants.gameState.STATE_COMPLETED;
+      newState.byId[id].result  = action.result;
       newState.byId[id].time    = undefined; 
       break;
     
     case constantsActions.WEAK_RECORD:
       var id = newState.allIds[newState.allIds.length-1];
-      newState.byId[id].result = action.record;
       newState.byId[id].index = 5;
       break;
 
     case constantsActions.NEW_RECORD:
       var id = newState.allIds[newState.allIds.length-1];
-      newState.byId[id].result = action.record;
       newState.byId[id].index = action.index;
       break;
 
