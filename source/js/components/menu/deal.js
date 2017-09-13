@@ -9,7 +9,7 @@ import   constantsGame        from 'constants/game'       ;
 import   selectorsGame        from 'selectors/game'       ;
 import   toolsHash            from 'tools/hash'           ;
 
-class ButtonDeal extends React.Component {
+class ButtonDeal extends React.PureComponent {
   generateNewGame() {
     if (toolsHash.getHashCmd() === 'deal') {
       this.props.newGame(toolsHash.getHashParm() || Date.now());

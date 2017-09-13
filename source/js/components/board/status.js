@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux'            ;
 import   gameSelectors        from 'selectors/game'   ;
 import   aboutActions         from 'actions/about'    ;
 
-class Status extends React.Component {
+class Status extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state.time = 0;

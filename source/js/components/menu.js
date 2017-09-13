@@ -7,7 +7,7 @@ import ButtonRules    from 'components/menu/rules'    ;
 import ButtonRecords  from 'components/menu/records'  ;
 import ButtonOptions  from 'components/menu/options'  ;
 
-export default class Menu extends React.Component {
+export default class Menu extends React.PureComponent {
   render() {
     return (
       <div id="menu">

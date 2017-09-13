@@ -1,6 +1,6 @@
 import   React      from 'react'          ;
 
-class RadioButton extends React.Component {
+class RadioButton extends React.PureComponent {
   render() {
     return (
       <div ref="radiobutton" className={"radio" + (this.props.checked ? " checked" : "") + (this.props.disabled ? " disabled" : "")}>

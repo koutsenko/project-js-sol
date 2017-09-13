@@ -1,7 +1,7 @@
 import   React     from 'react'       ;
 import { connect } from 'react-redux' ;
 
-class Mask extends React.Component {
+class Mask extends React.PureComponent {
   render() {
     return (
       <div className={"mask" + (this.props.visible ? " visible" : "")}/>

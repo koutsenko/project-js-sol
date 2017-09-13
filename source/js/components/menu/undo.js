@@ -8,7 +8,7 @@ import   actionsGames         from 'actions/games'        ;
 import   constantsGame        from 'constants/game'       ;
 import   selectorsGame        from 'selectors/game'       ;
 
-class ButtonUndo extends React.Component {
+class ButtonUndo extends React.PureComponent {
   render() {
     return (
       <MenuButton

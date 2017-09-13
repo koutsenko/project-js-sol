@@ -2,7 +2,7 @@ import   React      from 'react'          ;
 import   interact   from 'interactjs'     ;
 import { connect }  from 'react-redux'    ;
 
-class Popup extends React.Component {
+class Popup extends React.PureComponent {
   componentDidMount() {
     interact(this.refs["closeButton"]).on('tap', this.props.handler.bind(this));
   }

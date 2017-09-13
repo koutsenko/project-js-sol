@@ -6,7 +6,7 @@ import   actions              from 'actions/rules'          ;
 
 import   MenuButton           from 'controls/menu/button'   ;
   
-class ButtonRules extends React.Component {
+class ButtonRules extends React.PureComponent {
   render() {
     return (
       <MenuButton

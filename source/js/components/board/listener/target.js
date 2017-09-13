@@ -13,7 +13,7 @@ import   toolsRules           from 'tools/rules'      ;
  * Отвечает за управление элементами-целями.
  * Поддерживается DropZone-часть Drag'n'Drop и тапы/клики.
  */
-class Target extends React.Component {
+class Target extends React.PureComponent {
   constructor(props) {
     super(props);
 

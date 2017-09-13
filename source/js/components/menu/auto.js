@@ -9,7 +9,7 @@ import   constantsGame        from 'constants/game'       ;
 import   selectorsGame        from 'selectors/game'       ;
 import   toolsRules           from 'tools/rules'          ;
 
-class ButtonAuto extends React.Component {
+class ButtonAuto extends React.PureComponent {
   render() {
     return (
       <MenuButton

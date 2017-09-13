@@ -1,7 +1,7 @@
 import React    from 'react'          ;
 import interact from 'interactjs'     ;
 
-class MenuButton extends React.Component {
+class MenuButton extends React.PureComponent {
   componentDidMount() {
     interact(this.refs[this.props.role]).on('tap', this.handlePress.bind(this));
   }

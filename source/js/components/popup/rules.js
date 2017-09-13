@@ -5,7 +5,7 @@ import { connect }            from 'react-redux'    ;
 import   actions              from 'actions/rules'  ;
 import   Popup                from 'controls/popup' ;
 
-class Rules extends React.Component {
+class Rules extends React.PureComponent {
   render() {
     let ps = {textIndent: '1.5em'};
     return (

@@ -6,7 +6,7 @@ import { Motion, spring }     from 'react-motion'                     ;
 import   boardActions         from 'actions/board'                    ;
 import   constantsBoard       from 'constants/board'                  ;
 
-class Holder extends React.Component {
+class Holder extends React.PureComponent {
   getRef(element) {
     this.Ref = element;
   }

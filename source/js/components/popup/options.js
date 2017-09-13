@@ -9,7 +9,7 @@ import   Popup                from 'controls/popup'             ;
 
 import   actions              from 'actions/options'            ;
 
-class Options extends React.Component {
+class Options extends React.PureComponent {
   componentDidMount() {
     interact(this.refs["applyButton"]).on('tap', this.applyChanges.bind(this));
     // interact(this.refs["cancelButton"]).on('tap', this.props.closeOptions.bind(this));

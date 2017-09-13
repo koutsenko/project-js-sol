@@ -14,7 +14,7 @@ import   constantsBoard       from 'constants/board'  ;
  * TODO Мог быть еще и дроп карты, но это мне показалось ресурсоемко...
  * Хотя наверное сделаю - ради чистоты кода
  */
-class Background extends React.Component {
+class Background extends React.PureComponent {
   // странный Workaround на неготовность ("не отрисованность") refs props.selector...
   componentWillReceiveProps(nextProps) {
     if (!this.props.selector && nextProps.selector) {

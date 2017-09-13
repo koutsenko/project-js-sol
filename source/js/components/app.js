@@ -14,7 +14,7 @@ import   Mask                 from 'components/mask'          ;
 
 import   gameActions          from 'actions/games'            ;
 
-class App extends React.Component {
+class App extends React.PureComponent {
   onHashChange(event) {
     let oldHash = event.oldURL.split('#')[1];
     let cmd = hashTools.getHashCmd();

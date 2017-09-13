@@ -13,7 +13,7 @@ import   toolsRules           from 'tools/rules'      ;
  * Отвечает за управление элементами-источниками.
  * Поддерживается DragSource-часть Drag'n'Drop и тапы/клики.
  */
-class Source extends React.Component {
+class Source extends React.PureComponent {
   constructor(props) {
     super(props);
 

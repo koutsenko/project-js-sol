@@ -1,7 +1,7 @@
 import   React      from 'react'          ;
 import   interact   from 'interactjs'     ;
 
-class Checkbox extends React.Component {
+class Checkbox extends React.PureComponent {
   constructor(props) {
     super(props);
     this.setState({

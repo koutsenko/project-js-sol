@@ -6,7 +6,7 @@ import   actionsRecords       from 'actions/records'  ;
 import   Popup                from 'controls/popup'   ;
 import   gameSelectors        from 'selectors/game'   ;
 
-class Records extends React.Component {
+class Records extends React.PureComponent {
   buildTable() {
     var records           = this.props.records;
     var result            = this.props.result;

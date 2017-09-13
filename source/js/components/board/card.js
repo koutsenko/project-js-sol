@@ -27,7 +27,7 @@ function generateDeltas(width) {
   };
 };
 
-class Card extends React.Component {
+class Card extends React.PureComponent {
   updateState(props, nextProps) {
     this.setState({
       deltas    : this.state.deltas === undefined ? generateDeltas(props.width) : (this.state.deltas.e ? generateDeltas(nextProps.width) : scaleDeltas(this.state.deltas, props.width, nextProps.width)),
