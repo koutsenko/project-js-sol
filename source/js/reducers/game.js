@@ -11,9 +11,10 @@ export default function(state, action) {
     };
   }
 
+  var newState = JSON.parse(JSON.stringify(state));
+
   switch (action.type) {
     case constantsActions.GAME_CREATED:
-      var newState = JSON.parse(JSON.stringify(state));
       var id = tsRandom();
       newState.allIds.push(id);
       newState.byId[id] = {
@@ -21,13 +22,19 @@ export default function(state, action) {
         index             : undefined,  // Выигранная сейчас игра - место в таблице рекордов, 0-4 для рекорда, 5 для нерекорда
         result            : undefined,  // Выигранная сейчас игра - результат
         controlsEnabled   : false,
-        time              : 0,
+        time              : undefined,
         status            : gameConstants.gameState.GAME_CREATED
       };
-      return newState;  
+      break;
+
+    case constantsActions.GAME_END:
+      var id = newState.allIds[newState.allIds.length-1];      
+      newState.byId[id] = {
+        time              : undefined
+      };
+      break;
           
     case constantsActions.LOAD_SCENARIO: // сигнал о загрузке сохраненки, он пока что обходится без анимации и поэтому controlsEnabled = true. TODO - переосмыслить...
-      var newState = JSON.parse(JSON.stringify(state));
       var id = tsRandom();
       newState.allIds.push(id);
       newState.byId[id] = {
@@ -38,41 +45,40 @@ export default function(state, action) {
         time              : JSON.parse(decodeURI(action.data)).time,
         status            : gameConstants.gameState.STATE_STARTED
       };
-      return newState;
+      break;
 
     case constantsActions.GAME_START:    // сигнал об окончании раздачи и старте игры
-      var newState = JSON.parse(JSON.stringify(state));
       var id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].status            = gameConstants.gameState.STATE_STARTED;
       newState.byId[id].controlsEnabled   = true;
-      return newState;
+      newState.byId[id].time              = 0;
+      break;
 
     case constantsActions.GAME_COMPLETE:      // конец игры, между играми делать ничего нельзя, TODO - это имеются в виду BOARD controls. Переосмыслить. Вероятно надо делать ч/б затененную доску
-      var newState = JSON.parse(JSON.stringify(state));
       var id = newState.allIds[newState.allIds.length-1];
-      newState.byId[id].status = gameConstants.gameState.STATE_COMPLETED;
-      return newState;
+      newState.byId[id].status  = gameConstants.gameState.STATE_COMPLETED;
+      newState.byId[id].time    = undefined; 
+      break;
     
     case constantsActions.WEAK_RECORD:
-      var newState = JSON.parse(JSON.stringify(state));
       var id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].result = action.record;
       newState.byId[id].index = 5;
-      return newState;
+      break;
 
     case constantsActions.NEW_RECORD:
-      var newState = JSON.parse(JSON.stringify(state));
       var id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].result = action.record;
       newState.byId[id].index = action.index;
-      return newState;
+      break;
 
-    case constantsActions.TICK:
-      var newState = JSON.parse(JSON.stringify(state));
-      var id = newState.allIds[newState.allIds.length-1];
-      newState.byId[id].time++;
-      return newState;
+    default:
+      newState = state;
   }
 
-  return state;
+  // if (newState.allIds && newState.allIds.length) {
+  //   console.log(`стейтовое время после обработки action ${action.type} равно ${newState.byId[newState.allIds[newState.allIds.length-1]].time}`);
+  // }
+
+  return newState;
 };

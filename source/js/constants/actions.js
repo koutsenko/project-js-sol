@@ -19,6 +19,5 @@ export default {
   SHOW_RECORDS                  : 'SHOW_RECORDS'                  ,
   SHOW_RULES                    : 'SHOW_RULES'                    ,
   SHOW_OPTIONS                  : 'SHOW_OPTIONS'                  ,
-  TICK                          : 'TICK'                          ,
   WEAK_RECORD                   : 'WEAK_RECORD'                   ,
 };
