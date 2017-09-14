@@ -16,7 +16,6 @@ export default function(state, action) {
       newState.dndEnabled = action.value;
       return newState;
 
-    case constantsActions.SHOW_ABOUT:
     case constantsActions.SHOW_RECORDS:
     case constantsActions.SHOW_RULES:
     case constantsActions.SHOW_OPTIONS:
@@ -24,7 +23,6 @@ export default function(state, action) {
       newState.maskVisible  = true;
       return newState;
 
-    case constantsActions.CLOSE_ABOUT:
     case constantsActions.CLOSE_RECORDS:
     case constantsActions.CLOSE_RULES:
     case constantsActions.CLOSE_OPTIONS:

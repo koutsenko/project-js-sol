@@ -12,8 +12,8 @@ class ButtonRules extends React.PureComponent {
       <MenuButton
         disabled={false}
         hint="Как играть в пасьянс-косынку"
-        role="btn4"
-        text="Правила"
+        role="btn6"
+        text="Об игре"
         handler={this.props.openRules}
       />
     );

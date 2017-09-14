@@ -6,7 +6,6 @@ import   hashTools            from 'tools/hash'               ;
 
 import   Board                from 'components/board'         ;
 import   Menu                 from 'components/menu'          ;
-import   About                from 'components/popup/about'   ;
 import   Options              from 'components/popup/options' ;
 import   Records              from 'components/popup/records' ;
 import   Rules                from 'components/popup/rules'   ;
@@ -49,8 +48,6 @@ class App extends React.PureComponent {
     window.onhashchange = this.onHashChange.bind(this);
   }
 
-
-
   render() {
     return (
       <div id="app" className={(this.props.fx.mini ? "mini" : "")}>
@@ -58,7 +55,6 @@ class App extends React.PureComponent {
         <Menu       />
         <div id="popups">
           <Mask     />
-          <About    />
           <Records  />
           <Rules    />
           <Options  />

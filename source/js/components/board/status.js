@@ -1,10 +1,7 @@
 import   React                from 'react'            ;
-import   interact             from 'interactjs'       ;
 import { connect }            from 'react-redux'      ;
-import { bindActionCreators } from 'redux'            ; 
 
 import   gameSelectors        from 'selectors/game'   ;
-import   aboutActions         from 'actions/about'    ;
 
 class Status extends React.PureComponent {
   constructor(props) {
@@ -39,12 +36,6 @@ class Status extends React.PureComponent {
     }
   }
 
-  componentDidMount() {
-    this.ir = interact(this.refs['aboutBtn']);
-    this.ir.styleCursor(false);
-    this.ir.on('tap', this.props.openAbout.bind(this));
-  }
-
   calculateElapsedTime() {
     let elapsedSeconds  = Math.floor(this.state.time);
     let elapsedMinutes  = Math.floor(elapsedSeconds/60);
@@ -58,13 +49,11 @@ class Status extends React.PureComponent {
 
   render() {
     return (
-      <div className="status">
-        <div className="btn-about" ref="aboutBtn">
-          "Косынка"<br />классика <br />
-          <span style={{fontSize: '1.5em', lineHeight: '1em'}}>
-          {this.props.mini ? ('mini') : ('©')}
-          </span>
-        </div>
+      <div className="status">        
+        "Косынка"<br />классика <br />
+        <span style={{fontSize: '1.4em', lineHeight: '1em', opacity: this.props.mini ? '1' : '0', color: 'lightyellow', fontWeight: 'normal'}}>
+          mini
+        </span>
         <div className="counter">
           ход {this.props.counter}
           <br/>
@@ -85,10 +74,4 @@ const mapStateToProps = function(state) {
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    openAbout: bindActionCreators(aboutActions.open, dispatch),
-  };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Status);
+export default connect(mapStateToProps)(Status);

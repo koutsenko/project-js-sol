@@ -7,6 +7,7 @@ import   API                  from 'components/board/api'                 ;
 import   Card                 from 'components/board/card'                ;
 import   Holder               from 'components/board/holder'              ;
 import   Status               from 'components/board/status'              ;
+import   Watermark            from 'components/board/watermark'           ;
 
 import   Background           from 'components/board/listener/background' ;
 import   Source               from 'components/board/listener/source'     ;
@@ -198,6 +199,7 @@ class Board extends React.Component {
         <div className="cards">
           {cards}
         </div>
+        <Watermark/>
       </div>
     );
   }

@@ -12,7 +12,7 @@ class ButtonRecords extends React.PureComponent {
       <MenuButton
         disabled={false}
         hint="Авторизация, статистика, рекорды"
-        role="btn5"
+        role="btn4"
         text="Рекорды"
         handler={this.props.openRecords}
       />

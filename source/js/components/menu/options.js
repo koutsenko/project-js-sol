@@ -12,7 +12,7 @@ class ButtonOptions extends React.PureComponent {
       <MenuButton
         disabled={false}
         hint="Настройки правил, управления и анимаций"
-        role="btn6"
+        role="btn5"
         text="Настройки"
         handler={this.props.openOptions}
       />

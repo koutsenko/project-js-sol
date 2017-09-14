@@ -14,9 +14,9 @@ export default class Menu extends React.PureComponent {
         <ButtonDeal     />
         <ButtonUndo     />
         <ButtonAuto     />
-        <ButtonRules    />
         <ButtonRecords  />
         <ButtonOptions  />
+        <ButtonRules    />
       </div>
     );
   }
