@@ -50,7 +50,7 @@ class App extends React.PureComponent {
 
   render() {
     return (
-      <div id="app" className={(this.props.fx.mini ? "mini" : "")}>
+      <div id="app" className={(this.props.mini ? "mini" : "")}>
         <Board      />
         <Menu       />
         <div id="popups">
@@ -65,7 +65,9 @@ class App extends React.PureComponent {
 };
 
 const mapStateToProps = function(state) {
-  return state;
+  return {
+    mini: state.fx.mini
+  };
 };
 
 const mapDispatchToProps = function(dispatch) {

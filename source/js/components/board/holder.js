@@ -42,8 +42,6 @@ class Holder extends React.PureComponent {
 };
 
 Holder.propTypes = {
-  cards           : React.PropTypes.array.isRequired,
-  dndEnabled      : React.PropTypes.bool.isRequired,
   id              : React.PropTypes.string.isRequired,
   className       : React.PropTypes.string.isRequired,
   declined        : React.PropTypes.bool.isRequired,

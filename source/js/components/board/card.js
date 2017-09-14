@@ -148,7 +148,6 @@ class Card extends React.PureComponent {
 Card.propTypes = {
   declined      : React.PropTypes.bool.isRequired,
   className     : React.PropTypes.string.isRequired,
-  holderId      : React.PropTypes.string.isRequired,
   id            : React.PropTypes.string.isRequired,
   index         : React.PropTypes.number,
   flip          : React.PropTypes.bool.isRequired,

@@ -42,10 +42,6 @@ class Board extends React.Component {
   getStackRef(index)    { return function(component) { this['stack'+index+'Ref']  = component ? component.base : null }}
   getHomeRef(index)     { return function(component) { this['home'+index+'Ref']   = component ? component.base : null }}  
 
-  hasChildrenCards(element) {
-    return !!element.querySelector('.card');
-  }
-
   getDimensions(ref) {
     let height  = 0
     let width   = 0;
@@ -88,11 +84,9 @@ class Board extends React.Component {
           declined      = {this.state.declined === card.id}
           hovered       = {this.state.hovered[card.id] || ''}
           className     = {cardClassName}
-          holderId      = {holderId}
           flip          = {!card.flip}
           id            = {card.id}
           index         = {index}
-          mini          = {this.props.fx.mini}
           shifted       = {this.state.shifted[card.id]}
           selected      = {this.state.selected === card.id}
           width         = {width}
@@ -104,12 +98,10 @@ class Board extends React.Component {
     }.bind(this));
   }
 
-  buildHolder(cards, id, ref, className) {
+  buildHolder(id, ref, className) {
     return (
       <Holder 
         hovered       = {this.state.hovered[id] || ''}
-        dndEnabled    = {this.props.fx.dndEnabled}
-        cards         = {cards}
         declined      = {this.state.declined === id}
         ref           = {ref.bind(this)}
         id            = {id}
@@ -179,22 +171,22 @@ class Board extends React.Component {
         <Source selected={this.state.selected} api={sourceAPI} dndEnabled={this.props.fx.dndEnabled} selector={selector}/>
         <Target selected={this.state.selected} api={targetAPI} dndEnabled={this.props.fx.dndEnabled} selector={selector}/>
         <div className="row">
-          {this.buildHolder(this.props.deckCards, constantsBoard.places.DECK, this.getDeckRef, "deck")}
-          {this.buildHolder(this.props.openCards, constantsBoard.places.OPEN, this.getOpenRef, "open")}
+          {this.buildHolder(constantsBoard.places.DECK, this.getDeckRef, "deck")}
+          {this.buildHolder(constantsBoard.places.OPEN, this.getOpenRef, "open")}
           <Status />
-          {this.buildHolder(this.props.home1Cards, constantsBoard.places.HOME1, this.getHomeRef(1), "home")}
-          {this.buildHolder(this.props.home2Cards, constantsBoard.places.HOME2, this.getHomeRef(2), "home")}
-          {this.buildHolder(this.props.home3Cards, constantsBoard.places.HOME3, this.getHomeRef(3), "home")}
-          {this.buildHolder(this.props.home4Cards, constantsBoard.places.HOME4, this.getHomeRef(4), "home")}
+          {this.buildHolder(constantsBoard.places.HOME1, this.getHomeRef(1), "home")}
+          {this.buildHolder(constantsBoard.places.HOME2, this.getHomeRef(2), "home")}
+          {this.buildHolder(constantsBoard.places.HOME3, this.getHomeRef(3), "home")}
+          {this.buildHolder(constantsBoard.places.HOME4, this.getHomeRef(4), "home")}
         </div>
         <div className="row">
-          {this.buildHolder(this.props.stack1Cards, constantsBoard.places.STACK1, this.getStackRef(1), "stack")}
-          {this.buildHolder(this.props.stack2Cards, constantsBoard.places.STACK2, this.getStackRef(2), "stack")}
-          {this.buildHolder(this.props.stack3Cards, constantsBoard.places.STACK3, this.getStackRef(3), "stack")}
-          {this.buildHolder(this.props.stack4Cards, constantsBoard.places.STACK4, this.getStackRef(4), "stack")}
-          {this.buildHolder(this.props.stack5Cards, constantsBoard.places.STACK5, this.getStackRef(5), "stack")}
-          {this.buildHolder(this.props.stack6Cards, constantsBoard.places.STACK6, this.getStackRef(6), "stack")}
-          {this.buildHolder(this.props.stack7Cards, constantsBoard.places.STACK7, this.getStackRef(7), "stack")}
+          {this.buildHolder(constantsBoard.places.STACK1, this.getStackRef(1), "stack")}
+          {this.buildHolder(constantsBoard.places.STACK2, this.getStackRef(2), "stack")}
+          {this.buildHolder(constantsBoard.places.STACK3, this.getStackRef(3), "stack")}
+          {this.buildHolder(constantsBoard.places.STACK4, this.getStackRef(4), "stack")}
+          {this.buildHolder(constantsBoard.places.STACK5, this.getStackRef(5), "stack")}
+          {this.buildHolder(constantsBoard.places.STACK6, this.getStackRef(6), "stack")}
+          {this.buildHolder(constantsBoard.places.STACK7, this.getStackRef(7), "stack")}
         </div>
         <div className="cards">
           {cards}
