@@ -56,13 +56,41 @@ class Board extends React.Component {
     return { rect, width, height };
   }
 
-  getPos(cardId, rect, height, holderId, index) {
+  getStackCardShift(index, height, holderId, cards) {
+    if (!constantsBoard.isStackPlace(holderId)) {
+      return 0;
+    }
+    
+    // если карта закрытая или первая открытая, тупо возвращаем как раньше 
+    if (cards[index].flip || index === 0 || (index > 0 && cards[index-1].flip)) {
+      return (height/5) * index;
+    }
+    
+    // иначе если вторая, третья и так далее из всех открытых карт
+    console.log('подсчет для карты ' , cards[index]);
+    let flippedCount = cards.filter(function(card) { return !card.flip } ).length;
+    let nonFlippedCount = cards.length - flippedCount;
+    console.log('для холдера ' + holderId + ' кол-во открытых карт равно ' + flippedCount + ', а кол-во закрытых = ' + nonFlippedCount);
+
+    let base = (height/5) * nonFlippedCount;
+    console.log('базовый сдвиг', base);
+
+    let openedIndex = index - nonFlippedCount;
+    console.log('индекс среди сдвинутых открытых карт: ', openedIndex);
+
+    let delta = (height/(this.props.fx.mini ? 1.5 : 3)) * openedIndex;
+    console.log('значение нарощенной дельты ' + delta);
+
+    return base + delta;
+  }
+
+  getPos(cardId, rect, height, holderId, index, all) {
     let x = 0, y = 0;
 
     let shifted = this.state.shifted[cardId];
     if (rect) {
       x         = Math.round(rect.left);
-      y         = Math.round(rect.top + (constantsBoard.isStackPlace(holderId) ? ((height/(this.props.fx.mini ? 3 : 5)) * index) : 0));
+      y         = Math.round(rect.top + this.getStackCardShift(index, height, holderId, all));
     }
     if (shifted) {
       x        += shifted[0],
@@ -78,7 +106,7 @@ class Board extends React.Component {
   buildCards(holderId, source, ref) {
     let { rect, width, height } = this.getDimensions(ref);
     return source.map(function(card, index, all) {
-      let { x, y } = this.getPos(card.id, rect, height, holderId, index);
+      let { x, y } = this.getPos(card.id, rect, height, holderId, index, all);
       return (
         <Card 
           declined      = {this.state.declined === card.id}
