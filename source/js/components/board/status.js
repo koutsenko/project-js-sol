@@ -2,11 +2,13 @@ import   React                from 'react'            ;
 import { connect }            from 'react-redux'      ;
 
 import   gameSelectors        from 'selectors/game'   ;
+import   toolsTime            from 'tools/time'       ;
 
 class Status extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.state.time = 0;
+    this.state.time = Date.now();
+    this.state.elapsed = '00:00';
   }
 
   stopTimer() {
@@ -15,10 +17,10 @@ class Status extends React.PureComponent {
 
   startTimer(time) {
     clearInterval(this.timer);
-    this.state.time = time || 0;
+    this.state.time = time || Date.now();
     this.timer = setInterval(function() {
       this.setState({
-        time: this.state.time + 1
+        elapsed: toolsTime.calculateElapsedTime(this.state.time, Date.now())
       });
     }.bind(this), 1000);
   }
@@ -26,7 +28,7 @@ class Status extends React.PureComponent {
   componentWillReceiveProps(nextProps) {
     if ((this.props.time === undefined) && (nextProps.time !== undefined)) {
       // новая игра
-      this.startTimer();
+      this.startTimer(Date.now());
     } else if ((this.props.time !== undefined) && (nextProps.time !== undefined) && (nextProps.time !== this.props.time)) {
       // загруженная не новая игра
       this.startTimer(nextProps.time);
@@ -35,17 +37,6 @@ class Status extends React.PureComponent {
       this.stopTimer();
     }
   }
-
-  calculateElapsedTime() {
-    let elapsedSeconds  = Math.floor(this.state.time);
-    let elapsedMinutes  = Math.floor(elapsedSeconds/60);
-
-    if (elapsedMinutes > 99) {
-      return '99:99';
-    } else {
-      return ('0' + elapsedMinutes).slice(-2) + ':' + ('0' + (elapsedSeconds-elapsedMinutes*60)).slice(-2);
-    }
-  };
 
   render() {
     return (
@@ -57,7 +48,7 @@ class Status extends React.PureComponent {
         <div className="counter">
           ход {this.props.counter}
           <br/>
-          {this.calculateElapsedTime()}
+          {this.state.elapsed}
         </div>
       </div>
     );

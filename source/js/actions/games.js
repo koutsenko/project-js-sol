@@ -1,14 +1,16 @@
-import constantsActions from 'constants/actions' ;
-import constantsBoard   from 'constants/board'   ;
-import selectorsBoard   from 'selectors/board'   ;
-import selectorsGame    from 'selectors/game'    ;
-import toolsRules       from 'tools/rules'       ;
+import constantsActions from 'constants/actions'  ;
+import constantsBoard   from 'constants/board'    ;
+import selectorsBoard   from 'selectors/board'    ;
+import selectorsGame    from 'selectors/game'     ;
+import toolsRules       from 'tools/rules'        ;
+import toolsTime        from 'tools/time'         ;
 
 export default {
   load: function(data) {
     return {
-      data: data,
-      type: constantsActions.LOAD_SCENARIO
+      currentTime : Date.now(),
+      data        : data,
+      type        : constantsActions.LOAD_SCENARIO
     };
   },
   deal: function(seed) {
@@ -47,6 +49,7 @@ export default {
 
       // Даем сигнал о старте игры
       batch.push({
+        time  : Date.now(),
         type  : constantsActions.GAME_START
       });
 
@@ -69,7 +72,7 @@ export default {
           holders : state.board.holders,
           index   : state.board.index
         },
-        time    : game.time,
+        time    : toolsTime.calculateElapsedSeconds(game.time, Date.now()),
         opened  : opened,
       };
       setTimeout(function() {

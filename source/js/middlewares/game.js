@@ -1,6 +1,7 @@
 import constantsActions from 'constants/actions' ;
 import actionsRecords   from 'actions/records'   ;
 import toolsRules       from 'tools/rules'       ;
+import toolsTime        from 'tools/time'        ;
 
 export default function(store) {
   var getState = store.getState;
@@ -19,7 +20,7 @@ export default function(store) {
               result  : {
                 moves: state.board.index,
                 nick: "тест",
-                time: game.time
+                time: toolsTime.calculateElapsedTime(game.time, Date.now())
               },
               type    : constantsActions.GAME_COMPLETE
             });

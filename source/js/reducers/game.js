@@ -2,6 +2,7 @@ import tsRandom         from 'uuid/v1'            ;
 
 import constantsActions from 'constants/actions'  ;
 import gameConstants    from 'constants/game'     ;
+import toolsTime        from 'tools/time'         ;
 
 export default function(state, action) {
   if (state === undefined) {
@@ -42,7 +43,7 @@ export default function(state, action) {
         index             : undefined,  // Выигранная сейчас игра - место в таблице рекордов, 0-4 для рекорда, 5 для нерекорда
         result            : undefined,  // Выигранная сейчас игра - результат
         controlsEnabled   : true,
-        time              : JSON.parse(decodeURI(action.data)).time,
+        time              : toolsTime.calculateUnixTimeBefore(action.currentTime, JSON.parse(decodeURI(action.data)).time),
         status            : gameConstants.gameState.STATE_STARTED
       };
       break;
@@ -51,7 +52,7 @@ export default function(state, action) {
       var id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].status            = gameConstants.gameState.STATE_STARTED;
       newState.byId[id].controlsEnabled   = true;
-      newState.byId[id].time              = 0;
+      newState.byId[id].time              = action.time;  // FIXME текущее unix время, у нас возможно будут проблемы с загрузкой сохраненок...
       break;
 
     case constantsActions.GAME_COMPLETE:      // конец игры, между играми делать ничего нельзя, TODO - это имеются в виду BOARD controls. Переосмыслить. Вероятно надо делать ч/б затененную доску
