@@ -44,15 +44,13 @@ body {
  * Disabling text selections for menu buttons, cards etc
  */
 :not(input) {
-  -webkit-user-select : none;
-  -khtml-user-select  : none;
-  -moz-user-select    : none;
-  -ms-user-select     : none;
-  user-select         : none;
+  user-select : none;
 }
 
 /**
  * Disabling tap highlight
+ * Специфичное свойство, не существует в виде tap-highlight-color, а соответственно и не поддерживается в autoprefixer.
+ * FIXME Возможно этот вендор-хак следует просто удалить.
  */
 html {
   -webkit-tap-highlight-color: rgba(0,0,0,0);

@@ -3,9 +3,9 @@
   // выделяем изменяющиеся DOM-элементы и их потомки в отдельные GPU-слои
   .holder,
   .card.moving {
-    -webkit-transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    -webkit-perspective: 1000;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
   }
 
   .holder, .card {
@@ -68,10 +68,5 @@
     .card {
       pointer-events: none;
     }
-    // TODO LESS mixin?
-    // -webkit-filter : brightness(50%);  /* Google Chrome, Safari 6+ & Opera 15+  */
-    // filter         : brightness(50%);  /* Microsoft Edge and Firefox 35+        */
-    // -webkit-filter : grayscale(0.5);   /* Google Chrome, Safari 6+ & Opera 15+  */
-    // filter         : grayscale(0.5);   /* Microsoft Edge and Firefox 35+        */
   }
 }
