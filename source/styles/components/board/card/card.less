@@ -1,4 +1,33 @@
 .card {
+  @keyframes selected {
+    0% {
+      box-shadow: 0 0 0.1em 0.3em rgba(32,  255, 0, 0)
+    }
+    100% {
+      box-shadow: 0 0 0.1em 0.3em rgba(32,  255, 0, 1)  
+    }
+  }
+
+  /**
+   * FIXME declined здесь это копипаста из board.less
+   */
+  @keyframes declined {
+    0% {
+      box-shadow: 0 0 0.1em 0.3em rgba(255, 0, 0, 0.5)
+    }
+    100% {
+      box-shadow: 0 0 0.1em 0.3em rgba(255, 0, 0, 1)
+    }
+  }
+
+  &.declined {
+    animation: declined ease-in-out 1s;
+  }
+
+  &.selected {
+    animation: selected ease-in-out 1s forwards;
+  }
+
   border-radius : 0.5em;
   font-family   : m3w-card;
   left          : 0;

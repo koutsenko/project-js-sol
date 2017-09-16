@@ -83,19 +83,31 @@ class Card extends React.PureComponent {
       dy = this.props.y;
     }
 
+    let className = this.props.className;
+    if (this.props.shifted) {
+      className += ' moving';
+    }
+    if (this.props.selected) {
+      className += ' selected';
+    } else if (this.props.declined) {
+      className += ' declined';
+    } else {
+      if (this.props.hovered === constantsBoard.highlights.ACCEPT) {
+        className += ' hovered yes';
+      } else if (this.props.hovered === constantsBoard.highlights.DENY) {
+        className += ' hovered no';
+      }
+    }
+
     return (
       <Motion defaultStyle={{
-        dColor  : +!this.props.declined,
         dx      : this.state.previousX,
         dy      : this.state.previousY,
-        do      : +!this.props.selected,
         drFace  : this.state.previousF ? rFace : rBack,
         drBack  : this.state.previousF ? rBack : rFace
       }} style={{
-        dColor  : spring(+!this.props.declined),
         dx      : dx,
         dy      : dy,
-        do      : spring(+!!this.props.selected, options),
         drFace  : spring(rFace, options),
         drBack  : spring(rBack, options),
       }}>
@@ -105,28 +117,14 @@ class Card extends React.PureComponent {
             let dy = Math.round(this.state.deltas.y + interpolatingStyle.dy);
             let dr = this.state.deltas.r;
 
-            let select = `0 0 0.1em 0.3em rgba(32,  255, 0, ${interpolatingStyle.do})`;
-            let decline = `0 0 0.1em 0.3em rgba(255, 0, 0, ${interpolatingStyle.dColor})`;
-
             // Оставили 9 слоев, с запасом - для холдеров и их псевдоэлементов
             let style = {
-              boxShadow       : this.props.declined ? decline : (this.props.selected ? select : null),
               zIndex          : this.props.index + 10 + (this.props.shifted ? 100 : 0),
               width           : this.props.width  + 'px',
               height          : this.props.height + 'px',
               webkitTransform : `translate(${dx}px,${dy}px) rotate(${dr}deg)`,
               transform       : `translate(${dx}px,${dy}px) rotate(${dr}deg)`
             };
-
-            let className = this.props.className;
-            if (this.props.shifted) {
-              className += ' moving';
-            }
-            if (this.props.hovered === constantsBoard.highlights.ACCEPT) {
-              className += ' hovered yes';
-            } else if (this.props.hovered === constantsBoard.highlights.DENY) {
-              className += ' hovered no';
-            }
 
             return (
               <div 
