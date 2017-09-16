@@ -68,7 +68,8 @@ module.exports = function(env) {
           }, {
             loader: 'less-loader',
             options: {
-              compress: true
+              compress: true,
+              relativeUrls: false
             }
           }]
         })
