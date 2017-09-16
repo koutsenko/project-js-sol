@@ -1,5 +1,6 @@
-#board {
 
+#board {
+  
   // выделяем изменяющиеся DOM-элементы и их потомки в отдельные GPU-слои
   .holder,
   .card.moving {
@@ -7,9 +8,9 @@
     backface-visibility: hidden;
     perspective: 1000;
   }
-
+  
   .holder, .card {
-   /**
+    /**
     * Подсветка, когда над дропзоной по DND проносится другая карта.
     */
     &.hovered::after {
@@ -26,19 +27,32 @@
       background-color	: rgba(255,0,0,0.3);
     }
   }
-
-
+  
+  
   .cards {
     height    : 0;
     left      : 0;
     position  : absolute;
     top       : 0;
   }
-
+  
   .holder {
     position          : relative;
     border-radius     : 0.5em;
     box-shadow        : 0 0 0.1em 0.1em rgba(255,255,0,0.1);
+    
+    @keyframes declined {
+      0% {
+        box-shadow: 0 0 0.1em 0.3em rgba(255, 0, 0, 0.5)
+      }
+      100% {
+        box-shadow: 0 0 0.1em 0.3em rgba(255, 0, 0, 1)
+      }
+    }
+
+    &.declined {
+      animation: declined ease-in-out 1s;
+    }
 
     &:before {
       position          : absolute;
@@ -54,13 +68,6 @@
 
       background-size   : cover;
     }
-  }
-
-  .fx_red {
-    box-shadow: 0 0 0.1em 0.3em red;
-  }
-  .fx_lime {
-    box-shadow: 0 0 0.1em 0.3em lime;
   }
 
   &.disabled {
