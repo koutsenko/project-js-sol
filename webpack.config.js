@@ -59,15 +59,20 @@ module.exports = function(env) {
         test: /\.less$/,
         use: ExtractTextPlugin.extract({
           use: [{
-            loader: 'css-loader'
+            loader: 'css-loader',
+            options: {
+              sourceMap: true
+            }
           }, {
             loader: 'postcss-loader',
             options: {
-              plugins: [require('autoprefixer')]
+              plugins: [require('autoprefixer')],
+              sourceMap: true,
             }
           }, {
             loader: 'less-loader',
             options: {
+              sourceMap: true,
               compress: true,
               relativeUrls: false
             }
