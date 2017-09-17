@@ -56,36 +56,31 @@ class Options extends React.PureComponent {
     let ws = {
       boxShadow: '0 0 0.2em 0.01em black',
       display: 'inline-block',
-      marginRight: '0.5em',
+      marginRight: '0.25em',
       paddingRight: '0.5em'
     }
     return (
-      <Popup role="options" visible={this.props.optionsVisible} handler={this.props.closeOptions} header="Настройки">
-        <div class="content">
-          <div className="block">
-            <div style={{marginBottom: '0.5em'}}>игровые правила</div>
-            <div style={ws}>
-              <RadioButton label="игра на очки" checked={false} disabled={true}/>
-              <RadioButton label="на деньги" checked={false} disabled={true}/>
-              <RadioButton label="без счета" checked={true} disabled={true}/>
-            </div>
-            <div style={{display: 'inline-block', position: 'absolute'}}>
-              <Checkbox label="учет времени" checked={true} disabled={true} handler={()=>null}/> 
-            </div>
-            <div style={ws}>
-              <RadioButton label="сдача по одной" checked={true} disabled={true}/>
-              <RadioButton label="сдача по три" checked={false} disabled={true}/>
-            </div>
-          </div>
-          <div className="block">
-            <div style={{marginBottom: '0.5em'}}>разное</div>
-            <Checkbox label="перетаскивание карт" checked={this.state.dndEnabled} handler={this.toggleDndState.bind(this)}/>
-            <Checkbox label="эффекты анимации" checked={true} disabled={true} handler={()=>null}/> 
-          </div>
+      <Popup role="options" visible={this.props.optionsVisible} handler={this.props.closeOptions} caption="Настройки">
+        <div style={{marginTop: '1em', marginBottom: '0.5em'}}>игровые правила</div>
+        <hr/>
+        <div style={ws}>
+          <RadioButton label="игра на очки" checked={false} disabled={true}/>
+          <RadioButton label="на деньги" checked={false} disabled={true}/>
+          <RadioButton label="без счета" checked={true} disabled={true}/>
         </div>
+        <div style={{display: 'inline-block', position: 'absolute'}}>
+          <Checkbox label="учет времени" checked={true} disabled={true} handler={()=>null}/> 
+        </div>
+        <div style={ws}>
+          <RadioButton label="сдача по одной" checked={true} disabled={true}/>
+          <RadioButton label="сдача по три" checked={false} disabled={true}/>
+        </div>
+        <div style={{marginTop: '1.5em', marginBottom: '0.5em'}}>разное</div>
+        <hr/>
+        <Checkbox label="перетаскивание карт" checked={this.state.dndEnabled} handler={this.toggleDndState.bind(this)}/>
+        <Checkbox label="эффекты анимации" checked={true} disabled={true} handler={()=>null}/> 
         <div className="buttonBar">
           <div className="button" ref="applyButton">Применить</div>
-          {/* <div className="button" ref="cancelButton">Отмена</div> */}
         </div>
       </Popup>
     );

@@ -1,29 +1,28 @@
 .rules {
-
+  
+  @maxWidth     : 30em;
+  @maxHeight    : 23em;
+  
+  margin-left   : ~'calc((100vw - @{maxWidth})/2)';
+  max-width     : @maxWidth;
+  width         : @maxWidth;
+  
+  margin-top : 1em;
+  max-height : @maxHeight;
+  height     : @maxHeight; 
+  
   a:link    ,
   a:visited ,
   a:hover   ,
   a:active {
     color     : greenyellow;
   }
-
-  @maxWidth: 30em;
-
-  margin-left: ~'calc((100vw - @{maxWidth})/2)';
-  max-width: @maxWidth;
-
-  bottom: initial !important;
-  left:  initial !important;
-  right: initial !important;
-
-  text-align: justify;
-  box-sizing: border-box;
-
+  
   .image {
     background-image: url('res/rule.svg');
     background-size: cover;
     background-repeat: no-repeat;
-    margin: 0 0 1em 1.5em;
+    margin: 0 0 0 1.5em;
     height: 6.4em;
     width: 8.4em;
     float: right;

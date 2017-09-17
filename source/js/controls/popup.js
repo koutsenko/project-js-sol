@@ -10,17 +10,21 @@ class Popup extends React.PureComponent {
   render() {
     return (
       <div className={this.props.role + ' popup' + (this.props.visible ? ' visible' : '')} ref={this.props.role}>
-        <div className="header">{this.props.header}</div>
-        {this.props.children}
-        <div className="close" ref="closeButton">&times;</div>
+        <div className="header">
+          <div className="caption">{this.props.caption}</div>
+          <div className="close" ref="closeButton">&times;</div>
+        </div>
+        <div className="content">
+          {this.props.children}
+        </div>
       </div>
     );
   }
 };
 
 Popup.propTypes = {
-  header  : React.PropTypes.string.isRequired,
-  handler : React.PropTypes.func.isRequired
+  caption   : React.PropTypes.string.isRequired,
+  handler   : React.PropTypes.func.isRequired
 };
 
 export default Popup;

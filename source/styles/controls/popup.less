@@ -2,34 +2,36 @@
   background-color  : darkgreen;
   border            : 0.5em solid black;
   border-radius     : 1em;
+  box-sizing        : border-box;
   box-shadow        : 0 0 0.5em 0.1em black;
   color             : greenyellow;
-  padding           : 2.5em 1em 1em 1em;
   font-size         : 1.2em;
   text-align        : center;
 
   hr {
     background-color  : yellowgreen;
     border            : none;
-    height            : 0.1em;
-  }
-
-  .header, .close {
-    color             : yellow;
-    position          : absolute;
-    top               : 0;
+    height            : 0.1rem;
   }
 
   .header {
-    padding           : 0.25em 1em;
-    border-radius     : 0.5em;
-    font-size         : 1.25em; 
+    height            : 2em;
+    text-align        : left;
+  }
+
+  .caption, .close {
+    color             : yellow;
     display           : inline-block;
-    left              : 0;
-    background-color  : darkgreen;
+  }
+  
+  .caption {
+    font-size         : 1.25em; 
+    line-height       : 1.75em;
+    margin-left       : 2em;
   }
 
   .close {
+    position          : absolute;
     background-color  : inherit;
     border            : 0.1em solid green;
     border-radius     : 0.25em;
@@ -42,23 +44,14 @@
   }
 
   .content {
-    text-align        : left;
+    padding           : 0 1em;
+    text-align        : justify;
     display           : inline-block;
-
-    .block {
-      border-radius     : 0.5em;
-      background-color  : green;
-      margin            : 0.5em;
-      padding           : 0.5em 1em;
-    }
   }
 
   .buttonBar {
-    position          : absolute;
-    bottom            : 0;
-    width             : 100%;
-    left              : 0;
     text-align        : center;
+    margin            : 0.5em 0;
     padding           : 0.5em 0;
     font-size         : 1.5em;
 

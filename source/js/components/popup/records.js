@@ -89,11 +89,12 @@ class Records extends React.PureComponent {
 
   render() {
     return (
-      <Popup role="records" visible={this.props.recordsVisible} handler={this.props.closeRecords} header="Рекорды *">
+      <Popup role="records" visible={this.props.recordsVisible} handler={this.props.closeRecords} caption="Рекорды *">
         <div style={{position: 'absolute', left: 0, right: 0, color: 'black', backgroundColor: 'yellow', textAlign: 'center', top: '-2.75em'}}>{this.props.recordsCongrats ? 'поздравляем, пасьянс сложился!' : ''}</div>
         {this.buildTable()}
         <hr/>
         {this.buildStats()}
+        <hr/>
         <div className="note">* на данном устройстве</div>
       </Popup>
     );

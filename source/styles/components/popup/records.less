@@ -1,20 +1,21 @@
 .records {
 
-  @maxWidth: 20em;
+  @maxWidth   : 20em;
+  @maxHeight  : 22em;
 
-  margin-left: ~'calc((100vw - @{maxWidth})/2)';
-  max-width: @maxWidth;
+  margin-left : ~'calc((100vw - @{maxWidth})/2)';
+  max-width   : @maxWidth;
+  width       : @maxWidth;
 
-  bottom: initial !important;
-  left:  initial !important;
-  right: initial !important;
+  margin-top : 1em;
+  max-height : @maxHeight;
+  height     : @maxHeight; 
 
   .congrats {
     padding-top: 5%;
   }
 
   .note {
-    margin-top: 1em;
     text-align: center;
     font-size: 0.75em;
   }
