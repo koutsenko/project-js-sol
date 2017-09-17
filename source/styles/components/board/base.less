@@ -1,0 +1,33 @@
+#board {
+  .hovered::after {
+    border-radius : 0.5em;
+    content		    : '';
+    width			    : 100%;
+    height		    : 100%;
+    position	    : absolute;
+  }
+  .hovered.yes::after {
+    background-color	: rgba(0,255,0,0.3);
+  }
+  .hovered.no::after {
+    background-color	: rgba(255,0,0,0.3);
+  }
+  
+  // выделяем изменяющиеся DOM-элементы и их потомки в отдельные GPU-слои
+  .moving {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+  } 
+  
+  .cards {
+    height    : 0;
+    left      : 0;
+    position  : absolute;
+    top       : 0;
+  }
+  
+  &.disabled {
+    pointer-events: none;
+  }
+}

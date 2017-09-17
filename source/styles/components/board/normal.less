@@ -1,0 +1,20 @@
+@blur   : 0.1em;
+@spread : 0.3em;
+
+#app:not(.mini) {
+  #board {
+    @keyframes selected {
+      0%    { box-shadow: 0 0 @blur @spread rgba(32,  255, 0, 0.5)  }
+      100%  { box-shadow: 0 0 @blur @spread rgba(32,  255, 0, 1)  }
+    }
+
+    @keyframes declined {
+      0%    { box-shadow: 0 0 @blur @spread rgba(255, 0, 0, 0.5)  }
+      100%  { box-shadow: 0 0 @blur @spread rgba(255, 0, 0, 1)    }
+    }
+
+    .declined { animation: declined ease-in-out 1s;           }
+    .selected { animation: selected ease-in-out 1s forwards;  }
+  }
+}
+
