@@ -126,14 +126,24 @@ class Card extends React.PureComponent {
               transform       : `translate(${dx}px,${dy}px) rotate(${dr}deg)`
             };
 
+            let fStyle = {
+              webkitTransform : `rotateY(${interpolatingStyle.drFace}deg)`,
+              transform       : `rotateY(${interpolatingStyle.drFace}deg)`
+            };
+
+            let bStyle = {
+              webkitTransform : `rotateY(${interpolatingStyle.drBack}deg)`,
+              transform       : `rotateY(${interpolatingStyle.drBack}deg)`
+            };
+
             return (
               <div 
                 className = {className}
                 data-id   = {this.props.id}
                 style     = {style}
               >
-                <div className="face" style={{transform: `rotateY(${interpolatingStyle.drFace}deg)`}}/>
-                <div className="back" style={{transform: `rotateY(${interpolatingStyle.drBack}deg)`}}/>
+                <div className="face" style={fStyle}/>
+                <div className="back" style={bStyle}/>
               </div>
             );
           }.bind(this)
