@@ -6,6 +6,26 @@ import { bindActionCreators } from 'redux'                            ;
 import   constantsBoard       from 'constants/board'                  ;
 import   boardActions         from 'actions/board'                    ;
 
+function buildClassName(props) {
+  let className = props.className;
+  if (props.shifted) {
+    className += ' moving';
+  }
+  if (props.selected) {
+    className += ' selected';
+  } else if (props.declined) {
+    className += ' declined';
+  } else {
+    if (props.hovered === constantsBoard.highlights.ACCEPT) {
+      className += ' hovered yes';
+    } else if (props.hovered === constantsBoard.highlights.DENY) {
+      className += ' hovered no';
+    }
+  }
+  
+  return className;
+}
+
 function randomize(dispersion) {
   return Math.round((Math.random()-0.5) * dispersion);
 };
@@ -83,21 +103,7 @@ class Card extends React.PureComponent {
       dy = this.props.y;
     }
 
-    let className = this.props.className;
-    if (this.props.shifted) {
-      className += ' moving';
-    }
-    if (this.props.selected) {
-      className += ' selected';
-    } else if (this.props.declined) {
-      className += ' declined';
-    } else {
-      if (this.props.hovered === constantsBoard.highlights.ACCEPT) {
-        className += ' hovered yes';
-      } else if (this.props.hovered === constantsBoard.highlights.DENY) {
-        className += ' hovered no';
-      }
-    }
+    let className = buildClassName(this.props);
 
     return (
       <Motion defaultStyle={{
