@@ -28,9 +28,10 @@ class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      hovered   : {} ,        // подсвечиваемая в процессе dnd-перетаскивания цель
+      hovered   : {}        , // подсвечиваемая в процессе dnd-перетаскивания цель
       selected  : undefined , // выбранная Source-карта
       declined  : undefined , // ошибка выбора Source/Target карты или холдера
+      initial   : {}        , // начальные координаты карт до смещения (FIXME вероятно их тоже надо прокидывать в <Card>?)
       shifted   : {}          // id смещенных вручную через dnd карт и их реальные координаты на момент дропа
     };
   }

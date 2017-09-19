@@ -59,25 +59,32 @@ class Source extends React.PureComponent {
       return;
     }
 
+
     let cardIds = selectorsBoard.getChildCards(id, this.props.board);   
     console.log('стартуем драг-н-дроп, двигать будем карты с id', cardIds);
     this.state.moving = cardIds;
-    this.props.api.cardShift(cardIds, 0, 0);
+    this.state.movingEls = {};
+    cardIds.forEach(function(id) {
+      this.state.movingEls[id] = event.target.parentElement.querySelector('[data-id="' + id + '"]');
+    }.bind(this));
   }
   
   onDragMove(event) {
     console.log('наращиваем дельту и двигаем');
-    this.props.api.cardShift(this.state.moving, event.dx, event.dy);  
+    this.props.api.cardShift(this.state.moving, this.state.movingEls, event.dx, event.dy);  
   }
+
 
   onDragEnd(event) {
     console.log('закончили двигать');
+
 
     if (event.interaction.dropTarget === null) {
       console.log('это не дроп - поэтому вручную возвращаем карты');
       this.props.api.cardUnshift();
     }
     this.state.moving = {};
+    this.state.movingEls = {};
   }
 
   isTappable() {
