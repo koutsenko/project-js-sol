@@ -1,18 +1,39 @@
 import   React                from 'react'                            ;
-import { Motion, spring }     from 'react-motion'                     ;
 import { connect }            from 'react-redux'                      ;
 import { bindActionCreators } from 'redux'                            ;
 
 import   constantsBoard       from 'constants/board'                  ;
 import   boardActions         from 'actions/board'                    ;
 
-function buildClassName(props) {
+import   toolsAnim            from 'tools/anim'                       ;
+
+/**
+ * Определяем необходимость анимации перемещения
+ */
+function needMoveAnimation(props, state) {
+  let result = true;
+
+  if (props.shifted) {
+    result = false;
+  } else if ((state.previousW !== props.width) || (state.previousH !== props.height)) {
+    result = false;
+  } else if ((state.previousX === props.x) && (state.previousY === props.y)) {
+    result = false;
+  }
+
+  return result;
+}
+
+function buildClassName(props, state) {
   let className = props.className;
   if (props.shifted) {
     className += ' moving';
   }
   if (props.flip) {
     className += ' flipped';
+  }
+  if (needMoveAnimation(props, state)) {
+    className += ' animated';
   }
   if (props.selected) {
     className += ' selected';
@@ -64,6 +85,7 @@ class Card extends React.PureComponent {
 
   constructor(props) {
     super(props);
+    this.event = toolsAnim.getTransitionEvent();
     this.updateState(props); 
   }
 
@@ -71,72 +93,36 @@ class Card extends React.PureComponent {
     this.updateState(this.props, nextProps);
   }
 
+  getElementRef(element) {
+    this.cardRef = element;
+  }
+  
   render() {
-    let options = this.state.debug ? {
-      stiffness : 10
-    } : {
-      damping   : 30,
-      precision : 1.0,
-      stiffness : 300
+    let className = buildClassName(this.props, this.state);
+    
+    let dx = Math.round(this.state.deltas.x + this.props.x);
+    let dy = Math.round(this.state.deltas.y + this.props.y);
+    let dr = this.state.deltas.r;
+    // Оставили 9 слоев, с запасом - для холдеров и их псевдоэлементов
+    let style = {
+      zIndex          : this.props.index + 10 + (this.props.shifted ? 100 : 0),
+      width           : this.props.width  + 'px',
+      height          : this.props.height + 'px'
     };
-
-    let dx = spring(this.props.x, options);
-    let dy = spring(this.props.y, options);
-
-    /**
-     * Также выключаем анимацию перемещения если изменились размеры (явно делается ресайз окна)
-     */
-    if ((this.state.previousW !== this.props.width) || (this.state.previousH !== this.props.height)) {
-      dx = this.props.x;
-      dy = this.props.y;
-    }
-
-    /**
-     * Также выключаем анимацию перемещения если идет ручное двигание карты 
-     */
-    if (this.props.shifted) {
-      dx = this.props.x;
-      dy = this.props.y;
-    }
-
-    let className = buildClassName(this.props);
+    style.webkitTransform = style.transform = `translate(${dx}px,${dy}px) rotate(${dr}deg)`;
+    this.cardRef && this.cardRef.addEventListener(toolsAnim.getTransitionEvent(), function(event) {
+      this.cardRef.classList.remove('animated');
+    }.bind(this));
 
     return (
-      <Motion defaultStyle={{
-        dx      : this.state.previousX,
-        dy      : this.state.previousY
-      }} style={{
-        dx      : dx,
-        dy      : dy
-      }}>
-        {
-          function(interpolatingStyle) {
-            let dx = Math.round(this.state.deltas.x + interpolatingStyle.dx);
-            let dy = Math.round(this.state.deltas.y + interpolatingStyle.dy);
-            let dr = this.state.deltas.r;
-
-            // Оставили 9 слоев, с запасом - для холдеров и их псевдоэлементов
-            let style = {
-              zIndex          : this.props.index + 10 + (this.props.shifted ? 100 : 0),
-              width           : this.props.width  + 'px',
-              height          : this.props.height + 'px',
-              webkitTransform : `translate(${dx}px,${dy}px) rotate(${dr}deg)`,
-              transform       : `translate(${dx}px,${dy}px) rotate(${dr}deg)`
-            };
-
-            return (
-              <div 
-                className = {className}
-                data-id   = {this.props.id}
-                style     = {style}
-              >
-                <div className="face"/>
-                <div className="back"/>
-              </div>
-            );
-          }.bind(this)
-        }
-      </Motion>
+      <div ref={this.getElementRef.bind(this)}
+        className = {className}
+        data-id   = {this.props.id}
+        style     = {style}
+      >
+        <div className="face"/>
+        <div className="back"/>
+      </div>
     );
   }
 }

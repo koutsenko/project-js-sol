@@ -63,18 +63,17 @@ const cardShift = function(cardIds, els, dx, dy) {
   cardIds.forEach(function(id) {
       if (!this.state.shifted[id]) {
         let rect = els[id].getBoundingClientRect();
-        this.state.initial[id] = [Math.round(rect.left), Math.round(rect.top)];
-        this.state.shifted[id] = [0, 0];
+        this.setState({
+          initial: Object.assign(this.state.initial, { [id]: [Math.round(rect.left), Math.round(rect.top)] }),
+          shifted: Object.assign(this.state.shifted, { [id]: [0, 0] })
+        });
       }
-
 
       this.state.shifted[id][0] += dx;
       this.state.shifted[id][1] += dy;
 
-
       let x = this.state.initial[id][0] + this.state.shifted[id][0];
       let y = this.state.initial[id][1] + this.state.shifted[id][1];
-
 
       els[id].style.webkitTransform = els[id].style.transform = `translate(${x}px,${y}px)`;      
   }, this);

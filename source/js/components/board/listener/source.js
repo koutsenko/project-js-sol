@@ -70,7 +70,8 @@ class Source extends React.PureComponent {
   }
   
   onDragMove(event) {
-    console.log('наращиваем дельту и двигаем');
+    // debug выключаем консоль (мешает)
+    // console.log('наращиваем дельту и двигаем');
     this.props.api.cardShift(this.state.moving, this.state.movingEls, event.dx, event.dy);  
   }
 

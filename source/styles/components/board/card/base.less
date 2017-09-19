@@ -6,6 +6,10 @@
   position      : absolute;
   top           : 0;
 
+  &.animated {
+    transition  : transform 500ms
+  }
+  
   &:not(.flipped) {
     .face {
       transform: rotateY(-180deg)
