@@ -52,14 +52,14 @@ function generateDeltas(width) {
 
 class Card extends React.PureComponent {
   updateState(props, nextProps) {
-    this.setState({
+    this.state = {
       deltas    : this.state.deltas === undefined ? generateDeltas(props.width) : (this.state.deltas.e ? generateDeltas(nextProps.width) : scaleDeltas(this.state.deltas, props.width, nextProps.width)),
       previousX : props.x,
       previousY : props.y,
       previousF : props.flip,
       previousW : props.width,
       previousH : props.height
-    });
+    };
   }
 
   constructor(props) {
