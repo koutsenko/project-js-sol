@@ -80,12 +80,8 @@ class Card extends React.PureComponent {
       stiffness : 300
     };
 
-    /**
-     * N.B. spring ведет себя странно если совпадают начальная и конечные координаты.
-     * Поэтому в таком случае недопускаем spring данного параметра в верстку вообще.
-     */
-    let dx = (this.props.x === this.state.previousX) ? this.props.x : spring(this.props.x, options);
-    let dy = (this.props.y === this.state.previousY) ? this.props.y : spring(this.props.y, options);
+    let dx = spring(this.props.x, options);
+    let dy = spring(this.props.y, options);
 
     /**
      * Также выключаем анимацию перемещения если изменились размеры (явно делается ресайз окна)
@@ -96,7 +92,7 @@ class Card extends React.PureComponent {
     }
 
     /**
-     * Также выключаем анимацию если идет ручное двигание карты 
+     * Также выключаем анимацию перемещения если идет ручное двигание карты 
      */
     if (this.props.shifted) {
       dx = this.props.x;
