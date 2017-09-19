@@ -11,6 +11,9 @@ function buildClassName(props) {
   if (props.shifted) {
     className += ' moving';
   }
+  if (props.flip) {
+    className += ' flipped';
+  }
   if (props.selected) {
     className += ' selected';
   } else if (props.declined) {
@@ -69,9 +72,6 @@ class Card extends React.PureComponent {
   }
 
   render() {
-    let rFace = -180*(+!this.props.flip);
-    let rBack = 180*(+this.props.flip);
-
     let options = this.state.debug ? {
       stiffness : 10
     } : {
@@ -104,14 +104,10 @@ class Card extends React.PureComponent {
     return (
       <Motion defaultStyle={{
         dx      : this.state.previousX,
-        dy      : this.state.previousY,
-        drFace  : this.state.previousF ? rFace : rBack,
-        drBack  : this.state.previousF ? rBack : rFace
+        dy      : this.state.previousY
       }} style={{
         dx      : dx,
-        dy      : dy,
-        drFace  : spring(rFace, options),
-        drBack  : spring(rBack, options),
+        dy      : dy
       }}>
         {
           function(interpolatingStyle) {
@@ -128,24 +124,14 @@ class Card extends React.PureComponent {
               transform       : `translate(${dx}px,${dy}px) rotate(${dr}deg)`
             };
 
-            let fStyle = {
-              webkitTransform : `rotateY(${interpolatingStyle.drFace}deg)`,
-              transform       : `rotateY(${interpolatingStyle.drFace}deg)`
-            };
-
-            let bStyle = {
-              webkitTransform : `rotateY(${interpolatingStyle.drBack}deg)`,
-              transform       : `rotateY(${interpolatingStyle.drBack}deg)`
-            };
-
             return (
               <div 
                 className = {className}
                 data-id   = {this.props.id}
                 style     = {style}
               >
-                <div className="face" style={fStyle}/>
-                <div className="back" style={bStyle}/>
+                <div className="face"/>
+                <div className="back"/>
               </div>
             );
           }.bind(this)

@@ -6,8 +6,27 @@
   position      : absolute;
   top           : 0;
 
+  &:not(.flipped) {
+    .face {
+      transform: rotateY(-180deg)
+    }
+    .back {
+      transform: rotateY(0deg)
+    }
+  }
+
+  &.flipped {
+    .face {
+      transform: rotateY(0deg)
+    }
+    .back {
+      transform: rotateY(180deg)
+    }
+  }
+  
   & .face,
   & .back {
+    transition                    : 0.5s ease-in-out;
     background-color              : #ffa;
     backface-visibility           : hidden;
     border-radius                 : 0.4em;
