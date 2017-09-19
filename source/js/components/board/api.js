@@ -63,7 +63,7 @@ const cardShift = function(cardIds, els, dx, dy) {
   cardIds.forEach(function(id) {
       if (!this.state.shifted[id]) {
         let rect = els[id].getBoundingClientRect();
-        this.state.initial[id] = [rect.left, rect.top];
+        this.state.initial[id] = [Math.round(rect.left), Math.round(rect.top)];
         this.state.shifted[id] = [0, 0];
       }
 
