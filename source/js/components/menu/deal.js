@@ -21,6 +21,8 @@ class ButtonDeal extends React.PureComponent {
   render() {
     return (
       <MenuButton
+        btnIndex={this.props.btnIndex}
+        btnCount={this.props.btnCount}
         hint="Начать новый расклад, текущий будет закрыт"
         role="btn1"
         text="Разложить"

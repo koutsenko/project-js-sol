@@ -1,5 +1,10 @@
-import React    from 'react'          ;
-import interact from 'interactjs'     ;
+import   React            from 'react'            ;
+import { connect }        from 'react-redux'      ;
+
+import   interact         from 'interactjs'       ;
+
+import   selectorsLayout  from 'selectors/layout' ;
+
 
 class MenuButton extends React.PureComponent {
   componentDidMount() {
@@ -31,7 +36,7 @@ class MenuButton extends React.PureComponent {
 
   render() {
     return (
-      <div title={this.props.hint} className={this.props.role + " button" + (this.props.disabled ? ' disabled' : '') + (this.state.pressed ? ' pressed' : '')} ref={this.props.role}>
+      <div title={this.props.hint} style={this.props.style} className={this.props.role + " button" + (this.props.disabled ? ' disabled' : '') + (this.state.pressed ? ' pressed' : '')} ref={this.props.role}>
         <div>{this.props.text}</div>
       </div>
     );
@@ -39,6 +44,8 @@ class MenuButton extends React.PureComponent {
 }
 
 MenuButton.propTypes = {
+  btnIndex  : React.PropTypes.number.isRequired,
+  btnCount  : React.PropTypes.number.isRequired,
   disabled  : React.PropTypes.bool.isRequired,
   handler   : React.PropTypes.func.isRequired,
   hint      : React.PropTypes.string.isRequired,
@@ -46,4 +53,10 @@ MenuButton.propTypes = {
   text      : React.PropTypes.string.isRequired
 };
 
-export default MenuButton;
+const mapStateToProps = function(state, ownProps) {
+  return {
+    style : selectorsLayout.menuButtonStyle(state, ownProps.btnCount, ownProps.btnIndex)
+  };
+}
+
+export default connect(mapStateToProps)(MenuButton);

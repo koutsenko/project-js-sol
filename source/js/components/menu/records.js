@@ -10,6 +10,8 @@ class ButtonRecords extends React.PureComponent {
   render() {
     return (
       <MenuButton
+        btnIndex={this.props.btnIndex}
+        btnCount={this.props.btnCount}
         disabled={false}
         hint="Авторизация, статистика, рекорды"
         role="btn4"

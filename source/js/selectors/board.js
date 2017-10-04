@@ -1,6 +1,7 @@
-import { createSelector } from 'reselect'         ;
+import   createCachedSelector from 're-reselect'      ;
+import { createSelector }     from 'reselect'         ;
 
-import   constantsBoard   from 'constants/board'  ;
+import   constantsBoard       from 'constants/board'  ;
 
 const getCards = (state) => state.board.cards.byId;
 
@@ -22,24 +23,21 @@ const getHolderId = function(cardId, boardState) {
   return holderId;
 }
 
-const getDeckCardIds    = (state) => state.board.holders.byId[constantsBoard.places.DECK]   ;
-const getOpenCardIds    = (state) => state.board.holders.byId[constantsBoard.places.OPEN]   ;
-const getStack1CardIds  = (state) => state.board.holders.byId[constantsBoard.places.STACK1] ;
-const getStack2CardIds  = (state) => state.board.holders.byId[constantsBoard.places.STACK2] ;
-const getStack3CardIds  = (state) => state.board.holders.byId[constantsBoard.places.STACK3] ;
-const getStack4CardIds  = (state) => state.board.holders.byId[constantsBoard.places.STACK4] ;
-const getStack5CardIds  = (state) => state.board.holders.byId[constantsBoard.places.STACK5] ;
-const getStack6CardIds  = (state) => state.board.holders.byId[constantsBoard.places.STACK6] ;
-const getStack7CardIds  = (state) => state.board.holders.byId[constantsBoard.places.STACK7] ;
-const getHome1CardIds   = (state) => state.board.holders.byId[constantsBoard.places.HOME1]  ;
-const getHome2CardIds   = (state) => state.board.holders.byId[constantsBoard.places.HOME2]  ;
-const getHome3CardIds   = (state) => state.board.holders.byId[constantsBoard.places.HOME3]  ;
-const getHome4CardIds   = (state) => state.board.holders.byId[constantsBoard.places.HOME4]  ;
+const getHolderCards = createCachedSelector(
+  (state, holderId) => state.board.holders.byId[holderId],
+  (state) => state.board.cards,
+  (holder, cards) => holder.map(function(cardId) {
+    return cards.byId[cardId];
+  })
+)(
+  (state, holderId) => holderId
+);
+
 const getNonDeckCards   = function(state) {
   let holderIds   = state.board.holders.allIds.slice();
   let cards       = [];
-  
-  holderIds.splice(holderIds.indexOf(constantsBoard.places.DECK), 1);  
+
+  holderIds.splice(holderIds.indexOf(constantsBoard.places.DECK), 1);
   holderIds.forEach(function(holderId) {
     cards = cards.concat(state.board.holders.byId[holderId]);
   });
@@ -55,11 +53,11 @@ const getLastCards      = function(boardState) {
  * Селектор возвращающий самую верхнюю карту холдера или undefined холдер пустой.
  * На входе id холдера
  * @param {*} holderId
- * @param {*} boardState 
+ * @param {*} boardState
  */
 const getLastCard       = function(holderId, boardState) {
   let holder = boardState.holders.byId[holderId];
-  
+
   return (holder && holder.length) ? holder[holder.length - 1] : undefined;
 };
 
@@ -68,7 +66,7 @@ const getChildCards     = function(cardId, boardState) {
   let holderId = getHolderId(cardId, boardState);
 
   if (constantsBoard.isStackPlace(holderId)) {
-    let holder      = boardState.holders.byId[holderId]; 
+    let holder      = boardState.holders.byId[holderId];
     let startIndex  = holder.indexOf(cardId);
     let endIndex    = holder[holder.length];
     result = holder.slice(startIndex, endIndex);
@@ -79,27 +77,32 @@ const getChildCards     = function(cardId, boardState) {
   return result;
 };
 
+const getNeighbours      = function(state, cardId) {
+  let holderId = getHolderId(cardId, state.board);
+
+  return state.board.holders.byId[holderId].map(function(cardId) {
+    return state.board.cards.byId[cardId];
+  });
+};
+
+const getCardIndex      = function(state, cardId) {
+  let holderId = getHolderId(cardId, state.board);
+  let holder = state.board.holders.byId[holderId];
+
+  return holder.indexOf(cardId);
+};
+
 const resultFunc = (ids, cards) => ids.map((id) => cards[id]);
 
 const resultFunc2 = (id) => id;
 
 export default {
-  getDeckCards    : createSelector([getDeckCardIds  , getCards ] , resultFunc),
-  getOpenCards    : createSelector([getOpenCardIds  , getCards ] , resultFunc),
-  getStack1Cards  : createSelector([getStack1CardIds, getCards ] , resultFunc), 
-  getStack2Cards  : createSelector([getStack2CardIds, getCards ] , resultFunc),
-  getStack3Cards  : createSelector([getStack3CardIds, getCards ] , resultFunc),
-  getStack4Cards  : createSelector([getStack4CardIds, getCards ] , resultFunc), 
-  getStack5Cards  : createSelector([getStack5CardIds, getCards ] , resultFunc),
-  getStack6Cards  : createSelector([getStack6CardIds, getCards ] , resultFunc),
-  getStack7Cards  : createSelector([getStack7CardIds, getCards ] , resultFunc), 
-  getHome1Cards   : createSelector([getHome1CardIds , getCards ] , resultFunc), 
-  getHome2Cards   : createSelector([getHome2CardIds , getCards ] , resultFunc),
-  getHome3Cards   : createSelector([getHome3CardIds , getCards ] , resultFunc),
-  getHome4Cards   : createSelector([getHome4CardIds , getCards ] , resultFunc),
   getNonDeckCards : createSelector([getNonDeckCards , getCards ] , resultFunc),
   getHolderId     : createSelector([getHolderId   ] , resultFunc2),
   getLastCards    : createSelector([getLastCards  ] , resultFunc2),
   getLastCard     : createSelector([getLastCard   ] , resultFunc2),
-  getChildCards   : createSelector([getChildCards ] , resultFunc2)
+  getChildCards   : createSelector([getChildCards ] , resultFunc2),
+  getNeighbours   : createSelector([getNeighbours ] , resultFunc2),
+  getCardIndex    : createSelector([getCardIndex  ] , resultFunc2),
+  getHolderCards  : getHolderCards
 };

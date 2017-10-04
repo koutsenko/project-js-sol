@@ -8,65 +8,54 @@ import   App              from 'components/app'           ;
 import   rootMiddleware   from 'middlewares/_root'        ;
 import   rootReducer      from 'reducers/_root'           ;
 import   constantsActions from 'constants/actions'        ;
+import   actionsApp       from 'actions/app'              ;
+import   constantsLayout  from 'constants/layout'         ;
 
 // import { composeWithDevTools }  from 'redux-devtools-extension' ;
 // const composeEnhancers = composeWithDevTools({
 //   maxAge: 5000  // 5000 actions in redux-devtools history instead of default 50
 // });
 // const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
+const md    = new MobileDetect(window.navigator.userAgent);
 const store = createStore(rootReducer, rootMiddleware);
+let parent  = document.querySelector('#'+constantsLayout.rootId), child;
 
-const getWH = function() {
-  let w = Math.max(document.documentElement.clientWidth , window.innerWidth   || 0);
-  let h = Math.max(document.documentElement.clientHeight, window.innerHeight  || 0);
+const getWHLT = function() {
+  let rect = parent.getBoundingClientRect();
 
-  return {w, h};
+  let w = Math.round(rect.right - rect.left);
+  let h = Math.round(rect.bottom - rect.top);
+  let l = Math.round(rect.left);
+  let t = Math.round(rect.top);
+
+  return {w, h, l, t};
 }
 
 let resizeTimer;
-window.onresize = function() {
-
-  document.body.style.display = "none";
+const windowChangeHandler = function() {
+  child.style.display = "none";
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(function() {
-    document.body.style.display = "";
-    let {w, h} = getWH();
-    let m = store.getState().fx.mini;
-    
-    let mini;
-    if (!m && ((w < 480) || (h < 480))) {
-      mini = true;
-    } else if (m && ((w >= 480) && (h >= 480))) {
-      mini = false;
-    }
-  
-    store.dispatch({ 
-      mini: mini,
-      type: constantsActions.FX_RESIZE      
-    });
+    child.style.display = "";
+    actionsApp.resize(md, getWHLT())(store.dispatch, store.getState);
   }, 200);
 };
 
-window.onload = function() {
-  let md      = new MobileDetect(window.navigator.userAgent);
-  let {w, h}  = getWH();
-  if (md.phone() || (w < 480) || (h < 480)) {
-    store.dispatch({
-      mini: true,
-      type: constantsActions.FX_RESIZE
-    });
-  }
-
-  // выключаем браузерные жесты на iPhone кроме неотключаемого history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
-  ["gesturestart", "gesturechange", "gestureend", "touchstart", "touchmove", "touchend"].forEach(function(eventName) {
-    document.body.addEventListener(eventName, function(event) {
-      event.preventDefault();
-    });
-  });
-
-  ReactDOM.render((
+window.addEventListener('load', function() {
+  actionsApp.resize(md, getWHLT())(store.dispatch, store.getState);
+  child = ReactDOM.findDOMNode(ReactDOM.render((
     <Provider store={store}>
       <App />
     </Provider>
-  ), document.getElementById('root'));
-};
+  ), parent));
+
+  window.addEventListener('resize', windowChangeHandler.bind(this));
+  window.addEventListener('scroll', windowChangeHandler.bind(this));
+
+  // выключаем браузерные жесты на iPhone кроме неотключаемого history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
+  ["gesturestart", "gesturechange", "gestureend", "touchstart", "touchmove", "touchend"].forEach(function(eventName) {
+    child.addEventListener(eventName, function(event) {
+      event.preventDefault();
+    });
+  });
+});

@@ -12,7 +12,7 @@ export default function(state, action) {
     state = buildBoard();
   }
 
-  switch(action.type) {   
+  switch(action.type) {
     case constantsActions.REVERT:
       var newState = JSON.parse(JSON.stringify(state.previous));
       newState.index    = newState.index + 2;
@@ -69,16 +69,15 @@ const cardMove = function(action, state, newState, raw) {
   var target_type     = action.target_type;
   var target_index    = action.target_index;
   var target_holder   = newState.holders.byId[target_type];
-  
+
   var card_ids;
 
   let isOpenToDeck = (source_type === constantsBoard.places.OPEN) && (target_type === constantsBoard.places.DECK);
-  
+
   if (constantsBoard.isStackPlace(source_type)) {
     card_ids = source_holder.slice(source_holder.indexOf(action.card_id), source_holder.length)
   } else if (isOpenToDeck) {
     return cardBack(newState);
-    card_ids = source_holder.slice(source_holder.indexOf(action.card_id), source_holder.length)
   } else {
     card_ids = [action.card_id]
   }
@@ -90,7 +89,7 @@ const cardMove = function(action, state, newState, raw) {
     source_holder.splice(source_holder.indexOf(id), 1);
     target_holder.push(id);
   });
-  
+
   if (!raw && constantsBoard.isStackPlace(source_type) && source_holder.length) {
     newState.cards.byId[source_holder[source_holder.length-1]].flip = false;
   }
@@ -115,7 +114,7 @@ const buildBoard = function(seed) {
 
 /**
  * Генератор списка холдеров и id хранящихся в них карт
- * @param {*} byIds 
+ * @param {*} byIds
  */
 const buildHolders = function(byIds) {
   let holders = {
@@ -133,8 +132,8 @@ const buildHolders = function(byIds) {
 };
 
 /**
- * Генератор перетасованного списка id карт, для холдера-колоды 
- * @param {*} seed 
+ * Генератор перетасованного списка id карт, для холдера-колоды
+ * @param {*} seed
  */
 const buildDeck = function(seed) {
   let deck = [];
@@ -151,8 +150,8 @@ const buildDeck = function(seed) {
 };
 
 /**
- * Генератор списка и объктов карт 
- * @param {*} deck 
+ * Генератор списка и объктов карт
+ * @param {*} deck
  */
 const buildCards = function(deck) {
   let cards = {

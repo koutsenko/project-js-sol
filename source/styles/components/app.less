@@ -1,0 +1,15 @@
+#mxwsol-app {
+  position          : absolute;
+  width             : inherit;
+  height            : inherit;
+  background-image  : svg-gradient(ellipse at center, #22ad32 0%,#001100 100%)                              ;
+  background-size   : 100% 100%                                                                                 ;
+  font-family       : "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif ;
+
+  /**
+  * Disabling text selections for menu buttons, cards etc
+  */
+  &:not(input) {
+    user-select : none;
+  }
+}

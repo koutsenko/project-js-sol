@@ -2,27 +2,12 @@ import   React                from 'react'                            ;
 import { connect }            from 'react-redux'                      ;
 import { bindActionCreators } from 'redux'                            ;
 
+import   selectorsLayout      from 'selectors/layout'                 ;
+
 import   constantsBoard       from 'constants/board'                  ;
 import   boardActions         from 'actions/board'                    ;
 
 import   toolsAnim            from 'tools/anim'                       ;
-
-/**
- * Определяем необходимость анимации перемещения
- */
-function needMoveAnimation(props, state) {
-  let result = true;
-
-  if (props.shifted) {
-    result = false;
-  } else if ((state.previousW !== props.width) || (state.previousH !== props.height)) {
-    result = false;
-  } else if ((state.previousX === props.x) && (state.previousY === props.y)) {
-    result = false;
-  }
-
-  return result;
-}
 
 function buildClassName(props, state) {
   let className = props.className;
@@ -32,9 +17,7 @@ function buildClassName(props, state) {
   if (props.flip) {
     className += ' flipped';
   }
-  if (needMoveAnimation(props, state)) {
-    className += ' animated';
-  }
+
   if (props.selected) {
     className += ' selected';
   } else if (props.declined) {
@@ -46,79 +29,54 @@ function buildClassName(props, state) {
       className += ' hovered no';
     }
   }
-  
+
   return className;
 }
 
-function randomize(dispersion) {
-  return Math.round((Math.random()-0.5) * dispersion);
-};
-
-function scaleDeltas(deltas, oldWidth, newWidth) {
-  return {
-    x: deltas.x / oldWidth * newWidth,
-    y: deltas.y / oldWidth * newWidth,
-    r: deltas.r
-  };
-};
-
-function generateDeltas(width) {
-  return {
-    e: width === 0,
-    x: randomize(width/15),
-    y: randomize(width/15),
-    r: randomize(5),
-  };
-};
-
 class Card extends React.PureComponent {
-  updateState(props, nextProps) {
-    this.state = {
-      deltas    : this.state.deltas === undefined ? generateDeltas(props.width) : (this.state.deltas.e ? generateDeltas(nextProps.width) : scaleDeltas(this.state.deltas, props.width, nextProps.width)),
-      previousX : props.x,
-      previousY : props.y,
-      previousF : props.flip,
-      previousW : props.width,
-      previousH : props.height
-    };
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   let equalityFn = function(arg1, arg2) {
+  //     return JSON.stringify(arg1) === JSON.stringify(arg2);
+  //   }
 
-  constructor(props) {
-    super(props);
-    this.event = toolsAnim.getTransitionEvent();
-    this.updateState(props); 
-  }
+  //   let result = !equalityFn.apply(this, [this.props, nextProps]) || !equalityFn.apply(this, [this.state, nextState]);
+  //   console.log(`${this.props.id}: shouldComponentUpdate returned ${result}`);
+
+  //   return result;
+  // }
 
   componentWillReceiveProps(nextProps) {
-    this.updateState(this.props, nextProps);
+    if (nextProps.indexInOwner !== this.props.indexInOwner || this.props.ownerId !== nextProps.ownerId) {
+      console.log(`изменилось место карты: ${this.props.ownerId}:${this.props.indexInOwner} -> ${nextProps.ownerId}:${nextProps.indexInOwner}`);
+    }
+    let positionChanged = (nextProps.indexInOwner !== this.props.indexInOwner) || (nextProps.ownerId !== this.props.ownerId);
+    if (this.state.positionChanged !== positionChanged) {
+      this.setState({
+        positionChanged: positionChanged
+      });
+    }
+  }
+  animationCallback(event) {
+    console.log(`${this.props.id}: animationCallback called, marking position as unchaged`);
+
+    this.setState({
+      positionChanged: false
+    });
   }
 
-  getElementRef(element) {
-    this.cardRef = element;
-  }
-  
   render() {
     let className = buildClassName(this.props, this.state);
-    
-    let dx = Math.round(this.state.deltas.x + this.props.x);
-    let dy = Math.round(this.state.deltas.y + this.props.y);
-    let dr = this.state.deltas.r;
-    // Оставили 9 слоев, с запасом - для холдеров и их псевдоэлементов
-    let style = {
-      zIndex          : this.props.index + 10 + (this.props.shifted ? 100 : 0),
-      width           : this.props.width  + 'px',
-      height          : this.props.height + 'px'
-    };
-    style.webkitTransform = style.transform = `translate(${dx}px,${dy}px) rotate(${dr}deg)`;
-    this.cardRef && this.cardRef.addEventListener(toolsAnim.getTransitionEvent(), function(event) {
-      this.cardRef.classList.remove('animated');
-    }.bind(this));
+
+    let eventName = toolsAnim.getTransitionEvent();
+    let eventProp = 'on' + eventName[0].toUpperCase() + eventName.substr(1);
 
     return (
-      <div ref={this.getElementRef.bind(this)}
+      <div {...{
+        [eventProp]: this.animationCallback.bind(this)
+      }}
         className = {className}
         data-id   = {this.props.id}
-        style     = {style}
+        style     = {this.props.cardStyle(this.state)}
       >
         <div className="face"/>
         <div className="back"/>
@@ -131,14 +89,26 @@ Card.propTypes = {
   declined      : React.PropTypes.bool.isRequired,
   className     : React.PropTypes.string.isRequired,
   id            : React.PropTypes.string.isRequired,
-  index         : React.PropTypes.number,
   flip          : React.PropTypes.bool.isRequired,
   selected      : React.PropTypes.bool.isRequired,
   hovered       : React.PropTypes.string.isRequired,
-  width         : React.PropTypes.number.isRequired,
-  height        : React.PropTypes.number.isRequired,
-  x             : React.PropTypes.number.isRequired,
-  y             : React.PropTypes.number.isRequired
+  ownerId       : React.PropTypes.string.isRequired,
+  indexInOwner  : React.PropTypes.number.isRequired,
+  shifted       : React.PropTypes.array
 };
 
-export default Card;
+const mapStateToProps = function(state, ownProps) {
+  return {
+    cardStyle : function(componentState) {
+      return selectorsLayout.cardStyle(
+        state,
+        ownProps.id,
+        ownProps.shifted,
+        ownProps.deltas,
+        componentState.positionChanged
+      );
+    }
+  };
+};
+
+export default connect(mapStateToProps)(Card);

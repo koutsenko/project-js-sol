@@ -1,4 +1,4 @@
-.card {
+.mxwsol-card {
   border-radius : 0.5em;
   font-family   : m3w-card;
   left          : 0;
@@ -6,10 +6,10 @@
   position      : absolute;
   top           : 0;
 
-  &.animated {
-    transition  : transform 500ms
+  &:not(.moving) {
+    transition  : transform 500ms;
   }
-  
+
   &:not(.flipped) {
     .face {
       transform: rotateY(-180deg)
@@ -27,7 +27,7 @@
       transform: rotateY(180deg)
     }
   }
-  
+
   & .face,
   & .back {
     transition                    : 0.5s ease-in-out;
@@ -52,7 +52,7 @@
   }
 
   /**
-   * Общие моменты текстовой верстки уголков и центра фейса 
+   * Общие моменты текстовой верстки уголков и центра фейса
    */
   & .face:before,
   & .face:after {
@@ -63,7 +63,7 @@
   /**
    * Тюнинг текстового отступа уголков
    */
-  & .face:before { 
+  & .face:before {
     margin-left : 0.1em;
     text-indent : 0.1em;
   }
@@ -79,6 +79,12 @@
   &[data-id*='H'] {
     & .face {
       color     : red;
+    }
+  }
+  &[data-id*='S'],
+  &[data-id*='C'] {
+    & .face {
+      color     : black;
     }
   }
 }

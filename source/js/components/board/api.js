@@ -6,7 +6,7 @@ import   constantsBoard       from 'constants/board'                  ;
  * Здесь что-то типа action creators, но для setState а не для dispatch.
  */
 
-const cardDoubleClick = function(source_card_id) {  
+const cardDoubleClick = function(source_card_id) {
   let map = toolsRules.getHomeMap(this.props.board);
   let found = false;
 
@@ -17,10 +17,10 @@ const cardDoubleClick = function(source_card_id) {
       this.props.madeMove(source_card_id, constantsBoard.getHomePlace(parseInt(index)))
     }
   }, this);
-  
+
   if (!found) {
     alertFlash.call(this, source_card_id);
-  }     
+  }
 };
 
 const deckCardClick = function() {
@@ -55,31 +55,40 @@ const cardMove = function(source_card_id, target_id) {
 
   this.props.madeMove(source_card_id, target_holder_id);
 };
-  
+
 /**
- * 
+ *
  */
 const cardShift = function(cardIds, els, dx, dy) {
+  if (!Object.keys(this.state.shifted).length) {
+    let initial = {};
+    let shifted = {};
+
+    cardIds.forEach(function(id) {
+      let rect = els[id].getBoundingClientRect();
+      // let sl = window.pageXOffset || document.documentElement.scrollLeft;
+      // let st = window.pageYOffset || document.documentElement.scrollTop;
+      let x0 = this.props.fx.layout.size.l// - sl;
+      let y0 = this.props.fx.layout.size.t// - st;
+      initial[id] = [Math.round(rect.left-x0), Math.round(rect.top-y0)];
+      shifted[id] = [0, 0];
+    }, this);
+
+    this.setState({ initial, shifted });
+  }
+
   cardIds.forEach(function(id) {
-      if (!this.state.shifted[id]) {
-        let rect = els[id].getBoundingClientRect();
-        this.setState({
-          initial: Object.assign(this.state.initial, { [id]: [Math.round(rect.left), Math.round(rect.top)] }),
-          shifted: Object.assign(this.state.shifted, { [id]: [0, 0] })
-        });
-      }
+    this.state.shifted[id][0] += dx;
+    this.state.shifted[id][1] += dy;
 
-      this.state.shifted[id][0] += dx;
-      this.state.shifted[id][1] += dy;
+    let x = this.state.initial[id][0] + this.state.shifted[id][0];
+    let y = this.state.initial[id][1] + this.state.shifted[id][1];
 
-      let x = this.state.initial[id][0] + this.state.shifted[id][0];
-      let y = this.state.initial[id][1] + this.state.shifted[id][1];
-
-      els[id].style.webkitTransform = els[id].style.transform = `translate(${x}px,${y}px)`;      
+    els[id].style.webkitTransform = els[id].style.transform = `translate(${x}px,${y}px)`;
   }, this);
 };
-  
-const cardUnshift = function() {  
+
+const cardUnshift = function() {
     this.setState({
       shifted: {},
       initial: {}

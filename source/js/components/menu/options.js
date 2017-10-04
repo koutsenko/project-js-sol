@@ -10,6 +10,8 @@ class ButtonOptions extends React.PureComponent {
   render() {
     return (
       <MenuButton
+        btnIndex={this.props.btnIndex}
+        btnCount={this.props.btnCount}
         disabled={false}
         hint="Настройки правил, управления и анимаций"
         role="btn5"

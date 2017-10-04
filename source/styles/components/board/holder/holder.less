@@ -1,11 +1,13 @@
-.holder {
-  position          : relative;
+.mxwsol-holder {
+  // TODO данный position: absolute относится к layout машине и наверное д.б. вынесен в layout.less
+  position          : absolute;
   border-radius     : 0.5em;
   box-shadow        : 0 0 0.1em 0.1em rgba(255,255,0,0.1);
-  
+
   &:before {
+    color             : black;
     position          : absolute;
-    z-index           : -1;
+    // z-index           : -1;
     display           : inline-block;
     font-family       : 'm3w-card';
     opacity           : 0.25;

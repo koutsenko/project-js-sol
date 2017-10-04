@@ -9,9 +9,11 @@ import   Menu                 from 'components/menu'          ;
 import   Options              from 'components/popup/options' ;
 import   Records              from 'components/popup/records' ;
 import   Rules                from 'components/popup/rules'   ;
-import   Mask                 from 'components/mask'          ;
 
 import   gameActions          from 'actions/games'            ;
+
+import   selectorsLayout      from 'selectors/layout'         ;
+import   constantsLayout      from 'constants/layout'         ;
 
 class App extends React.PureComponent {
   onHashChange(event) {
@@ -50,11 +52,10 @@ class App extends React.PureComponent {
 
   render() {
     return (
-      <div id="app" className={(this.props.mini ? "mini" : "")}>
+      <div id={constantsLayout.appIdName} style={this.props.style} className={(this.props.mini ? "mini" : "")}>
         <Board      />
         <Menu       />
-        <div id="popups">
-          <Mask     />
+        <div id={constantsLayout.popupsIdName} className={this.props.mask ? 'visible' : null}>
           <Records  />
           <Rules    />
           <Options  />
@@ -66,7 +67,9 @@ class App extends React.PureComponent {
 
 const mapStateToProps = function(state) {
   return {
-    mini: state.fx.mini
+    style : selectorsLayout.appStyle(state),
+    mini  : state.fx.layout.mini,
+    mask  : state.fx.maskVisible
   };
 };
 

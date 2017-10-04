@@ -1,6 +1,8 @@
 import   React                from 'react'            ;
 import { connect }            from 'react-redux'      ;
 
+import   selectorsLayout      from 'selectors/layout' ;
+
 import   gameSelectors        from 'selectors/game'   ;
 import   toolsTime            from 'tools/time'       ;
 
@@ -40,7 +42,7 @@ class Status extends React.PureComponent {
 
   render() {
     return (
-      <div className="status">        
+      <div className="mxwsol-status" style={this.props.style}>
         "Косынка"<br />классика <br />
         <span style={{fontSize: '1.4em', lineHeight: '1em', opacity: this.props.mini ? '1' : '0', color: 'lightyellow', fontWeight: 'normal'}}>
           mini
@@ -59,8 +61,10 @@ const mapStateToProps = function(state) {
   let game = gameSelectors.getCurrentGame(state);
 
   return {
+    style   : selectorsLayout.holderStyle(state, 'status'),
     counter : state.board.index,
-    mini    : state.fx.mini,
+    mini    : state.fx.layout.mini,
+    layout  : state.fx.layout,
     time    : game ? game.time : undefined
   };
 };

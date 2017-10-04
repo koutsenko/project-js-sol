@@ -20,22 +20,22 @@ class Source extends React.PureComponent {
     this.ir = interact(this.props.selector);
     this.ir.styleCursor(false);
     this.ir.on('tap', this.tapHandler.bind(this));
-    
+
     this.irDrag = interact(this.props.selector);
     this.irDrag.styleCursor(false);
     this.toggleDnd(this.props.dndEnabled);
 
     this.state = {
       moving  : []  // хранилище id двигаемых карт
-    }; 
+    };
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (this.props.dndEnabled !== nextProps.dndEnabled) {
       this.toggleDnd(nextProps.dndEnabled);
     }
   }
-  
+
   toggleDnd(state) {
     if (state) {
       this.irDrag.draggable({
@@ -43,7 +43,7 @@ class Source extends React.PureComponent {
         onmove  : this.onDragMove.bind(this),
         onend   : this.onDragEnd.bind(this),
       });
-    } else {  
+    } else {
       this.irDrag.onstart = null;
       this.irDrag.onmove  = null;
       this.irDrag.onend   = null;
@@ -60,28 +60,28 @@ class Source extends React.PureComponent {
     }
 
 
-    let cardIds = selectorsBoard.getChildCards(id, this.props.board);   
-    console.log('стартуем драг-н-дроп, двигать будем карты с id', cardIds);
+    let cardIds = selectorsBoard.getChildCards(id, this.props.board);
+    // console.log('стартуем драг-н-дроп, двигать будем карты с id', cardIds);
     this.state.moving = cardIds;
     this.state.movingEls = {};
     cardIds.forEach(function(id) {
       this.state.movingEls[id] = event.target.parentElement.querySelector('[data-id="' + id + '"]');
     }.bind(this));
   }
-  
+
   onDragMove(event) {
     // debug выключаем консоль (мешает)
     // console.log('наращиваем дельту и двигаем');
-    this.props.api.cardShift(this.state.moving, this.state.movingEls, event.dx, event.dy);  
+    this.props.api.cardShift(this.state.moving, this.state.movingEls, event.dx, event.dy);
   }
 
 
   onDragEnd(event) {
-    console.log('закончили двигать');
+    // console.log('закончили двигать');
 
 
     if (event.interaction.dropTarget === null) {
-      console.log('это не дроп - поэтому вручную возвращаем карты');
+      // console.log('это не дроп - поэтому вручную возвращаем карты');
       this.props.api.cardUnshift();
     }
     this.state.moving = {};
@@ -94,7 +94,7 @@ class Source extends React.PureComponent {
 
   tapHandler(event) {
     if (this.isTappable()) {
-      console.log('source tapped');
+      // console.log('source tapped');
       let id = event.target.dataset['id'];
 
       if (constantsBoard.isCard(id)) {
@@ -116,7 +116,7 @@ class Source extends React.PureComponent {
         }
       }
     } else {
-      console.log('source tapped but ignored, because it is disabled');
+      // console.log('source tapped but ignored, because it is disabled');
     }
   }
 
@@ -126,7 +126,7 @@ class Source extends React.PureComponent {
 };
 
 Source.propTypes = {
-  selected      : React.PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */  
+  selected      : React.PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */
   selector      : React.PropTypes.string.isRequired,
   dndEnabled    : React.PropTypes.bool.isRequired,
   api           : React.PropTypes.object.isRequired

@@ -15,15 +15,14 @@ import   constantsBoard       from 'constants/board'  ;
  * Хотя наверное сделаю - ради чистоты кода
  */
 class Background extends React.PureComponent {
-  // странный Workaround на неготовность ("не отрисованность") refs props.selector...
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.selector && nextProps.selector) {
-      this.ir = interact(nextProps.selector);
-      this.ir.styleCursor(false);
-      this.ir.on('tap', this.tapHandler.bind(this));
-    }
+  constructor(props) {
+    super(props);
+
+    this.ir = interact(this.props.selector);
+    this.ir.styleCursor(false);
+    this.ir.on('tap', this.tapHandler.bind(this));
   }
-  
+
   isTappable(element) {
     let selected = !!this.props.selected;
     let acceptable = !matches(element, this.props.ignoreSelector);
@@ -43,8 +42,8 @@ class Background extends React.PureComponent {
 };
 
 Background.propTypes = {
-  selected      : React.PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */  
-  selector      : React.PropTypes.object,
+  selected      : React.PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */
+  selector      : React.PropTypes.string,
   ignoreSelector: React.PropTypes.string,
   api           : React.PropTypes.object.isRequired
 };

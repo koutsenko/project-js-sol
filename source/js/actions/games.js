@@ -23,7 +23,7 @@ export default {
 
       let state   = getState();
       let batch   = [];
-      let source  = selectorsBoard.getDeckCards(state).slice();
+      let source  = selectorsBoard.getHolderCards(state, constantsBoard.places.DECK).slice();
 
       // Раскладываем карты по стекам
       for (var i = 0; i < 7; i++) {
@@ -79,7 +79,7 @@ export default {
         let save = encodeURI(JSON.stringify(data));
         console.log('Dumping game save, length = ' + save.length);
         console.log(save);
-      }.bind(this), 0);      
+      }.bind(this), 0);
     };
   },
   completeGame: function() {
@@ -135,10 +135,10 @@ export default {
           continue;
         }
 
-        // иначе перемещаем найденные   
+        // иначе перемещаем найденные
         Object.keys(map).forEach(function(home_index) {
           let wantedCard  = map[home_index];
-          
+
           // смотрим верхние карты
           lastCards.forEach(function(id) {
             if (id === wantedCard) {
@@ -149,7 +149,7 @@ export default {
               });
             }
           });
-        }); 
+        });
       } while(!toolsRules.isGameEnd(getState()));
     }.bind(this);
   },

@@ -13,6 +13,8 @@ class ButtonAuto extends React.PureComponent {
   render() {
     return (
       <MenuButton
+        btnIndex={this.props.btnIndex}
+        btnCount={this.props.btnCount}
         hint="Автозавершение игры, если открыты все карты"
         role="btn3"
         text="Автосбор"

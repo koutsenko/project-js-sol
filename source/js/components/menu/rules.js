@@ -10,6 +10,8 @@ class ButtonRules extends React.PureComponent {
   render() {
     return (
       <MenuButton
+        btnIndex={this.props.btnIndex}
+        btnCount={this.props.btnCount}
         disabled={false}
         hint="Как играть в пасьянс-косынку"
         role="btn6"

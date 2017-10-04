@@ -4,8 +4,14 @@ export default function(state, action) {
   if (state === undefined) {
     state = {
       maskVisible         : false,    // видимость маски вьюпорта
-      mini                : false,    // признак работы на маленьком экране
-      dndEnabled          : true      // включенность dnd
+      dndEnabled          : true,     // включенность dnd
+      layout              : {
+        mini: false,                  // признак работы на маленьком экране
+        size: {                       // размер корневого контейнера
+          w: 0,
+          h: 0
+        }
+      }
     }
   }
 
@@ -31,7 +37,7 @@ export default function(state, action) {
 
     case constantsActions.FX_RESIZE:
       var newState = JSON.parse(JSON.stringify(state));
-      newState.mini = action.mini !== undefined ? action.mini : newState.mini;
+      newState.layout = action.layout;
       return newState;
   }
 

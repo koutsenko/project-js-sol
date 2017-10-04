@@ -1,4 +1,5 @@
-import React from 'react';
+import React            from 'react'            ;
+import constantsLayout  from 'constants/layout' ;
 
 /**
  * Класс водяного знака с копирайтом.
@@ -6,10 +7,11 @@ import React from 'react';
 class Watermark extends React.PureComponent {
   render() {
     return (
-      <div className="watermark">        
-        <div>Версия v1.1b © 2017</div>
-        <div>сборка для порталов</div>
-        <div className="bigger">min2win <small>&</small> min3win</div> 
+      <div id={constantsLayout.watermarkIdName}>
+        <div>Версия v1.1c © 2017</div>
+        <div>дата сборки 29.09.2017</div>
+        <div>создано для порталов</div>
+        <div className="bigger">min2win <small>&</small> min3win</div>
       </div>
     );
   }

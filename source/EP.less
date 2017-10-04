@@ -1,7 +1,10 @@
+@import 'styles/reset'                                        ;
+
 @import 'styles/controls/popup'                               ;
 @import 'styles/controls/popup/checkbox'                      ;
 @import 'styles/controls/popup/radio'                         ;
 
+@import 'styles/components/app'                               ;
 @import 'styles/components/board/base'                        ;
 @import 'styles/components/board/mini'                        ;
 @import 'styles/components/board/normal'                      ;
@@ -26,39 +29,9 @@
 @import 'styles/components/popup/rules'                       ;
 @import 'styles/components/popup/options'                     ;
 
-@import 'styles/layout/layout-common'                         ;
-@import 'styles/layout/layout-0'                              ;
-@import 'styles/layout/layout-1'                              ;
-@import 'styles/layout/layout-2'                              ;
+@import 'styles/common'                                       ;
 
 @font-face {
-  font-family: 'm3w-card';
-  src: data-uri('res/solcard.woff') format('woff');
-}
-
-html {
-  font-family: "Trebuchet MS", "Lucida Grande", "Lucida Sans Unicode", "Lucida Sans", Tahoma, sans-serif;
-  background-size: 100vw 100vh;
-  background-image: svg-gradient(ellipse at center, #22ad32 0%,#001100 100%);
-}
-
-body {
-  margin: 0;
-  overflow: hidden;
-}
-
-/**
- * Disabling text selections for menu buttons, cards etc
- */
-:not(input) {
-  user-select : none;
-}
-
-/**
- * Disabling tap highlight
- * Специфичное свойство, не существует в виде tap-highlight-color, а соответственно и не поддерживается в autoprefixer.
- * FIXME Возможно этот вендор-хак следует просто удалить.
- */
-html {
-  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  font-family : 'm3w-card'                                    ;
+  src         : data-uri('res/solcard.woff') format('woff')   ;
 }

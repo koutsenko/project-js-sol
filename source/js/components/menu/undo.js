@@ -12,6 +12,8 @@ class ButtonUndo extends React.PureComponent {
   render() {
     return (
       <MenuButton
+        btnIndex={this.props.btnIndex}
+        btnCount={this.props.btnCount}
         hint="Отмена последнего сделанного хода"
         role="btn2"
         text="Ход назад"

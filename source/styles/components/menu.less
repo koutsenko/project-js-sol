@@ -1,21 +1,25 @@
 /**
  * Игровое меню
  */
-#menu {
-  opacity: 0.9;
-  
+#mxwsol-menu {
+  opacity         : 0.9;
+  pointer-events  : none;
+
   & > * {
-    filter            : brightness(0.8);
-    cursor            : pointer;
+    background-color  : darkgreen;
     border-radius     : 1em;
     box-shadow        : 0 0 0.1em 0.1em rgba(0,0,0,0.25);
-    background-color  : darkgreen;
+    cursor            : pointer;
+    filter            : brightness(0.8);
+    overflow          : hidden;
+    pointer-events    : all;
+    text-overflow     : ellipsis;          /* Подстраховка от слома layout */
     & > div {
       background      : black;
+      border-radius   : 1em 1em 0 0;
       color           : greenyellow;
       text-transform  : lowercase;
       text-align      : center;
-      border-radius   : 1em 1em 0 0;
     }
   }
 

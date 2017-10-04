@@ -69,7 +69,7 @@ class Target extends React.PureComponent {
       hovered_card_id = undefined;
       target_holder_id = hovered_id;
     }
-        
+
     let target_card_id = selectorsBoard.getLastCard(target_holder_id, this.props.board);
 
     this.state = {
@@ -80,13 +80,13 @@ class Target extends React.PureComponent {
       target_holder_id  : target_holder_id
     };
   }
-  
+
   onDragEnter(event) {
-    console.log('в дропзону вошли');
+    // console.log('в дропзону вошли');
     this.updateIds(event.relatedTarget.dataset['id'], event.target.dataset['id']);
-    
+
     if (this.state.source_holder_id === this.state.target_holder_id) {
-      console.log('игнорим, т.к. исходная позиция');
+      // console.log('игнорим, т.к. исходная позиция');
       return;
     }
 
@@ -99,28 +99,28 @@ class Target extends React.PureComponent {
 
     let highlight = acceptable ? constantsBoard.highlights.ACCEPT : constantsBoard.highlights.DENY;
 
-    this.props.api.targetHover(this.state.target_card_id || this.state.target_holder_id, highlight);    
+    this.props.api.targetHover(this.state.target_card_id || this.state.target_holder_id, highlight);
   }
 
   onDragLeave(event) {
-    console.log('из дропзоны вышли');
+    // console.log('из дропзоны вышли');
     this.updateIds(event.relatedTarget.dataset['id'], event.target.dataset['id']);
     if (this.state.source_holder_id === this.state.target_holder_id) {
-      console.log('игнорим, т.к. исходная позиция');
+      // console.log('игнорим, т.к. исходная позиция');
       return;
     }
     this.props.api.targetUnhover();
   }
 
   onDrop(event) {
-    console.log('дропнули в дропзону')
+    // console.log('дропнули в дропзону')
     this.updateIds(event.relatedTarget.dataset['id'], event.target.dataset['id']);
     if (this.state.source_holder_id === this.state.target_holder_id) {
-      console.log('игнорим, т.к. исходная позиция');
+      // console.log('игнорим, т.к. исходная позиция');
       this.props.api.cardUnshift();
       return;
     }
-    
+
     let acceptable = toolsRules.canAcceptDrop(
       this.state.source_card_id   ,
       this.state.source_holder_id ,
@@ -141,7 +141,7 @@ class Target extends React.PureComponent {
     this.props.api.cardUnshift();
     this.props.api.targetUnhover();
   }
-  
+
   handleDoubleClick(event) {
     let target = event.target;
     let id = target.dataset['id'];
@@ -166,7 +166,7 @@ class Target extends React.PureComponent {
       let source_id = this.props.selected;
 
       this.updateIds(source_id, event.target.dataset['id']);
-      
+
 
       if (this.state.source_card_id === this.state.target_card_id) {
         console.log('повторный клик на выбранную карту - раньше это был дабл-клик хэндлер');
@@ -180,7 +180,7 @@ class Target extends React.PureComponent {
           this.state.target_card_id,
           this.state.target_holder_id
         )) {
-          this.props.api.cardSelectCancel();          
+          this.props.api.cardSelectCancel();
           this.props.api.cardMove(source_id, event.target.dataset['id']);
         } else {
           this.props.api.alertFlash(event.target.dataset['id']);

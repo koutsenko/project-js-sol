@@ -1,0 +1,49 @@
+/**
+ * TODO разгрести эти стили
+ */
+@maxSafeZIndex: 16777271;
+
+
+#mxwsol-board  { z-index: 0              };
+#mxwsol-menu   { z-index: 1              };
+#mxwsol-popups { z-index: @maxSafeZIndex };
+
+#mxwsol-app {
+
+  #mxwsol-popups {
+    position          : absolute;
+    top               : 0;
+    left              : 0;
+    right             : 0;
+    bottom            : 0;
+    &:not(.visible) {
+      display         : none;
+    }
+  }
+
+  #mxwsol-popups::before {
+    content           : '';
+    background-color  : black;
+    opacity           : .5;
+    position          : absolute;
+    top               : 0;
+    left              : 0;
+    right             : 0;
+    bottom            : 0;
+  }
+
+  #mxwsol-popups.visible {
+    .popup {
+      display  : none;
+      position : absolute;
+      top      : 0;
+      left     : 0;
+      right    : 0;
+
+      &.visible {
+        display : block;
+      }
+    }
+  }
+}
+

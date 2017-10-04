@@ -1,0 +1,12 @@
+body {
+  margin            : 0             ;
+  overflow          : hidden        ;
+}
+
+#mxwsol {
+  display           : inline-block  ;
+  height            : 100%          ;
+  width             : 100%          ;
+  background-color  : black       ;
+  background-image  : none          ;
+}
