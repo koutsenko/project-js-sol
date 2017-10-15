@@ -77,11 +77,13 @@ const getChildCards     = function(cardId, boardState) {
   return result;
 };
 
-const getNeighbours      = function(state, cardId) {
-  let holderId = getHolderId(cardId, state.board);
+const getLowerFlips      = function(state, cardId) {
+  let holder = state.board.holders.byId[getHolderId(cardId, state.board)];
 
-  return state.board.holders.byId[holderId].map(function(cardId) {
-    return state.board.cards.byId[cardId];
+  return holder.filter(function(id) {
+    return holder.indexOf(id) <= holder.indexOf(cardId);
+  }).map(function(id) {
+    return state.board.cards.byId[id].flip;
   });
 };
 
@@ -97,12 +99,12 @@ const resultFunc = (ids, cards) => ids.map((id) => cards[id]);
 const resultFunc2 = (id) => id;
 
 export default {
-  getNonDeckCards : createSelector([getNonDeckCards , getCards ] , resultFunc),
-  getHolderId     : createSelector([getHolderId   ] , resultFunc2),
-  getLastCards    : createSelector([getLastCards  ] , resultFunc2),
-  getLastCard     : createSelector([getLastCard   ] , resultFunc2),
-  getChildCards   : createSelector([getChildCards ] , resultFunc2),
-  getNeighbours   : createSelector([getNeighbours ] , resultFunc2),
-  getCardIndex    : createSelector([getCardIndex  ] , resultFunc2),
-  getHolderCards  : getHolderCards
+  getNonDeckCards     : createSelector([getNonDeckCards , getCards ] , resultFunc),
+  getHolderId         : createSelector([getHolderId   ] , resultFunc2),
+  getLastCards        : createSelector([getLastCards  ] , resultFunc2),
+  getLastCard         : createSelector([getLastCard   ] , resultFunc2),
+  getChildCards       : createSelector([getChildCards ] , resultFunc2),
+  getLowerFlips       : createSelector([getLowerFlips ] , resultFunc2),
+  getCardIndex        : createSelector([getCardIndex  ] , resultFunc2),
+  getHolderCards      : getHolderCards
 };

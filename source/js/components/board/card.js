@@ -34,20 +34,9 @@ function buildClassName(props, state) {
 }
 
 class Card extends React.PureComponent {
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   let equalityFn = function(arg1, arg2) {
-  //     return JSON.stringify(arg1) === JSON.stringify(arg2);
-  //   }
-
-  //   let result = !equalityFn.apply(this, [this.props, nextProps]) || !equalityFn.apply(this, [this.state, nextState]);
-  //   console.log(`${this.props.id}: shouldComponentUpdate returned ${result}`);
-
-  //   return result;
-  // }
-
   componentWillReceiveProps(nextProps) {
     if (nextProps.indexInOwner !== this.props.indexInOwner || this.props.ownerId !== nextProps.ownerId) {
-      console.log(`изменилось место карты: ${this.props.ownerId}:${this.props.indexInOwner} -> ${nextProps.ownerId}:${nextProps.indexInOwner}`);
+      console.log(`изменилось место карты ${this.props.id}: ${this.props.ownerId}:${this.props.indexInOwner} -> ${nextProps.ownerId}:${nextProps.indexInOwner}`);
     }
     let positionChanged = (nextProps.indexInOwner !== this.props.indexInOwner) || (nextProps.ownerId !== this.props.ownerId);
     if (this.state.positionChanged !== positionChanged) {

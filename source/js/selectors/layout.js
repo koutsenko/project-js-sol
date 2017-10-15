@@ -1,21 +1,10 @@
-import { createSelector/*, createSelectorCreator, defaultMemoize*/ }  from 'reselect'         ;
+import { createSelector }       from 'reselect'         ;
 
-import   createCachedSelector                                     from 're-reselect'      ;
-// import   isEqual                                                  from 'lodash/isEqual'   ;
+import   createCachedSelector   from 're-reselect'      ;
 
-import   constantsApp                                             from 'constants/app'    ;
-import   constantsBoard                                           from 'constants/board'  ;
-import   selectorsBoard                                           from 'selectors/board'  ;
-
-// const maxSafeZIndex = 16777271;
-
-
-/*const createDeepEqualSelector = createSelectorCreator(
-  defaultMemoize,
-  function(value1, value2) {
-    return JSON.stringify(value1) === JSON.stringify(value2);
-  }
-);*/
+import   constantsApp           from 'constants/app'    ;
+import   constantsBoard         from 'constants/board'  ;
+import   selectorsBoard         from 'selectors/board'  ;
 
 /**
  * Функции-хелперы.
@@ -89,17 +78,18 @@ const holderStyle = createCachedSelector(
 );
 
 const cardStyle = createCachedSelector(
+  (state, cardId) => cardId,
   getW,
   getH,
   getMode,
   getMini,
-  (state, cardId) => selectorsBoard.getNeighbours(state, cardId),
+  (state, cardId) => selectorsBoard.getLowerFlips(state, cardId),
   (state, cardId) => selectorsBoard.getCardIndex(state, cardId),
   (state, cardId) => selectorsBoard.getHolderId(cardId, state.board),
   (state, cardId, shifted) => shifted,
   (state, cardId, shifted, deltas) => deltas,
   (state, cardId, shifted, deltas, animated) => animated,
-  (w, h, mode, mini, neighbours, index, holderId, shifted, deltas, animated) => getCardStyle(w, h, mode, mini, index, neighbours, holderId, shifted, deltas, animated)
+  (id, w, h, mode, mini, flips, index, holderId, shifted, deltas, animated) => getCardStyle(id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated)
 )(
   (state, cardId) => `${cardId}`,
   /*{
@@ -131,20 +121,20 @@ const menuButtonStyle = createCachedSelector(
 /**
  * "Тяжелые вычисления"
  */
-const getStackCardShift = function(index, height, holderId, cards, mini) {
+const getStackCardShift = function(index, height, holderId, flips, mini) {
   if (!constantsBoard.isStackPlace(holderId)) {
     return 0;
   }
 
   // если карта закрытая или первая открытая, тупо возвращаем как раньше
-  if (cards[index].flip || index === 0 || (index > 0 && cards[index-1].flip)) {
+  if (flips[index] || index === 0 || (index > 0 && flips[index-1])) {
     return (height/5) * index;
   }
 
   // иначе если вторая, третья и так далее из всех открытых карт
   // console.log('подсчет для карты ' , cards[index]);
-  let flippedCount = cards.filter(function(card) { return !card.flip } ).length;
-  let nonFlippedCount = cards.length - flippedCount;
+  let flippedCount = flips.filter(function(flip) { return !flip } ).length;
+  let nonFlippedCount = flips.length - flippedCount;
   // console.log('для холдера ' + holderId + ' кол-во открытых карт равно ' + flippedCount + ', а кол-во закрытых = ' + nonFlippedCount);
 
   let base = (height/5) * nonFlippedCount;
@@ -159,7 +149,10 @@ const getStackCardShift = function(index, height, holderId, cards, mini) {
   return base + delta;
 }
 
-const getHolderStyle = function(w, h, mode, holderId) {
+const getHolderStyle = function(w, h, mode, holderId, innerCall) {
+  if (!innerCall) {
+    console.log(`holder ${holderId}: selector was forced to recalculate style`);
+  }
   let holderLeft    ;
   let holderTop     ;
 
@@ -219,7 +212,8 @@ const getHolderStyle = function(w, h, mode, holderId) {
   };
 };
 
-const getCardStyle = function(w, h, mode, mini, index, neighbours, holderId, shifted, deltas, animated) {
+const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated) {
+  console.log(`card ${id}: selector was forced to recalculate style`);
 
   // надо вызвать   y += getStackCardShift(index, cardHeight, holderId, neighbours, mini);
 
@@ -250,16 +244,15 @@ const getCardStyle = function(w, h, mode, mini, index, neighbours, holderId, shi
   x += cardWidth*deltas.x/100;
   y += cardHeight*deltas.y/100;
 
-  let ownerHolderStyle = getHolderStyle(w, h, mode, holderId);
+  let ownerHolderStyle = getHolderStyle(w, h, mode, holderId, true);
 
   x +=  denormalize(ownerHolderStyle.left);
   y +=  denormalize(ownerHolderStyle.top);
 
-  y += getStackCardShift(index, cardHeight, holderId, neighbours, mini);
+  y += getStackCardShift(index, cardHeight, holderId, flips, mini);
 
   cardTransform = `translate(${x}px,${y}px) rotate(${deltas.r}deg)`;
 
-  console.log(`${neighbours[index].id}: selector was forced to recalculate style`);
   return {
     height          : cardHeight,
     transform       : cardTransform,
@@ -270,6 +263,7 @@ const getCardStyle = function(w, h, mode, mini, index, neighbours, holderId, shi
 };
 
 const getMenuStyle = function(w, h, mode, btnCount) {
+  console.log(`menu: selector was forced to recalculate card style`);
   let fontSize    ;
   let menuWidth   ; // вычисляется первым... поэтому для красоты не по алфавиту
   let menuBottom  ;
@@ -317,6 +311,7 @@ const getMenuStyle = function(w, h, mode, btnCount) {
 };
 
 const getMenuButtonStyle = function(w, h, mode, btnCount, btnIndex) {
+  console.log(`menu button index ${btnIndex}: selector was forced to recalculate style`);
   let menuButtonSide    ;
   let menuButtonMargin  ;
   let menuButtonLeft    ;

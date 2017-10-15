@@ -1,45 +1,13 @@
 import   React                from 'react'            ;
 import { connect }            from 'react-redux'      ;
 
+import   Timer                from 'components/board/status/timer'     ;
+
 import   selectorsLayout      from 'selectors/layout' ;
 
 import   gameSelectors        from 'selectors/game'   ;
-import   toolsTime            from 'tools/time'       ;
 
 class Status extends React.PureComponent {
-  constructor(props) {
-    super(props);
-    this.state.time = Date.now();
-    this.state.elapsed = '00:00';
-  }
-
-  stopTimer() {
-    clearInterval(this.timer);
-  }
-
-  startTimer(time) {
-    clearInterval(this.timer);
-    this.state.time = time || Date.now();
-    this.timer = setInterval(function() {
-      this.setState({
-        elapsed: toolsTime.calculateElapsedTime(this.state.time, Date.now())
-      });
-    }.bind(this), 1000);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if ((this.props.time === undefined) && (nextProps.time !== undefined)) {
-      // новая игра
-      this.startTimer(Date.now());
-    } else if ((this.props.time !== undefined) && (nextProps.time !== undefined) && (nextProps.time !== this.props.time)) {
-      // загруженная не новая игра
-      this.startTimer(nextProps.time);
-    } else if ((this.props.time !== undefined) && (nextProps.time === undefined)) {
-      // останов игры
-      this.stopTimer();
-    }
-  }
-
   render() {
     return (
       <div className="mxwsol-status" style={this.props.style}>
@@ -50,7 +18,7 @@ class Status extends React.PureComponent {
         <div className="counter">
           ход {this.props.counter}
           <br/>
-          {this.state.elapsed}
+          <Timer/>
         </div>
       </div>
     );
@@ -58,14 +26,10 @@ class Status extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game = gameSelectors.getCurrentGame(state);
-
   return {
     style   : selectorsLayout.holderStyle(state, 'status'),
     counter : state.board.index,
     mini    : state.fx.layout.mini,
-    layout  : state.fx.layout,
-    time    : game ? game.time : undefined
   };
 };
 
