@@ -2,6 +2,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = function(env) {
   var config = {
@@ -36,7 +37,7 @@ module.exports = function(env) {
         loader : 'babel-loader',
         exclude: /node_modules/,
         query: {
-          presets: ['react', 'es2015']
+          presets: ['react']
         }
       },
       {
@@ -98,13 +99,9 @@ module.exports = function(env) {
 
   if (env.prod) {
     config.plugins.push(
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-          drop_console: true,
-          unsafe: true,
-        },
-        sourceMap: true
+      new UglifyJSPlugin({
+        sourceMap : true,
+        parallel  : true
       })
     );
     config.plugins.push(
