@@ -67,13 +67,19 @@ window.addEventListener('load', function() {
     </Provider>
   ), parent));
 
-  window.addEventListener('resize', windowChangeHandler.bind(this));
-  window.addEventListener('scroll', windowChangeHandler.bind(this));
+  window.addEventListener('resize', windowChangeHandler.bind(this), {
+    'passive': true
+  });
+  window.addEventListener('scroll', windowChangeHandler.bind(this), {
+    'passive': true
+  });
 
   // выключаем браузерные жесты на iPhone кроме неотключаемого history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
   ["gesturestart", "gesturechange", "gestureend", "touchstart", "touchmove", "touchend"].forEach(function(eventName) {
     child.addEventListener(eventName, function(event) {
       event.preventDefault();
+    }, {
+      'passive': true
     });
   });
 });
