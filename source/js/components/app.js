@@ -35,18 +35,6 @@ class App extends React.PureComponent {
   }
 
   componentDidMount() {
-    let cmd = hashTools.getHashCmd();
-    let p1 = hashTools.getHashParm();
-
-    if (cmd === 'load') {
-      this.props.load(p1);
-      window.history.pushState('', '/', window.location.pathname);
-    } else if (cmd === 'deal') {
-      this.props.deal(p1 || Date.now());
-    } else {
-      this.props.deal(Date.now());
-    }
-
     window.onhashchange = this.onHashChange.bind(this);
   }
 

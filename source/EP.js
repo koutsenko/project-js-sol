@@ -10,6 +10,8 @@ import   rootReducer      from 'reducers/_root'           ;
 import   constantsActions from 'constants/actions'        ;
 import   actionsApp       from 'actions/app'              ;
 import   constantsLayout  from 'constants/layout'         ;
+import   hashTools        from 'tools/hash'               ;
+import   actionsGames     from 'actions/games'            ;
 
 // import { composeWithDevTools }  from 'redux-devtools-extension' ;
 // const composeEnhancers = composeWithDevTools({
@@ -18,8 +20,23 @@ import   constantsLayout  from 'constants/layout'         ;
 // const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
 const md    = new MobileDetect(window.navigator.userAgent);
 const store = createStore(rootReducer, rootMiddleware);
-let parent  = document.querySelector('#'+constantsLayout.rootId), child;
 
+// предварительно проведем какую-то работу, еще до этапа рендера
+const initGameState = function() {
+  let cmd = hashTools.getHashCmd();
+  let p1 = hashTools.getHashParm();
+
+  if (cmd === 'load') {
+    store.dispatch(actionsGames.load(p1));
+    window.history.pushState('', '/', window.location.pathname);
+  } else if (cmd === 'deal') {
+    store.dispatch(actionsGames.deal(p1 || Date.now()));
+  } else {
+    store.dispatch(actionsGames.deal(Date.now()));
+  }
+}
+
+let parent  = document.querySelector('#'+constantsLayout.rootId), child;
 const getWHLT = function() {
   let rect = parent.getBoundingClientRect();
 
@@ -42,6 +59,7 @@ const windowChangeHandler = function() {
 };
 
 window.addEventListener('load', function() {
+  initGameState();
   actionsApp.resize(md, getWHLT())(store.dispatch, store.getState);
   child = ReactDOM.findDOMNode(ReactDOM.render((
     <Provider store={store}>
