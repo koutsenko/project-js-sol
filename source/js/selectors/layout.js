@@ -83,18 +83,17 @@ const holderStyle = createCachedSelector(
  */
 const cardStyle = createCachedSelector(
   (cardId) => cardId,
-  (cardId, turnState, layoutState) => getW(layoutState),
-  (cardId, turnState, layoutState) => getH(layoutState),
-  (cardId, turnState, layoutState) => getMode(layoutState),
-  (cardId, turnState, layoutState) => getMini(layoutState),
-  (cardId, turnState) => selectorsTurn.getHolderFlips(turnState, cardId),
-  (cardId, turnState) => selectorsTurn.getCardIndex(turnState, cardId),
-  (cardId, turnState) => selectorsTurn.getHolderId(turnState, cardId),
-  (cardId, turnState) => selectorsTurn.getNeighbours(turnState, cardId),
-  (cardId, turnState, layoutState, shifted) => shifted,
-  (cardId, turnState, layoutState, shifted, deltas) => deltas,
-  (cardId, turnState, layoutState, shifted, deltas, animated) => animated,
-  (id, w, h, mode, mini, flips, index, holderId, holder, shifted, deltas, animated) => getCardStyle(id, w, h, mode, mini, index, flips, holderId, holder, shifted, deltas, animated)
+  (cardId, flips) => flips,
+  (cardId, flips, ownerId) => ownerId,
+  (cardId, flips, ownerId, indexInOwner) => indexInOwner,
+  (cardId, flips, ownerId, indexInOwner, layoutState) => getW(layoutState),
+  (cardId, flips, ownerId, indexInOwner, layoutState) => getH(layoutState),
+  (cardId, flips, ownerId, indexInOwner, layoutState) => getMode(layoutState),
+  (cardId, flips, ownerId, indexInOwner, layoutState) => getMini(layoutState),
+  (cardId, flips, ownerId, indexInOwner, layoutState, shifted) => shifted,
+  (cardId, flips, ownerId, indexInOwner, layoutState, shifted, deltas) => deltas,
+  (cardId, flips, ownerId, indexInOwner, layoutState, shifted, deltas, animated) => animated,
+  (id, flips, holderId, index, w, h, mode, mini, shifted, deltas, animated) => getCardStyle(id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated)
 )(
   (cardId) => cardId,
   /*{
@@ -126,11 +125,7 @@ const menuButtonStyle = createCachedSelector(
 /**
  * "Тяжелые вычисления"
  */
-const getStackCardShift = function(id, index, height, holderId, holder, flips, mini) {
-  if (!constantsBoard.isStackPlace(holderId)) {
-    return 0;
-  }
-
+const getStackCardShift = function(id, index, height, flips, mini) {
   // если карта закрытая или первая открытая, тупо возвращаем как раньше
   if (!(flips.indexOf(id)+1) || index === 0) {
     return (height/5) * index;
@@ -139,7 +134,7 @@ const getStackCardShift = function(id, index, height, holderId, holder, flips, m
   // иначе если вторая, третья и так далее из всех открытых карт
   // console.log('подсчет для карты ' , cards[index]);
   let flippedCount = flips.length;
-  let nonFlippedCount = holder.length - flippedCount;
+  let nonFlippedCount = (index + 1) - flippedCount;
   // console.log('для холдера ' + holderId + ' кол-во открытых карт равно ' + flippedCount + ', а кол-во закрытых = ' + nonFlippedCount);
 
   let base = (height/5) * nonFlippedCount;
@@ -217,7 +212,7 @@ const getHolderStyle = function(w, h, mode, holderId, innerCall) {
   };
 };
 
-const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, holder, shifted, deltas, animated) {
+const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated) {
   console.log(`card ${id}: selector was forced to recalculate style`);
 
   let cardHeight      ;
@@ -252,7 +247,9 @@ const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, hold
   x +=  denormalize(ownerHolderStyle.left);
   y +=  denormalize(ownerHolderStyle.top);
 
-  y += getStackCardShift(id, index, cardHeight, holderId, holder, flips, mini);
+  if (constantsBoard.isStackPlace(holderId)) {
+    y += getStackCardShift(id, index, cardHeight, flips, mini);
+  }
 
   cardTransform = `translate(${x}px,${y}px) rotate(${deltas.r}deg)`;
 

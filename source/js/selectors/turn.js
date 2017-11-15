@@ -1,16 +1,19 @@
 import { createSelector }     from 'reselect'         ;
+import   createCachedSelector from 're-reselect'      ;
 
 import   constantsBoard       from 'constants/board'  ;
 
-const getCardIndex      = createSelector(
-  (boardState)          => boardState ,
-  (boardState, cardId)  => cardId     ,
-  function(boardState, cardId) {
-    let holderId = getHolderId(boardState, cardId);
-    let holder = boardState.holders.byId[holderId];
-
-    return holder.indexOf(cardId);
+const getParentFlips    = createCachedSelector(
+  (cardId)                  => cardId ,
+  (cardId, holder)          => holder ,
+  (cardId, holder, flipped) => flipped,
+  function(cardId, holder, flipped) {
+    return holder.slice(0, holder.indexOf(cardId)+1).filter(function(id) {
+      return !!(flipped.indexOf(id) + 1);
+    });
   }
+)(
+  (cardId) => cardId
 );
 
 const getChildCards     = createSelector(
@@ -51,19 +54,6 @@ const getHolderId       = createSelector(
   }
 );
 
-const getHolderFlips      = createSelector(
-  (boardState)          => boardState ,
-  (boardState, cardId)  => cardId     ,
-  function(boardState, cardId) {
-    let holder  = boardState.holders.byId[getHolderId(boardState, cardId)];
-    let flipped = boardState.flipped;
-
-    return holder.filter(function(id) {
-      return !!(flipped.indexOf(id)+1);
-    });
-  }
-);
-
 const getLastCard       = createSelector(
   (boardState)          => boardState ,
   (boardState, holderId)=> holderId   ,
@@ -83,14 +73,6 @@ const getLastCards      = createSelector(
   }
 );
 
-const getNeighbours     = createSelector(
-  (boardState)          => boardState ,
-  (boardState, cardId)  => cardId     ,
-  function(boardState, cardId) {
-    return boardState.holders.byId[getHolderId(boardState, cardId)];
-  }
-);
-
 const getNonDeckCards   = createSelector(
   (boardState)          => boardState ,
   function(boardState) {
@@ -107,12 +89,10 @@ const getNonDeckCards   = createSelector(
 );
 
 export default {
-  getCardIndex    ,
+  getParentFlips  ,
   getChildCards   ,
   getHolderId     ,
-  getHolderFlips  ,
   getLastCard     ,
   getLastCards    ,
-  getNeighbours   ,
   getNonDeckCards
 };

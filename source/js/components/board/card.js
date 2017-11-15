@@ -14,7 +14,7 @@ function buildClassName(props, state) {
   if (props.shifted) {
     className += ' moving';
   }
-  if (props.flipped) {
+  if (props.flips.indexOf(props.id)+1) {
     className += ' flipped';
   }
 
@@ -78,7 +78,7 @@ Card.propTypes = {
   declined      : React.PropTypes.bool.isRequired,
   className     : React.PropTypes.string.isRequired,
   id            : React.PropTypes.string.isRequired,
-  flipped       : React.PropTypes.bool.isRequired,
+  flips         : React.PropTypes.array.isRequired,  // массив id открытых карт под текущей включительно.
   selected      : React.PropTypes.bool.isRequired,
   hovered       : React.PropTypes.string.isRequired,
   ownerId       : React.PropTypes.string.isRequired,
@@ -91,7 +91,9 @@ const mapStateToProps = function(state, ownProps) {
     cardStyle : function(componentState) {
       return selectorsLayout.cardStyle(
         ownProps.id,
-        state.turn,
+        ownProps.flips,
+        ownProps.ownerId,
+        ownProps.indexInOwner,
         state.fx.layout,
         ownProps.shifted,
         ownProps.deltas,

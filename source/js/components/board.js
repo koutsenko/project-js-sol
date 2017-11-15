@@ -56,6 +56,7 @@ class Board extends React.PureComponent {
   // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
   buildCards(holderId, source) {
     return source.map(function(cardId, index, all) {
+      let flips = selectorsTurn.getParentFlips(cardId, source, this.props.flipped);
       let deltas = this.state.deltas[cardId];
       if (!deltas) {
         deltas = generateDeltas();
@@ -67,7 +68,7 @@ class Board extends React.PureComponent {
           declined      = {this.state.declined === cardId}
           hovered       = {this.state.hovered[cardId] || ''}
           className     = {constantsLayout.cardClassName}
-          flipped       = {!!(this.props.flipped.indexOf(cardId) + 1)}
+          flips         = {flips}
           id            = {cardId}
           shifted       = {this.state.shifted[cardId]}
           selected      = {this.state.selected === cardId}
