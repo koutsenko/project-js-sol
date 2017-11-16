@@ -68,6 +68,7 @@ export default {
           holders : state.turn.holders,
           index   : state.turn.index
         },
+        seed    : game.seed,
         time    : toolsTime.calculateElapsedSeconds(game.time, Date.now()),
       };
       setTimeout(function() {

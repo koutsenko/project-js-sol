@@ -22,32 +22,16 @@ import   toolsRules           from 'tools/rules'                          ;
 import   toolsArray           from 'tools/array'                          ;
 import   constantsLayout      from 'constants/layout'                     ;
 
-/**
- * Временно генерация небрежностей для карт перемещена в <Board>
- * По причине необходимости знать их уже на этапе биндинга свойств <Card>.
- */
-const randomize = function(dispersion) {
-  return Math.round((Math.random()-0.5) * dispersion);
-};
-const generateDeltas = function() {
-  return {
-    x: randomize(9), // это теперь проценты!
-    y: randomize(9), // это теперь проценты!
-    r: randomize(5)   // это градусы как и было
-  };
-};
-
 class Board extends React.PureComponent {
 
   constructor(props) {
     super(props);
     this.state = {
-      deltas    : {}        , // { cardId : deltas-погрешности }
-      hovered   : {}        , // подсвечиваемая в процессе dnd-перетаскивания цель
-      selected  : undefined , // выбранная Source-карта
-      declined  : undefined , // ошибка выбора Source/Target карты или холдера
-      initial   : {}        , // начальные координаты карт до смещения (FIXME вероятно их тоже надо прокидывать в <Card>?)
-      shifted   : {}          // id смещенных вручную через dnd карт и их реальные координаты на момент дропа
+      hovered   : {}       , // подсвечиваемая в процессе dnd-перетаскивания цель
+      selected  : undefined, // выбранная Source-карта
+      declined  : undefined, // ошибка выбора Source/Target карты или холдера
+      initial   : {}       , // начальные координаты карт до смещения (FIXME вероятно их тоже надо прокидывать в <Card>?)
+      shifted   : {}         // id смещенных вручную через dnd карт и их реальные координаты на момент дропа
     };
   }
 
@@ -58,14 +42,9 @@ class Board extends React.PureComponent {
     return source.map(function(cardId, index, all) {
       let flipped = this.props.flipped.byId[holderId];
       let flips = selectorsTurn.getParentFlips(cardId, source, flipped);
-      let deltas = this.state.deltas[cardId];
-      if (!deltas) {
-        deltas = generateDeltas();
-        this.state.deltas[cardId] = deltas;
-      }
       return (
         <Card
-          deltas        = {deltas}
+          deltas        = {this.props.cardSeeds[cardId]}
           declined      = {this.state.declined === cardId}
           hovered       = {this.state.hovered[cardId] || ''}
           className     = {constantsLayout.cardClassName}
@@ -177,8 +156,9 @@ class Board extends React.PureComponent {
 
 const mapStateToProps = function(state) {
   let game = selectorsGame.getCurrentGame(state.game);
-  
+
   return {
+    cardSeeds       : selectorsGame.getCardSeeds(game.seed),
     flipped         : state.turn.flipped,
     holderCards     : function(holderId) {
       return state.turn.holders.byId[holderId]

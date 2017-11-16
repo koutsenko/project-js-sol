@@ -24,18 +24,20 @@ export default function(state, action) {
         result            : undefined,  // Выигранная сейчас игра - результат
         controlsEnabled   : false,
         time              : undefined,
+        seed              : action.seed,
         status            : gameConstants.gameState.GAME_CREATED
       };
       break;
 
     case constantsActions.GAME_END:
-      var id = newState.allIds[newState.allIds.length-1];      
+      var id = newState.allIds[newState.allIds.length-1];
       newState.byId[id] = {
         time              : undefined
       };
       break;
-          
+
     case constantsActions.LOAD_SCENARIO: // сигнал о загрузке сохраненки, он пока что обходится без анимации и поэтому controlsEnabled = true. TODO - переосмыслить...
+      var data = JSON.parse(decodeURI(action.data));
       var id = tsRandom();
       newState.allIds.push(id);
       newState.byId[id] = {
@@ -43,7 +45,8 @@ export default function(state, action) {
         index             : undefined,  // Выигранная сейчас игра - место в таблице рекордов, 0-4 для рекорда, 5 для нерекорда
         result            : undefined,  // Выигранная сейчас игра - результат
         controlsEnabled   : true,
-        time              : toolsTime.calculateUnixTimeBefore(action.currentTime, JSON.parse(decodeURI(action.data)).time),
+        time              : toolsTime.calculateUnixTimeBefore(action.currentTime, data.time),
+        seed              : data.seed,
         status            : gameConstants.gameState.STATE_STARTED
       };
       break;
@@ -59,9 +62,9 @@ export default function(state, action) {
       var id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].status  = gameConstants.gameState.STATE_COMPLETED;
       newState.byId[id].result  = action.result;
-      newState.byId[id].time    = undefined; 
+      newState.byId[id].time    = undefined;
       break;
-    
+
     case constantsActions.WEAK_RECORD:
       var id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].index = 5;
