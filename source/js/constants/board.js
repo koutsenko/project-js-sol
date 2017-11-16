@@ -1,3 +1,5 @@
+import toolsArray  from 'tools/array';
+
 const highlights = {
   ACCEPT  : 'ACCEPT'  ,
   DENY    : 'DENY'
@@ -28,7 +30,7 @@ const isStackPlace = function(place) {
 };
 
 const isHomePlace = function(place) {
-  return ['HOME1', 'HOME2', 'HOME3', 'HOME4'].indexOf(place) !== -1; 
+  return ['HOME1', 'HOME2', 'HOME3', 'HOME4'].indexOf(place) !== -1;
 }
 
 const getHomePlace = function(index) {
@@ -59,6 +61,12 @@ const getStackPlaces = function() {
 const suits = ['H', 'D', 'C', 'S'];
 const ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
 
+const cards = toolsArray.flatten(ranks.map(function(rank) {
+  return suits.map(function(suit) {
+    return rank+suit;
+  });
+}));
+
 const ranksL2H = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '=', 'J', 'Q', 'K'];
 
-export default { getHomePlace, isCard, highlights, places, suits, ranks, isStackPlace, isHomePlace, getHomePlaces, getStackPlaces, ranksL2H };
+export default { cards, getHomePlace, isCard, highlights, places, suits, ranks, isStackPlace, isHomePlace, getHomePlaces, getStackPlaces, ranksL2H };

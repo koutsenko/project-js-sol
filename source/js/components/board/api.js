@@ -1,13 +1,13 @@
-import   selectorsBoard       from 'selectors/board'                  ;
-import   toolsRules           from 'tools/rules'                      ;
-import   constantsBoard       from 'constants/board'                  ;
+import   selectorsTurn  from 'selectors/turn'   ;
+import   toolsRules     from 'tools/rules'      ;
+import   constantsBoard from 'constants/board'  ;
 
 /**
  * Здесь что-то типа action creators, но для setState а не для dispatch.
  */
 
 const cardDoubleClick = function(source_card_id) {
-  let map = toolsRules.getHomeMap(this.props.board);
+  let map = toolsRules.getHomeMap(this.props.turn);
   let found = false;
 
   Object.keys(map).forEach(function(index) {
@@ -48,10 +48,10 @@ const cardSelectOk = function(id) {
  */
 const cardMove = function(source_card_id, target_id) {
   // FIXME что здесь делают эти выборки? Тот кто вызвал cardMove уже всё вычислил!
-  let boardState        = this.props.board;
-  let source_holder_id  = selectorsBoard.getHolderId(source_card_id, boardState);
-  let target_holder_id  = selectorsBoard.getHolderId(target_id, boardState) || target_id;
-  let target_card_id    = selectorsBoard.getLastCard(target_holder_id, boardState);
+  let boardState        = this.props.turn;
+  let source_holder_id  = selectorsTurn.getHolderId(boardState, source_card_id);
+  let target_holder_id  = selectorsTurn.getHolderId(boardState, target_id) || target_id;
+  let target_card_id    = selectorsTurn.getLastCard(boardState, target_holder_id);
 
   this.props.madeMove(source_card_id, target_holder_id);
 };

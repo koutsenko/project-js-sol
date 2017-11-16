@@ -5,7 +5,7 @@ import   React                from 'react'            ;
 import   ReactDOM             from 'react-dom'        ;
 
 import   constantsBoard       from 'constants/board'  ;
-import   selectorsBoard       from 'selectors/board'  ;
+import   selectorsTurn        from 'selectors/turn'   ;
 import   toolsRules           from 'tools/rules'      ;
 
 /**
@@ -58,19 +58,19 @@ class Target extends React.PureComponent {
   }
 
   updateIds(source_card_id, hovered_id) {
-    let source_holder_id = selectorsBoard.getHolderId(source_card_id, this.props.board);
+    let source_holder_id = selectorsTurn.getHolderId(this.props.turn, source_card_id);
     let hovered_card_id;
     let target_holder_id;
 
     if (constantsBoard.isCard(hovered_id)) {
       hovered_card_id = hovered_id;
-      target_holder_id = selectorsBoard.getHolderId(hovered_card_id, this.props.board);
+      target_holder_id = selectorsTurn.getHolderId(this.props.turn, hovered_card_id);
     } else {
       hovered_card_id = undefined;
       target_holder_id = hovered_id;
     }
 
-    let target_card_id = selectorsBoard.getLastCard(target_holder_id, this.props.board);
+    let target_card_id = selectorsTurn.getLastCard(this.props.turn, target_holder_id);
 
     this.state = {
       hovered_card_id   : hovered_card_id,
@@ -149,8 +149,8 @@ class Target extends React.PureComponent {
       return;
     };
 
-    let holderId = selectorsBoard.getHolderId(id, this.props.board);
-    if (((holderId === constantsBoard.places.OPEN) || constantsBoard.isStackPlace(holderId)) && (selectorsBoard.getChildCards(id, this.props.board).length===1)) {
+    let holderId = selectorsTurn.getHolderId(this.props.turn, id);
+    if (((holderId === constantsBoard.places.OPEN) || constantsBoard.isStackPlace(holderId)) && (selectorsTurn.getChildCards(this.props.turn, id).length===1)) {
       this.props.api.cardDoubleClick(id);
     }
   }

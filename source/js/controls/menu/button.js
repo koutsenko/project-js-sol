@@ -55,7 +55,7 @@ MenuButton.propTypes = {
 
 const mapStateToProps = function(state, ownProps) {
   return {
-    style : selectorsLayout.menuButtonStyle(state, ownProps.btnCount, ownProps.btnIndex)
+    style : selectorsLayout.menuButtonStyle(state.fx.layout, ownProps.btnCount, ownProps.btnIndex)
   };
 }
 

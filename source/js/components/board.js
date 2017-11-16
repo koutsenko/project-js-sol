@@ -15,7 +15,7 @@ import   Target               from 'components/board/listener/target'     ;
 
 import   actionsBoard         from 'actions/board'                        ;
 import   constantsBoard       from 'constants/board'                      ;
-import   selectorsBoard       from 'selectors/board'                      ;
+import   selectorsTurn        from 'selectors/turn'                       ;
 import   selectorsGame        from 'selectors/game'                       ;
 import   selectorsLayout      from 'selectors/layout'                     ;
 import   toolsRules           from 'tools/rules'                          ;
@@ -55,22 +55,22 @@ class Board extends React.PureComponent {
   // Как только в cards появятся ключи, сразу начнутся ремаунты вместо обновлений.
   // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
   buildCards(holderId, source) {
-    return source.map(function(card, index, all) {
-      let deltas = this.state.deltas[card.id];
+    return source.map(function(cardId, index, all) {
+      let deltas = this.state.deltas[cardId];
       if (!deltas) {
         deltas = generateDeltas();
-        this.state.deltas[card.id] = deltas;
+        this.state.deltas[cardId] = deltas;
       }
       return (
         <Card
           deltas        = {deltas}
-          declined      = {this.state.declined === card.id}
-          hovered       = {this.state.hovered[card.id] || ''}
+          declined      = {this.state.declined === cardId}
+          hovered       = {this.state.hovered[cardId] || ''}
           className     = {constantsLayout.cardClassName}
-          flip          = {!card.flip}
-          id            = {card.id}
-          shifted       = {this.state.shifted[card.id]}
-          selected      = {this.state.selected === card.id}
+          flipped       = {!!(this.props.flipped.indexOf(cardId) + 1)}
+          id            = {cardId}
+          shifted       = {this.state.shifted[cardId]}
+          selected      = {this.state.selected === cardId}
           ownerId       = {holderId}
           indexInOwner  = {index}
         />
@@ -174,14 +174,15 @@ class Board extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game = selectorsGame.getCurrentGame(state);
+  let game = selectorsGame.getCurrentGame(state.game);
 
   return {
-    holderCards  : function(holderId) {
-      return selectorsBoard.getHolderCards(state, holderId)
+    flipped         : state.turn.flipped,
+    holderCards     : function(holderId) {
+      return state.turn.holders.byId[holderId]
     },
     fx              : state.fx,
-    board           : state.board,
+    turn            : state.turn,
     disabled        : (game === undefined) || !game.controlsEnabled
   };
 }

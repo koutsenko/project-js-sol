@@ -1,10 +1,10 @@
-import { createSelector }       from 'reselect'         ;
+import { createSelector }     from 'reselect'         ;
 
-import   createCachedSelector   from 're-reselect'      ;
+import   createCachedSelector from 're-reselect'      ;
 
-import   constantsApp           from 'constants/app'    ;
-import   constantsBoard         from 'constants/board'  ;
-import   selectorsBoard         from 'selectors/board'  ;
+import   constantsApp         from 'constants/app'    ;
+import   constantsBoard       from 'constants/board'  ;
+import   selectorsTurn        from 'selectors/turn'   ;
 
 /**
  * Функции-хелперы.
@@ -21,9 +21,9 @@ const denormalize = function(value) {
 /**
  * Простые input-селекторы
  */
-const getW    = (state) => state.fx.layout.size.w;
-const getH    = (state) => state.fx.layout.size.h;
-const getMini = (state) => state.fx.layout.mini;
+const getW    = (layoutState) => layoutState.size.w;
+const getH    = (layoutState) => layoutState.size.h;
+const getMini = (layoutState) => layoutState.mini;
 
 /**
  * Сложный, но вспомогательный input-селектор
@@ -68,73 +68,78 @@ const appStyle = createSelector(
  * Непосредственно сами селекторы с параметрами
  */
 const holderStyle = createCachedSelector(
-  getW,
-  getH,
-  getMode,
-  (state, holderId) => holderId,
-  (w, h, mode, holderId) => getHolderStyle(w, h, mode, holderId)
+  (holderId) => holderId,
+  (holderId, layoutState) => getW(layoutState),
+  (holderId, layoutState) => getH(layoutState),
+  (holderId, layoutState) => getMode(layoutState),
+  (holderId, w, h, mode) => getHolderStyle(w, h, mode, holderId)
 )(
-  (state, holderId) => holderId
+  (holderId) => holderId
 );
 
+/**
+ * FIXME getHolderFlips: мониторится state, и все равно будет пересчет
+ * даже если state.turn не изменился..
+ */
 const cardStyle = createCachedSelector(
-  (state, cardId) => cardId,
-  getW,
-  getH,
-  getMode,
-  getMini,
-  (state, cardId) => selectorsBoard.getLowerFlips(state, cardId),
-  (state, cardId) => selectorsBoard.getCardIndex(state, cardId),
-  (state, cardId) => selectorsBoard.getHolderId(cardId, state.board),
-  (state, cardId, shifted) => shifted,
-  (state, cardId, shifted, deltas) => deltas,
-  (state, cardId, shifted, deltas, animated) => animated,
-  (id, w, h, mode, mini, flips, index, holderId, shifted, deltas, animated) => getCardStyle(id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated)
+  (cardId) => cardId,
+  (cardId, turnState, layoutState) => getW(layoutState),
+  (cardId, turnState, layoutState) => getH(layoutState),
+  (cardId, turnState, layoutState) => getMode(layoutState),
+  (cardId, turnState, layoutState) => getMini(layoutState),
+  (cardId, turnState) => selectorsTurn.getHolderFlips(turnState, cardId),
+  (cardId, turnState) => selectorsTurn.getCardIndex(turnState, cardId),
+  (cardId, turnState) => selectorsTurn.getHolderId(turnState, cardId),
+  (cardId, turnState) => selectorsTurn.getNeighbours(turnState, cardId),
+  (cardId, turnState, layoutState, shifted) => shifted,
+  (cardId, turnState, layoutState, shifted, deltas) => deltas,
+  (cardId, turnState, layoutState, shifted, deltas, animated) => animated,
+  (id, w, h, mode, mini, flips, index, holderId, holder, shifted, deltas, animated) => getCardStyle(id, w, h, mode, mini, index, flips, holderId, holder, shifted, deltas, animated)
 )(
-  (state, cardId) => `${cardId}`,
+  (cardId) => cardId,
   /*{
     selectorCreator: createDeepEqualSelector
   }*/
 );
 
 const menuStyle = createCachedSelector(
-  getW,
-  getH,
-  getMode,
-  (state, btnCount) => btnCount,
+  (btnCount, layoutState) => getW(layoutState),
+  (btnCount, layoutState) => getH(layoutState),
+  (btnCount, layoutState) => getMode(layoutState),
+  (btnCount) => btnCount,
   (w, h, mode, btnCount) => getMenuStyle(w, h, mode, btnCount)
 )(
-  (state, btnCount) => btnCount
+  (btnCount) => btnCount
 );
 
 const menuButtonStyle = createCachedSelector(
   getW,
   getH,
   getMode,
-  (state, btnCount) => btnCount,
-  (state, btnCount, btnIndex) => btnIndex,
+  (layoutState, btnCount) => btnCount,
+  (layoutState, btnCount, btnIndex) => btnIndex,
   (w, h, mode, btnCount, btnIndex) => getMenuButtonStyle(w, h, mode, btnCount, btnIndex)
 )(
-  (state, btnCount, btnIndex) => btnCount + ':' + btnIndex
+  (layoutState, btnCount, btnIndex) => btnCount + ':' + btnIndex
 );
 
 /**
  * "Тяжелые вычисления"
  */
-const getStackCardShift = function(index, height, holderId, flips, mini) {
+const getStackCardShift = function(id, index, height, holderId, holder, flips, mini) {
   if (!constantsBoard.isStackPlace(holderId)) {
     return 0;
   }
 
   // если карта закрытая или первая открытая, тупо возвращаем как раньше
-  if (flips[index] || index === 0 || (index > 0 && flips[index-1])) {
+  if (!(flips.indexOf(id)+1) || index === 0) {
     return (height/5) * index;
   }
 
   // иначе если вторая, третья и так далее из всех открытых карт
   // console.log('подсчет для карты ' , cards[index]);
-  let flippedCount = flips.filter(function(flip) { return !flip } ).length;
-  let nonFlippedCount = flips.length - flippedCount;
+  let flippedCount = flips.length;
+  let nonFlippedCount = holder.length - flippedCount;
   // console.log('для холдера ' + holderId + ' кол-во открытых карт равно ' + flippedCount + ', а кол-во закрытых = ' + nonFlippedCount);
 
   let base = (height/5) * nonFlippedCount;
@@ -212,10 +217,8 @@ const getHolderStyle = function(w, h, mode, holderId, innerCall) {
   };
 };
 
-const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated) {
+const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, holder, shifted, deltas, animated) {
   console.log(`card ${id}: selector was forced to recalculate style`);
-
-  // надо вызвать   y += getStackCardShift(index, cardHeight, holderId, neighbours, mini);
 
   let cardHeight      ;
   let cardWidth       ;
@@ -249,7 +252,7 @@ const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shif
   x +=  denormalize(ownerHolderStyle.left);
   y +=  denormalize(ownerHolderStyle.top);
 
-  y += getStackCardShift(index, cardHeight, holderId, flips, mini);
+  y += getStackCardShift(id, index, cardHeight, holderId, holder, flips, mini);
 
   cardTransform = `translate(${x}px,${y}px) rotate(${deltas.r}deg)`;
 

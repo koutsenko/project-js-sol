@@ -1,10 +1,14 @@
 export default {
   CARD_BACK_BY_PLAYER           : 'CARD_BACK_BY_PLAYER'           ,
   CARD_MOVE_BY_ENGINE           : 'CARD_MOVE_BY_ENGINE'           ,
-  CARD_MOVE_BY_PLAYER           : 'CARD_MOVE_BY_PLAYER'           , 
+  CARD_MOVE_BY_PLAYER           : 'CARD_MOVE_BY_PLAYER'           ,
   CLOSE_RECORDS                 : 'CLOSE_RECORDS'                 ,
   CLOSE_RULES                   : 'CLOSE_RULES'                   ,
   CLOSE_OPTIONS                 : 'CLOSE_OPTIONS'                 ,
+  CORE_CARD_BACK_BY_PLAYER      : 'CORE_CARD_BACK_BY_PLAYER'      ,
+  CORE_CARD_FLIP_BY_ENGINE      : 'CORE_CARD_FLIP_BY_ENGINE'      ,
+  CORE_CARD_MOVE_BY_ENGINE      : 'CORE_CARD_MOVE_BY_ENGINE'      ,
+  CORE_CARD_MOVE_BY_PLAYER      : 'CORE_CARD_MOVE_BY_PLAYER'      ,
   FX_RESIZE                     : 'FX_RESIZE'                     ,
   GAME_CREATED                  : 'GAME_CREATED'                  , /** Сигнал о создании игры и начале раздачи карт */
   GAME_COMPLETE                 : 'GAME_COMPLETE'                 ,

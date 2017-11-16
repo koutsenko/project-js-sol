@@ -18,7 +18,7 @@ export default function(store) {
             let game = state.game.byId[gameId];
             store.dispatch({
               result  : {
-                moves: state.board.index,
+                moves: state.turn.index,
                 nick: "тест",
                 time: toolsTime.calculateElapsedTime(game.time, Date.now())
               },
@@ -29,7 +29,7 @@ export default function(store) {
       }
 
       // отдельно обрабатываем конец игры, чтобы показать таблицу рекордов
-      if (action.type === constantsActions.GAME_COMPLETE) {       
+      if (action.type === constantsActions.GAME_COMPLETE) {
         store.dispatch(actionsRecords.write(action.result));
         store.dispatch({
           congrats: true,

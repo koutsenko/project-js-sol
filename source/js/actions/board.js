@@ -1,6 +1,6 @@
 import constantsActions from 'constants/actions' ;
 import constantsBoard   from 'constants/board'   ;
-import selectorsBoard   from 'selectors/board'   ;
+import selectorsTurn    from 'selectors/turn'    ;
 import toolsRules       from 'tools/rules'       ;
 
 /**
@@ -10,9 +10,9 @@ import toolsRules       from 'tools/rules'       ;
 function madeMove(source_card_id, target_holder_id) {
   return function(dispatch, getState) {
     dispatch({
-      card_id       : source_card_id,
-      target_type   : target_holder_id,
-      type          : constantsActions.CARD_MOVE_BY_PLAYER
+      card_id           : source_card_id,
+      target_holder_id  : target_holder_id,
+      type              : constantsActions.CARD_MOVE_BY_PLAYER
     });
   }
 };
@@ -28,17 +28,17 @@ let deckClick = function() {
 let deckCardClick = function() {
   return function(dispatch, getState) {
     let state = getState();
-    let holder = state.board.holders.byId[constantsBoard.places.DECK];
+    let holder = state.turn.holders.byId[constantsBoard.places.DECK];
     let card_id = holder[holder.length - 1];
     dispatch({
-      card_id     : card_id,
-      target_type : constantsBoard.places.OPEN,
-      type        : constantsActions.CARD_MOVE_BY_PLAYER
+      card_id           : card_id,
+      target_holder_id  : constantsBoard.places.OPEN,
+      type              : constantsActions.CARD_MOVE_BY_PLAYER
     });
   };
 };
 
-export default { 
+export default {
   madeMove            ,
   deckClick           ,
   deckCardClick

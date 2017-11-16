@@ -4,7 +4,7 @@ import { connect }            from 'react-redux'      ;
 
 import   actionsRecords       from 'actions/records'  ;
 import   Popup                from 'controls/popup'   ;
-import   gameSelectors        from 'selectors/game'   ;
+import   selectorsGame        from 'selectors/game'   ;
 
 class Records extends React.PureComponent {
   buildTable() {
@@ -108,7 +108,7 @@ const mapDispatchToProps = function(dispatch) {
 };
 
 const mapStateToProps = function(state) {
-  let game = gameSelectors.getCurrentGame(state) || {};
+  let game = selectorsGame.getCurrentGame(state.game) || {};
 
   return {
     recordsCongrats : state.popup.recordsCongrats ,

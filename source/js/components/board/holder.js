@@ -35,7 +35,7 @@ Holder.propTypes = {
 
 const mapStateToProps = function(state, ownProps) {
   return {
-    holderStyle: selectorsLayout.holderStyle(state, ownProps.id)
+    holderStyle: selectorsLayout.holderStyle(ownProps.id, state.fx.layout)
   };
 };
 

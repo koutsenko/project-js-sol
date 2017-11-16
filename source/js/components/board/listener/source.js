@@ -5,7 +5,7 @@ import   React                from 'react'            ;
 import   ReactDOM             from 'react-dom'        ;
 
 import   constantsBoard       from 'constants/board'  ;
-import   selectorsBoard       from 'selectors/board'  ;
+import   selectorsTurn        from 'selectors/turn'   ;
 import   toolsRules           from 'tools/rules'      ;
 
 /**
@@ -53,14 +53,14 @@ class Source extends React.PureComponent {
 
   onDragStart(event) {
     let id = event.target.dataset['id'];
-    if (this.props.selected || !constantsBoard.isCard(id) || !toolsRules.isAllowableCard(id, this.props.board)) {
+    if (this.props.selected || !constantsBoard.isCard(id) || !toolsRules.isAllowableCard(this.props.turn, id)) {
       interact.stop(event);
       this.props.api.alertFlash(id);
       return;
     }
 
 
-    let cardIds = selectorsBoard.getChildCards(id, this.props.board);
+    let cardIds = selectorsTurn.getChildCards(this.props.turn, id);
     // console.log('стартуем драг-н-дроп, двигать будем карты с id', cardIds);
     this.state.moving = cardIds;
     this.state.movingEls = {};
@@ -98,10 +98,10 @@ class Source extends React.PureComponent {
       let id = event.target.dataset['id'];
 
       if (constantsBoard.isCard(id)) {
-        if (!toolsRules.isAllowableCard(id, this.props.board)) {
+        if (!toolsRules.isAllowableCard(this.props.turn, id)) {
           this.props.api.alertFlash(id);
         } else {
-          let holderId = selectorsBoard.getHolderId(id, this.props.board);
+          let holderId = selectorsTurn.getHolderId(this.props.turn, id);
           if (holderId === constantsBoard.places.DECK) {
             this.props.api.deckCardClick();
           } else {

@@ -67,7 +67,7 @@ class App extends React.PureComponent {
 
 const mapStateToProps = function(state) {
   return {
-    style : selectorsLayout.appStyle(state),
+    style : selectorsLayout.appStyle(state.fx.layout),
     mini  : state.fx.layout.mini,
     mask  : state.fx.maskVisible
   };

@@ -14,7 +14,7 @@ function buildClassName(props, state) {
   if (props.shifted) {
     className += ' moving';
   }
-  if (props.flip) {
+  if (props.flipped) {
     className += ' flipped';
   }
 
@@ -78,7 +78,7 @@ Card.propTypes = {
   declined      : React.PropTypes.bool.isRequired,
   className     : React.PropTypes.string.isRequired,
   id            : React.PropTypes.string.isRequired,
-  flip          : React.PropTypes.bool.isRequired,
+  flipped       : React.PropTypes.bool.isRequired,
   selected      : React.PropTypes.bool.isRequired,
   hovered       : React.PropTypes.string.isRequired,
   ownerId       : React.PropTypes.string.isRequired,
@@ -90,8 +90,9 @@ const mapStateToProps = function(state, ownProps) {
   return {
     cardStyle : function(componentState) {
       return selectorsLayout.cardStyle(
-        state,
         ownProps.id,
+        state.turn,
+        state.fx.layout,
         ownProps.shifted,
         ownProps.deltas,
         componentState.positionChanged

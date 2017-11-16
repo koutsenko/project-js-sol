@@ -9,18 +9,18 @@ export default function(store) {
   return function(next) {
     return function(action) {
       let state = getState();
-      let game = selectorsGame.getCurrentGame(state);
+      let game = selectorsGame.getCurrentGame(state.game);
       if ((action.type === constantsActions.CLOSE_RECORDS) && (game.result !== undefined)) {
         console.log('Закрытие таблицы рекордов после окончания игры');
         let batch = [];
         for (var i = 0; i < 4; i++) {
-          let holder = state.board.holders.byId['HOME' + (i+1)];
+          let holder = state.turn.holders.byId['HOME' + (i+1)];
           for (var j = holder.length; j > 0; j--) {
             batch.push({
-              card_id       : holder[j-1],
-              flip          : true,
-              target_type   : constantsBoard.places.DECK,
-              type          : constantsActions.CARD_MOVE_BY_ENGINE
+              card_id           : holder[j-1],
+              flipped           : false,
+              target_holder_id  : constantsBoard.places.DECK,
+              type              : constantsActions.CARD_MOVE_BY_ENGINE
             });
           }
         }
@@ -31,7 +31,7 @@ export default function(store) {
 
           }, index*100);
           timers.push(timer);
-        });        
+        });
 
       } else if (action.type === constantsActions.GAME_CREATED) {
         // Очищаем анимации, игрок не захотел смотреть на анимацию сбора карт

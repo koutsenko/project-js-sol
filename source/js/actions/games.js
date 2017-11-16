@@ -1,6 +1,6 @@
 import constantsActions from 'constants/actions'  ;
 import constantsBoard   from 'constants/board'    ;
-import selectorsBoard   from 'selectors/board'    ;
+import selectorsTurn    from 'selectors/turn'     ;
 import selectorsGame    from 'selectors/game'     ;
 import toolsRules       from 'tools/rules'        ;
 import toolsTime        from 'tools/time'         ;
@@ -23,28 +23,26 @@ export default {
 
       let state   = getState();
       let batch   = [];
-      let source  = selectorsBoard.getHolderCards(state, constantsBoard.places.DECK).slice();
+      let source  = state.turn.holders.byId[constantsBoard.places.DECK].slice();
 
       // Раскладываем карты по стекам
       for (var i = 0; i < 7; i++) {
         for (var j = 0; j <= i; j++) {
-          let card = source.pop();
           batch.push({
-            card_id       : card.id,
-            flip          : i !== j,
-            target_type   : constantsBoard.places['STACK' + (i+1)],
-            type          : constantsActions.CARD_MOVE_BY_ENGINE
+            card_id           : source.pop(),
+            flipped           : i === j,
+            target_holder_id  : constantsBoard.places['STACK' + (i+1)],
+            type              : constantsActions.CARD_MOVE_BY_ENGINE
           });
         }
       }
 
       // Кладем одну в open
-      let card = source.pop();
       batch.push({
-        card_id       : card.id,
-        flip          : false,
-        target_type   : constantsBoard.places.OPEN,
-        type          : constantsActions.CARD_MOVE_BY_ENGINE
+        card_id           : source.pop(),
+        flipped           : true,
+        target_holder_id  : constantsBoard.places.OPEN,
+        type              : constantsActions.CARD_MOVE_BY_ENGINE
       });
 
       // Даем сигнал о старте игры
@@ -63,17 +61,14 @@ export default {
   dump: function() {
     return function(dispatch, getState) {
       let state = getState();
-      let game = selectorsGame.getCurrentGame(state);
-      let opened = state.board.cards.allIds.filter(function(id) {
-        return !state.board.cards.byId[id].flip
-      });
+      let game = selectorsGame.getCurrentGame(state.game);
       let data = {
         board: {
-          holders : state.board.holders,
-          index   : state.board.index
+          flipped : state.turn.flipped,
+          holders : state.turn.holders,
+          index   : state.turn.index
         },
         time    : toolsTime.calculateElapsedSeconds(game.time, Date.now()),
-        opened  : opened,
       };
       setTimeout(function() {
         let save = encodeURI(JSON.stringify(data));
@@ -94,16 +89,16 @@ export default {
         }
 
         // ищем карты, подходящие для перемещения в дома
-        let map = toolsRules.getHomeMap(getState().board);
+        let map = toolsRules.getHomeMap(getState().turn);
 
         // смотрим последние карты стеков и open
         let lastCards = constantsBoard.getStackPlaces().map(function(place) {
-          let holder = getState().board.holders.byId[place];
+          let holder = getState().turn.holders.byId[place];
           return holder.length ? holder[holder.length-1] : undefined;
         }).filter(function(card_id){
           return card_id !== undefined;
         });
-        let openHolder = getState().board.holders.byId[constantsBoard.places.OPEN];
+        let openHolder = getState().turn.holders.byId[constantsBoard.places.OPEN];
         let lastOpenCard = openHolder.length ? openHolder[openHolder.length - 1] : undefined;
         if (lastOpenCard !== undefined) {
           lastCards.push(lastOpenCard);
@@ -119,13 +114,13 @@ export default {
 
         // если нет, открываем карту и повторяем цикл
         if (!canMove) {
-          let deckHolder = getState().board.holders.byId[constantsBoard.places.DECK];
-          let openHolder = getState().board.holders.byId[constantsBoard.places.OPEN];
+          let deckHolder = getState().turn.holders.byId[constantsBoard.places.DECK];
+          let openHolder = getState().turn.holders.byId[constantsBoard.places.OPEN];
           if (deckHolder.length) {
             dispatch({
-              card_id     : deckHolder[deckHolder.length - 1],
-              target_type : constantsBoard.places.OPEN,
-              type        : constantsActions.CARD_MOVE_BY_PLAYER
+              card_id           : deckHolder[deckHolder.length - 1],
+              target_holder_id  : constantsBoard.places.OPEN,
+              type              : constantsActions.CARD_MOVE_BY_PLAYER
             });
           } else if (openHolder.length) {
             dispatch({
@@ -143,9 +138,9 @@ export default {
           lastCards.forEach(function(id) {
             if (id === wantedCard) {
               dispatch({
-                card_id       : id,
-                target_type   : constantsBoard.places['HOME'+(parseInt(home_index)+1)],
-                type          : constantsActions.CARD_MOVE_BY_PLAYER
+                card_id           : id,
+                target_holder_id  : constantsBoard.places['HOME'+(parseInt(home_index)+1)],
+                type              : constantsActions.CARD_MOVE_BY_PLAYER
               });
             }
           });
@@ -154,8 +149,11 @@ export default {
     }.bind(this);
   },
   revertTurn: function() {
-    return {
-      type: constantsActions.REVERT
+    return function(dispatch, getState) {
+      dispatch({
+        turn : getState().turn.previous,
+        type : constantsActions.REVERT
+      });
     };
   }
 };

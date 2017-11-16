@@ -27,8 +27,8 @@ class Status extends React.PureComponent {
 
 const mapStateToProps = function(state) {
   return {
-    style   : selectorsLayout.holderStyle(state, 'status'),
-    counter : state.board.index,
+    style   : selectorsLayout.holderStyle('status', state.fx.layout),
+    counter : state.turn.index,
     mini    : state.fx.layout.mini,
   };
 };

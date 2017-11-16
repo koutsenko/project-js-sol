@@ -26,9 +26,9 @@ class ButtonAuto extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game = selectorsGame.getCurrentGame(state) || {};
+  let game = selectorsGame.getCurrentGame(state.game) || {};
 
-  return { 
+  return {
     disabled: (game.status !== constantsGame.gameState.STATE_STARTED) || !toolsRules.canComplete(state)
   };
 };
