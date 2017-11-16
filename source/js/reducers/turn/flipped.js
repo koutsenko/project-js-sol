@@ -7,7 +7,7 @@ import constantsBoard   from 'constants/board'      ;
  */
 export default function(state, action) {
   if (state === undefined) {
-    state = [];
+    state = buildFlipped();
   }
 
   switch(action.type) {
@@ -19,44 +19,63 @@ export default function(state, action) {
       return save.board.flipped;
 
     case constantsActions.GAME_CREATED:
-      return [];
+      return buildFlipped();
 
     case constantsActions.CORE_CARD_BACK_BY_PLAYER:
-      // FIXME spread operator!
-      var result = state.slice();
-      action.cards.forEach(function(id) {
-        if (result.indexOf(id)+1) {
-          result.splice(result.indexOf(id), 1);
-        }
-      }, this);
-      return result;
+      var newState = Object.assign({}, state);
+      newState.byId[constantsBoard.places.DECK] = [];
+      newState.byId[constantsBoard.places.OPEN] = [];
+      return newState;
 
     case constantsActions.CORE_CARD_MOVE_BY_PLAYER:
     case constantsActions.CORE_CARD_MOVE_BY_ENGINE:
-      var result = state.slice();
-      action.cards.forEach(function(id) {
-        if (action.flipped) {
-          if (!(result.indexOf(id)+1)) {
-            result.push(id);
-          }
-        } else {
-          if (!!(result.indexOf(id)+1)) {
-            result.splice(result.indexOf(id), 1);
-          }
+      // TODO здесь я впервые задумался о том, что в других играх может понадобиться закрыть карту при перемещении.
+      // TODO следует написать тесты и проверить работу экшенов с такими условиями.
+      var newState = Object.assign({}, state);
+      var sourceFlips = newState.byId[action.source_holder_id];
+      var targetFlips = newState.byId[action.target_holder_id];
+      var sourceIndex, targetIndex;
+      action.cards.forEach(function(cardId) {
+        sourceIndex = sourceFlips.indexOf(cardId);
+        targetIndex = targetFlips.indexOf(cardId);
+        //  вытаскиваем из sourceFlips в любом случае (при наличии)
+        if (sourceIndex !== -1) {
+          sourceFlips.splice(sourceIndex, 1);
+        }
+        // добавляем/убираем в targetFlips (по необходимости)
+        if (action.flipped && targetIndex === -1) {
+          targetFlips.push(cardId);
+        } else if (!action.flipped && targetIndex !== -1) {
+          targetFlips.splice(targetIndex, 1);
         }
       });
-      return result;
+      return newState;
 
     case constantsActions.CORE_CARD_FLIP_BY_ENGINE:
-      var result = state.slice();
-      action.cards.forEach(function(id) {
-        if (!(result.indexOf(id)+1)) {
-          result.push(id);
+      // TODO сейчас этот экшен только открывает карту. Не умеет закрывать.
+      var newState = Object.assign({}, state);
+      action.cards.forEach(function(cardId, index, all) {
+        var holderId = action.holders[index];
+        if (newState.byId[holderId].indexOf(cardId) === -1) {
+          newState.byId[holderId] = [...newState.byId[holderId], cardId];
         }
       });
-      return result;
+      return newState;
 
   }
 
   return state;
 };
+
+const buildFlipped = function() {
+  let flipped = {
+    byId    : {},
+    allIds  : Object.keys(constantsBoard.places)
+  };
+
+  flipped.allIds.forEach(function(holder) {
+    flipped.byId[holder] = [];
+  });
+
+  return flipped;
+}

@@ -65,17 +65,18 @@ export default function(store) {
           source_holder_id  : source_holder_id,
           target_holder_id  : action.target_holder_id,
           cards             : cards,
-          flipped           : action.target_holder_id === constantsBoard.places.OPEN || !!(state.turn.flipped.indexOf(action.card_id)+1),
+          flipped           : action.target_holder_id === constantsBoard.places.OPEN || !!(state.turn.flipped.byId[source_holder_id].indexOf(action.card_id)+1),
           turn              : JSON.parse(JSON.stringify(state.turn)),
           type              : constantsActions.CORE_CARD_MOVE_BY_PLAYER
         });
 
         if (constantsBoard.isStackPlace(source_holder_id) && source_holder.length > cards.length) {
           let lastStackCardId = source_holder[source_holder.length-cards.length-1];
-          if (!(state.turn.flipped.indexOf(lastStackCardId)+1)) {
+          if (!(state.turn.flipped.byId[source_holder_id].indexOf(lastStackCardId)+1)) {
             actions.push({
-              cards : [lastStackCardId],
-              type  : constantsActions.CORE_CARD_FLIP_BY_ENGINE
+              cards   : [lastStackCardId],
+              holders : [source_holder_id],
+              type    : constantsActions.CORE_CARD_FLIP_BY_ENGINE
             })
           }
         }

@@ -56,7 +56,8 @@ class Board extends React.PureComponent {
   // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
   buildCards(holderId, source) {
     return source.map(function(cardId, index, all) {
-      let flips = selectorsTurn.getParentFlips(cardId, source, this.props.flipped);
+      let flipped = this.props.flipped.byId[holderId];
+      let flips = selectorsTurn.getParentFlips(cardId, source, flipped);
       let deltas = this.state.deltas[cardId];
       if (!deltas) {
         deltas = generateDeltas();
@@ -176,7 +177,7 @@ class Board extends React.PureComponent {
 
 const mapStateToProps = function(state) {
   let game = selectorsGame.getCurrentGame(state.game);
-
+  
   return {
     flipped         : state.turn.flipped,
     holderCards     : function(holderId) {

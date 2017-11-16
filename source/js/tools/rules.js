@@ -3,13 +3,15 @@ import selectorsTurn  from 'selectors/turn' ;
 
 const canComplete = function(state) {
   return !selectorsTurn.getNonDeckCards(state.turn).some(function(id) {
-    return !!(state.turn.flipped.indexOf(id)+1);
+    let holderId = selectorsTurn.getHolderId(state.turn, id);
+    return !!(state.turn.flipped.byId[holderId].indexOf(id)+1);
   });
 };
 
 const isAllowableCard = function(boardState, cardId) {
-  let isFlipped   = !!(boardState.flipped.indexOf(cardId)+1);
-  let insideStack = constantsBoard.isStackPlace(selectorsTurn.getHolderId(boardState, cardId));
+  let holderId    = selectorsTurn.getHolderId(boardState, cardId);
+  let isFlipped   = !!(boardState.flipped.byId[holderId].indexOf(cardId)+1);
+  let insideStack = constantsBoard.isStackPlace(holderId);
   let isLast      = !!(selectorsTurn.getLastCards(boardState).indexOf(cardId)+1);
 
   return (isFlipped && insideStack) || isLast;
