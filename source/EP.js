@@ -54,13 +54,13 @@ const windowChangeHandler = function() {
   clearTimeout(resizeTimer);
   resizeTimer = setTimeout(function() {
     child.style.display = "";
-    actionsApp.resize(md, getWHLT())(store.dispatch, store.getState);
+    store.dispatch(actionsApp.resize(md, getWHLT()));
   }, 200);
 };
 
 window.addEventListener('load', function() {
   initGameState();
-  actionsApp.resize(md, getWHLT())(store.dispatch, store.getState);
+  store.dispatch(actionsApp.resize(md, getWHLT()));
   child = ReactDOM.findDOMNode(ReactDOM.render((
     <Provider store={store}>
       <App />
