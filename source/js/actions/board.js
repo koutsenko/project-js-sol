@@ -8,20 +8,16 @@ import toolsRules       from 'tools/rules'       ;
  * @param {*} target_holder_id  - id холдера куда дроп. редьюсер разберется.
  */
 function madeMove(source_card_id, target_holder_id) {
-  return function(dispatch, getState) {
-    dispatch({
-      card_id           : source_card_id,
-      target_holder_id  : target_holder_id,
-      type              : constantsActions.CARD_MOVE_BY_PLAYER
-    });
-  }
+  return {
+    card_id           : source_card_id,
+    target_holder_id  : target_holder_id,
+    type              : constantsActions.CARD_MOVE_BY_PLAYER
+  };
 };
 
 let deckClick = function() {
-  return function(dispatch, getState) {
-    dispatch({
-      type: constantsActions.CARD_BACK_BY_PLAYER
-    });
+  return {
+    type: constantsActions.CARD_BACK_BY_PLAYER
   };
 };
 

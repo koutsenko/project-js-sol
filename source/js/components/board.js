@@ -92,6 +92,10 @@ class Board extends React.PureComponent {
       .concat(toolsArray.flatten(homesCards))
       .concat(toolsArray.flatten(stacksCards))
       .sort(function(a, b) {
+        // FIXME Возможно, какая-то проблема preact, проявляется только в работе по file://.
+        if (!a.props || !b.props) {
+          return a.attributes.id.localeCompare(b.attributes.id);
+        }
         return a.props.id.localeCompare(b.props.id);
       }
     );
