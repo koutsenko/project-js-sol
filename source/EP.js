@@ -7,7 +7,6 @@ import   MobileDetect     from 'mobile-detect'            ;
 import   App              from 'components/app'           ;
 import   rootMiddleware   from 'middlewares/_root'        ;
 import   rootReducer      from 'reducers/_root'           ;
-import   constantsActions from 'constants/actions'        ;
 import   actionsApp       from 'actions/app'              ;
 import   constantsLayout  from 'constants/layout'         ;
 import   hashTools        from 'tools/hash'               ;
@@ -61,11 +60,13 @@ const windowChangeHandler = function() {
 window.addEventListener('load', function() {
   initGameState();
   store.dispatch(actionsApp.resize(md, getWHLT()));
-  child = ReactDOM.findDOMNode(ReactDOM.render((
+  ReactDOM.render((
     <Provider store={store}>
       <App />
     </Provider>
-  ), parent));
+  ), parent);
+
+  child = parent.querySelector('div');
 
   window.addEventListener('resize', windowChangeHandler.bind(this), {
     'passive': true

@@ -6,7 +6,7 @@ export default {
   calculateElapsedTime: function(startTime, endTime) {
     let elapsedSeconds  = Math.floor((endTime - startTime)/1000);
     let elapsedMinutes  = Math.floor(elapsedSeconds/60);
-  
+
     if (elapsedMinutes > 99) {
       return '99:99';
     } else {

@@ -30,7 +30,6 @@ export default function(store) {
         });
       } else if (action.type === constantsActions.CARD_MOVE_BY_ENGINE) {
         let source_holder_id  = selectorsTurn.getHolderId(state.turn, action.card_id);
-        let source_holder     = state.turn.holders.byId[source_holder_id];
 
         store.dispatch({
           source_holder_id  : source_holder_id,
@@ -89,4 +88,4 @@ export default function(store) {
       return next(action);
     };
   };
-};
+}

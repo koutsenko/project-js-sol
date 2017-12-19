@@ -4,7 +4,6 @@ import   createCachedSelector from 're-reselect'      ;
 
 import   constantsApp         from 'constants/app'    ;
 import   constantsBoard       from 'constants/board'  ;
-import   selectorsTurn        from 'selectors/turn'   ;
 
 /**
  * Функции-хелперы.
@@ -95,8 +94,8 @@ const cardStyle = createCachedSelector(
   (cardId, flips, ownerId, indexInOwner, layoutState, shifted, deltas, animated) => animated,
   (id, flips, holderId, index, w, h, mode, mini, shifted, deltas, animated) => getCardStyle(id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated)
 )(
-  (cardId) => cardId,
-  /*{
+  (cardId) => cardId/*
+  {
     selectorCreator: createDeepEqualSelector
   }*/
 );
@@ -156,12 +155,9 @@ const getHolderStyle = function(w, h, mode, holderId, innerCall) {
   let holderLeft    ;
   let holderTop     ;
 
-  let holderIndex   ;
   let holderMargin  ;
   let holderWidth   ;
   let holderHeight  ;
-
-  let rowIndex;
 
   let holderCoors = {
     [constantsBoard.places.DECK]  : [0, 0],

@@ -1,5 +1,6 @@
-import   React      from 'react'          ;
-import   interact   from 'interactjs'     ;
+import React     from 'react'     ;
+import PropTypes from 'prop-types';
+import interact  from 'interactjs';
 
 class Checkbox extends React.PureComponent {
   constructor(props) {
@@ -16,7 +17,7 @@ class Checkbox extends React.PureComponent {
   }
 
   componentDidMount() {
-    interact(this.refs["checkbox"]).on('tap', this.handleCheckboxClick.bind(this));
+    interact(this.inputRef).on('tap', this.handleCheckboxClick.bind(this));
   }
 
   handleCheckboxClick() {
@@ -27,18 +28,18 @@ class Checkbox extends React.PureComponent {
 
   render() {
     return (
-      <div ref="checkbox" className={"checkbox" + (this.state.checked ? " checked" : "") + (this.props.disabled ? " disabled" : "")}>
+      <div ref={(el) => { this.inputRef = el }} className={"checkbox" + (this.state.checked ? " checked" : "") + (this.props.disabled ? " disabled" : "")}>
         <span>{this.props.label}</span>
       </div>
     );
   }
-};
+}
 
 Checkbox.propTypes = {
-  disabled  : React.PropTypes.bool              ,
-  checked   : React.PropTypes.bool.isRequired   ,
-  label     : React.PropTypes.string.isRequired ,
-  handler   : React.PropTypes.func.isRequired
+  disabled  : PropTypes.bool              ,
+  checked   : PropTypes.bool.isRequired   ,
+  label     : PropTypes.string.isRequired ,
+  handler   : PropTypes.func.isRequired
 };
 
 export default Checkbox;

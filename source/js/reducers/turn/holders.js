@@ -11,19 +11,21 @@ export default function(state, action) {
     state = buildHolders();
   }
 
+  var newState;
+
   switch(action.type) {
     case constantsActions.REVERT:
       return action.turn.holders;
 
     case constantsActions.LOAD_SCENARIO:
-      let save = JSON.parse(decodeURI(action.data));
+      var save = JSON.parse(decodeURI(action.data));
       return save.board.holders;
 
     case constantsActions.GAME_CREATED:
       return buildHolders(action.seed);
 
     case constantsActions.CORE_CARD_BACK_BY_PLAYER:
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       var deck = newState.byId[constantsBoard.places.DECK];
       var open = newState.byId[constantsBoard.places.OPEN];
       action.cards.forEach(function(id) {
@@ -34,7 +36,7 @@ export default function(state, action) {
 
     case constantsActions.CORE_CARD_MOVE_BY_PLAYER:
     case constantsActions.CORE_CARD_MOVE_BY_ENGINE:
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       var source_holder   = newState.byId[action.source_holder_id];
       var target_holder   = newState.byId[action.target_holder_id];
       action.cards.forEach(function(id) {
@@ -45,7 +47,7 @@ export default function(state, action) {
   }
 
   return state;
-};
+}
 
 const buildHolders = function(seed) {
   let holders = {

@@ -1,4 +1,5 @@
 import   React                from 'react'                ;
+import   PropTypes            from 'prop-types'           ;
 import { connect }            from 'react-redux'          ;
 import { bindActionCreators } from 'redux'                ;
 
@@ -37,6 +38,13 @@ const mapDispatchToProps = function(dispatch) {
   return {
     completeGame: bindActionCreators(actionsGame.completeGame, dispatch)
   };
+};
+
+ButtonAuto.propTypes = {
+  btnIndex: PropTypes.number,
+  btnCount: PropTypes.number,
+  completeGame: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ButtonAuto);

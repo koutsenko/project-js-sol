@@ -13,9 +13,9 @@ export default {
     }
 
     for(t in transitions){
-        if( el.style[t] !== undefined ){
-            return transitions[t];
-        }
+      if( el.style[t] !== undefined ){
+        return transitions[t];
+      }
     }
   }
 };

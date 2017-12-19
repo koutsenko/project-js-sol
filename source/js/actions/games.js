@@ -1,6 +1,5 @@
 import constantsActions from 'constants/actions'  ;
 import constantsBoard   from 'constants/board'    ;
-import selectorsTurn    from 'selectors/turn'     ;
 import selectorsGame    from 'selectors/game'     ;
 import toolsRules       from 'tools/rules'        ;
 import toolsTime        from 'tools/time'         ;

@@ -1,4 +1,5 @@
 import   React                from 'react'          ;
+import   PropTypes            from 'prop-types'     ;
 import { bindActionCreators } from 'redux'          ;
 import { connect }            from 'react-redux'    ;
 
@@ -8,7 +9,7 @@ import   Popup                from 'controls/popup' ;
 class Rules extends React.PureComponent {
   render() {
     let ps = {textIndent: '1.5em'};
-    return (         
+    return (
       <Popup role="rules" visible={this.props.rulesVisible} handler={this.props.closeRules} caption="Об игре">
         <p style={ps}>Клондайк, он же косынка - простой пасьянс родом из 90-х. Был создан для обучения работе с мышью, но стал популярен сам по себе!</p>
         <p style={ps}>Цель - заполнить дома картами одной масти, сначала тузы, далее двойки, тройки и так до королей.</p>
@@ -30,6 +31,11 @@ const mapDispatchToProps = function(dispatch) {
   return {
     closeRules: bindActionCreators(actions.close, dispatch)
   }
+};
+
+Rules.propTypes = {
+  rulesVisible: PropTypes.bool,
+  closeRules  : PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Rules);

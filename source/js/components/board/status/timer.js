@@ -1,4 +1,5 @@
 import   React                from 'react'            ;
+import   PropTypes            from 'prop-types'       ;
 import { connect }            from 'react-redux'      ;
 
 import   gameSelectors        from 'selectors/game'   ;
@@ -17,7 +18,9 @@ class Timer extends React.PureComponent {
 
   startTimer(time) {
     clearInterval(this.timer);
-    this.state.time = time || Date.now();
+    this.setState({
+      time: time || Date.now()
+    });
     this.timer = setInterval(this.handleTick.bind(this), 1000);
   }
 
@@ -51,6 +54,10 @@ const mapStateToProps = function(state) {
   return {
     time    : game ? game.time : undefined
   };
+};
+
+Timer.propTypes = {
+  time: PropTypes.number
 };
 
 export default connect(mapStateToProps)(Timer);

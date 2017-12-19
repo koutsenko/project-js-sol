@@ -5,4 +5,4 @@ export default function() {
       return next(action);
     };
   };
-};
+}

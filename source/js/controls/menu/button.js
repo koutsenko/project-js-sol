@@ -1,14 +1,14 @@
 import   React            from 'react'            ;
+import   PropTypes        from 'prop-types'       ;
 import { connect }        from 'react-redux'      ;
 
 import   interact         from 'interactjs'       ;
 
 import   selectorsLayout  from 'selectors/layout' ;
 
-
 class MenuButton extends React.PureComponent {
   componentDidMount() {
-    interact(this.refs[this.props.role]).on('tap', this.handlePress.bind(this));
+    interact(this.btnRef).on('tap', this.handlePress.bind(this));
   }
 
   constructor(props) {
@@ -18,7 +18,7 @@ class MenuButton extends React.PureComponent {
     };
   }
 
-  handlePress(event) {
+  handlePress() {
     if (this.props.disabled) {
       return;
     }
@@ -36,7 +36,12 @@ class MenuButton extends React.PureComponent {
 
   render() {
     return (
-      <div title={this.props.hint} style={this.props.style} className={this.props.role + " button" + (this.props.disabled ? ' disabled' : '') + (this.state.pressed ? ' pressed' : '')} ref={this.props.role}>
+      <div
+        className={this.props.role + " button" + (this.props.disabled ? ' disabled' : '') + (this.state.pressed ? ' pressed' : '')}
+        ref={(el) => { this.btnRef = el }}
+        style={this.props.style}
+        title={this.props.hint}
+      >
         <div>{this.props.text}</div>
       </div>
     );
@@ -44,13 +49,14 @@ class MenuButton extends React.PureComponent {
 }
 
 MenuButton.propTypes = {
-  btnIndex  : React.PropTypes.number.isRequired,
-  btnCount  : React.PropTypes.number.isRequired,
-  disabled  : React.PropTypes.bool.isRequired,
-  handler   : React.PropTypes.func.isRequired,
-  hint      : React.PropTypes.string.isRequired,
-  role      : React.PropTypes.string.isRequired,
-  text      : React.PropTypes.string.isRequired
+  btnIndex  : PropTypes.number.isRequired,
+  btnCount  : PropTypes.number.isRequired,
+  disabled  : PropTypes.bool.isRequired,
+  handler   : PropTypes.func.isRequired,
+  hint      : PropTypes.string.isRequired,
+  role      : PropTypes.string.isRequired,
+  style     : PropTypes.object,
+  text      : PropTypes.string.isRequired
 };
 
 const mapStateToProps = function(state, ownProps) {

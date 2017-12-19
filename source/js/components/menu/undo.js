@@ -1,4 +1,5 @@
 import   React                from 'react'                ;
+import   PropTypes            from 'prop-types'           ;
 import { connect }            from 'react-redux'          ;
 import { bindActionCreators } from 'redux'                ;
 
@@ -36,6 +37,13 @@ const mapDispatchToProps = function(dispatch) {
   return {
     revertTurn: bindActionCreators(actionsGames.revertTurn, dispatch)
   };
+};
+
+ButtonUndo.propTypes = {
+  btnIndex: PropTypes.number,
+  btnCount: PropTypes.number,
+  revertTurn: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ButtonUndo);

@@ -1,11 +1,12 @@
 import   React                from 'react'                  ;
+import   PropTypes            from 'prop-types'             ;
 import { bindActionCreators } from 'redux'                  ;
 import { connect }            from 'react-redux'            ;
 
 import   actions              from 'actions/options'        ;
 
 import   MenuButton           from 'controls/menu/button'   ;
-  
+
 class ButtonOptions extends React.PureComponent {
   render() {
     return (
@@ -22,7 +23,7 @@ class ButtonOptions extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
+const mapStateToProps = function() {
   return {};
 };
 
@@ -30,6 +31,13 @@ const mapDispatchToProps = function(dispatch) {
   return {
     openOptions: bindActionCreators(actions.open, dispatch)
   };
+};
+
+ButtonOptions.propTypes = {
+  btnIndex: PropTypes.number,
+  btnCount: PropTypes.number,
+  openOptions: PropTypes.func,
+  disabled: PropTypes.bool
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ButtonOptions);

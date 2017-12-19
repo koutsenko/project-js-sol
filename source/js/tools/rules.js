@@ -85,7 +85,7 @@ const getHomeMap = function(boardState) {
   let ranks = constantsBoard.ranks.slice().reverse();
   let freeSuits = constantsBoard.suits.slice();
   let map = {};
-  constantsBoard.getHomePlaces().forEach(function(place, index) {
+  constantsBoard.getHomePlaces().forEach(function(place) {
     let home = boardState.holders.byId[place];
     if (home[0] !== undefined) {
       freeSuits.splice(freeSuits.indexOf(home[0][1]), 1);

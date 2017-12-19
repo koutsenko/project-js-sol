@@ -1,5 +1,4 @@
 import constantsActions from 'constants/actions'  ;
-import constantsApp     from 'constants/app'      ;
 
 export default {
   resize: function(md, size) {

@@ -1,4 +1,5 @@
 import   React                from 'react'                    ;
+import   PropTypes            from 'prop-types'               ;
 import { connect }            from 'react-redux'              ;
 import { bindActionCreators } from 'redux'                    ;
 
@@ -51,7 +52,7 @@ class App extends React.PureComponent {
       </div>
     );
   }
-};
+}
 
 const mapStateToProps = function(state) {
   return {
@@ -67,6 +68,14 @@ const mapDispatchToProps = function(dispatch) {
     dump: bindActionCreators(gameActions.dump, dispatch),
     load: bindActionCreators(gameActions.load, dispatch)
   };
+};
+
+App.propTypes = {
+  dump: PropTypes.func,
+  load: PropTypes.func,
+  style: PropTypes.object,
+  mini: PropTypes.bool,
+  mask: PropTypes.bool
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

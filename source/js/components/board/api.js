@@ -49,9 +49,7 @@ const cardSelectOk = function(id) {
 const cardMove = function(source_card_id, target_id) {
   // FIXME что здесь делают эти выборки? Тот кто вызвал cardMove уже всё вычислил!
   let boardState        = this.props.turn;
-  let source_holder_id  = selectorsTurn.getHolderId(boardState, source_card_id);
   let target_holder_id  = selectorsTurn.getHolderId(boardState, target_id) || target_id;
-  let target_card_id    = selectorsTurn.getLastCard(boardState, target_holder_id);
 
   this.props.madeMove(source_card_id, target_holder_id);
 };
@@ -89,10 +87,10 @@ const cardShift = function(cardIds, els, dx, dy) {
 };
 
 const cardUnshift = function() {
-    this.setState({
-      shifted: {},
-      initial: {}
-    });
+  this.setState({
+    shifted: {},
+    initial: {}
+  });
 };
 
 const alertFlash = function(id) {
@@ -120,7 +118,6 @@ const targetUnhover = function() {
     hovered: {}
   });
 };
-
 
 export default {
   cardDoubleClick,

@@ -1,10 +1,9 @@
 import   React                from 'react'                            ;
-import { bindActionCreators } from 'redux'                            ;
+import   PropTypes            from 'prop-types'                       ;
 import { connect }            from 'react-redux'                      ;
 
 import   selectorsLayout      from 'selectors/layout'                 ;
 
-import   boardActions         from 'actions/board'                    ;
 import   constantsBoard       from 'constants/board'                  ;
 
 class Holder extends React.PureComponent {
@@ -24,19 +23,20 @@ class Holder extends React.PureComponent {
       <div style={this.props.holderStyle} data-id={this.props.id} className={className}/>
     );
   }
-};
-
-Holder.propTypes = {
-  id              : React.PropTypes.string.isRequired,
-  className       : React.PropTypes.string.isRequired,
-  declined        : React.PropTypes.bool.isRequired,
-  hovered         : React.PropTypes.string
-};
+}
 
 const mapStateToProps = function(state, ownProps) {
   return {
     holderStyle: selectorsLayout.holderStyle(ownProps.id, state.fx.layout)
   };
+};
+
+Holder.propTypes = {
+  id              : PropTypes.string.isRequired,
+  className       : PropTypes.string.isRequired,
+  declined        : PropTypes.bool.isRequired,
+  hovered         : PropTypes.string,
+  holderStyle     : PropTypes.object
 };
 
 export default connect(mapStateToProps)(Holder);

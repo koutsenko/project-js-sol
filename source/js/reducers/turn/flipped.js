@@ -10,19 +10,21 @@ export default function(state, action) {
     state = buildFlipped();
   }
 
+  var newState;
+
   switch(action.type) {
     case constantsActions.REVERT:
       return action.turn.flipped;
 
     case constantsActions.LOAD_SCENARIO:
-      let save = JSON.parse(decodeURI(action.data));
+      var save = JSON.parse(decodeURI(action.data));
       return save.board.flipped;
 
     case constantsActions.GAME_CREATED:
       return buildFlipped();
 
     case constantsActions.CORE_CARD_BACK_BY_PLAYER:
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       newState.byId[constantsBoard.places.DECK] = [];
       newState.byId[constantsBoard.places.OPEN] = [];
       return newState;
@@ -31,7 +33,7 @@ export default function(state, action) {
     case constantsActions.CORE_CARD_MOVE_BY_ENGINE:
       // TODO здесь я впервые задумался о том, что в других играх может понадобиться закрыть карту при перемещении.
       // TODO следует написать тесты и проверить работу экшенов с такими условиями.
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       var sourceFlips = newState.byId[action.source_holder_id];
       var targetFlips = newState.byId[action.target_holder_id];
       var sourceIndex, targetIndex;
@@ -53,8 +55,8 @@ export default function(state, action) {
 
     case constantsActions.CORE_CARD_FLIP_BY_ENGINE:
       // TODO сейчас этот экшен только открывает карту. Не умеет закрывать.
-      var newState = Object.assign({}, state);
-      action.cards.forEach(function(cardId, index, all) {
+      newState = Object.assign({}, state);
+      action.cards.forEach(function(cardId, index) {
         var holderId = action.holders[index];
         if (newState.byId[holderId].indexOf(cardId) === -1) {
           newState.byId[holderId] = [...newState.byId[holderId], cardId];
@@ -65,7 +67,7 @@ export default function(state, action) {
   }
 
   return state;
-};
+}
 
 const buildFlipped = function() {
   let flipped = {

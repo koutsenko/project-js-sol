@@ -15,7 +15,7 @@ export default function(state, action) {
       return state+1;
 
     case constantsActions.LOAD_SCENARIO:
-      let save = JSON.parse(decodeURI(action.data));
+      var save = JSON.parse(decodeURI(action.data));
       return save.board.index;
 
     case constantsActions.GAME_CREATED:
@@ -23,4 +23,4 @@ export default function(state, action) {
   }
 
   return state;
-};
+}

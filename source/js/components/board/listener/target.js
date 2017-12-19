@@ -1,8 +1,7 @@
-import { bindActionCreators } from 'redux'            ;
 import { connect }            from 'react-redux'      ;
 import   interact             from 'interactjs'       ;
 import   React                from 'react'            ;
-import   ReactDOM             from 'react-dom'        ;
+import   PropTypes            from 'prop-types'       ;
 
 import   constantsBoard       from 'constants/board'  ;
 import   selectorsTurn        from 'selectors/turn'   ;
@@ -72,13 +71,13 @@ class Target extends React.PureComponent {
 
     let target_card_id = selectorsTurn.getLastCard(this.props.turn, target_holder_id);
 
-    this.state = {
+    this.setState({
       hovered_card_id   : hovered_card_id,
       source_card_id    : source_card_id,
       source_holder_id  : source_holder_id,
       target_card_id    : target_card_id,
       target_holder_id  : target_holder_id
-    };
+    });
   }
 
   onDragEnter(event) {
@@ -147,7 +146,7 @@ class Target extends React.PureComponent {
     let id = target.dataset['id'];
     if (!constantsBoard.isCard(id)) {
       return;
-    };
+    }
 
     let holderId = selectorsTurn.getHolderId(this.props.turn, id);
     if (((holderId === constantsBoard.places.OPEN) || constantsBoard.isStackPlace(holderId)) && (selectorsTurn.getChildCards(this.props.turn, id).length===1)) {
@@ -166,7 +165,6 @@ class Target extends React.PureComponent {
       let source_id = this.props.selected;
 
       this.updateIds(source_id, event.target.dataset['id']);
-
 
       if (this.state.source_card_id === this.state.target_card_id) {
         console.log('повторный клик на выбранную карту - раньше это был дабл-клик хэндлер');
@@ -194,17 +192,18 @@ class Target extends React.PureComponent {
   render() {
     return null;
   }
-};
-
-Target.propTypes = {
-  selected      : React.PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */
-  selector      : React.PropTypes.string.isRequired,
-  dndEnabled    : React.PropTypes.bool.isRequired,
-  api           : React.PropTypes.object.isRequired
-};
+}
 
 const mapStateToProps = function(state) {
   return state;
+};
+
+Target.propTypes = {
+  selected      : PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */
+  selector      : PropTypes.string.isRequired,
+  dndEnabled    : PropTypes.bool.isRequired,
+  api           : PropTypes.object.isRequired,
+  turn          : PropTypes.object
 };
 
 export default connect(mapStateToProps)(Target);

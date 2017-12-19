@@ -1,7 +1,5 @@
 import constantsActions from 'constants/actions' ;
 import constantsBoard   from 'constants/board'   ;
-import selectorsTurn    from 'selectors/turn'    ;
-import toolsRules       from 'tools/rules'       ;
 
 /**
  * @param {*} source_card_id    - дроп source объекта , обычно это только карта!
@@ -13,7 +11,7 @@ function madeMove(source_card_id, target_holder_id) {
     target_holder_id  : target_holder_id,
     type              : constantsActions.CARD_MOVE_BY_PLAYER
   };
-};
+}
 
 let deckClick = function() {
   return {

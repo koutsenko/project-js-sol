@@ -1,11 +1,7 @@
-import { bindActionCreators } from 'redux'            ;
-import { connect }            from 'react-redux'      ;
 import   interact             from 'interactjs'       ;
 import   React                from 'react'            ;
-import   ReactDOM             from 'react-dom'        ;
+import   PropTypes            from 'prop-types'       ;
 import   matches              from 'matches-selector' ;
-
-import   constantsBoard       from 'constants/board'  ;
 
 /**
  * Компонент-часть Board без своей видимой DOM составляющей.
@@ -39,13 +35,13 @@ class Background extends React.PureComponent {
   render() {
     return null;
   }
-};
+}
 
 Background.propTypes = {
-  selected      : React.PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */
-  selector      : React.PropTypes.string,
-  ignoreSelector: React.PropTypes.string,
-  api           : React.PropTypes.object.isRequired
+  selected      : PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */
+  selector      : PropTypes.string,
+  ignoreSelector: PropTypes.string,
+  api           : PropTypes.object.isRequired
 };
 
 export default Background;

@@ -1,15 +1,14 @@
 import   React                from 'react'                            ;
+import   PropTypes            from 'prop-types'                       ;
 import { connect }            from 'react-redux'                      ;
-import { bindActionCreators } from 'redux'                            ;
 
 import   selectorsLayout      from 'selectors/layout'                 ;
 
 import   constantsBoard       from 'constants/board'                  ;
-import   boardActions         from 'actions/board'                    ;
 
 import   toolsAnim            from 'tools/anim'                       ;
 
-function buildClassName(props, state) {
+function buildClassName(props) {
   let className = props.className;
   if (props.shifted) {
     className += ' moving';
@@ -45,7 +44,7 @@ class Card extends React.PureComponent {
       });
     }
   }
-  animationCallback(event) {
+  animationCallback() {
     console.log(`${this.props.id}: animationCallback called, marking position as unchaged`);
 
     this.setState({
@@ -63,9 +62,9 @@ class Card extends React.PureComponent {
       <div {...{
         [eventProp]: this.animationCallback.bind(this)
       }}
-        className = {className}
-        data-id   = {this.props.id}
-        style     = {this.props.cardStyle(this.state)}
+      className = {className}
+      data-id   = {this.props.id}
+      style     = {this.props.cardStyle(this.state)}
       >
         <div className="face"/>
         <div className="back"/>
@@ -73,18 +72,6 @@ class Card extends React.PureComponent {
     );
   }
 }
-
-Card.propTypes = {
-  declined      : React.PropTypes.bool.isRequired,
-  className     : React.PropTypes.string.isRequired,
-  id            : React.PropTypes.string.isRequired,
-  flips         : React.PropTypes.array.isRequired,  // массив id открытых карт под текущей включительно.
-  selected      : React.PropTypes.bool.isRequired,
-  hovered       : React.PropTypes.string.isRequired,
-  ownerId       : React.PropTypes.string.isRequired,
-  indexInOwner  : React.PropTypes.number.isRequired,
-  shifted       : React.PropTypes.array
-};
 
 const mapStateToProps = function(state, ownProps) {
   return {
@@ -101,6 +88,19 @@ const mapStateToProps = function(state, ownProps) {
       );
     }
   };
+};
+
+Card.propTypes = {
+  declined      : PropTypes.bool.isRequired,
+  className     : PropTypes.string.isRequired,
+  id            : PropTypes.string.isRequired,
+  flips         : PropTypes.array.isRequired,  // массив id открытых карт под текущей включительно.
+  selected      : PropTypes.bool.isRequired,
+  hovered       : PropTypes.string.isRequired,
+  ownerId       : PropTypes.string.isRequired,
+  indexInOwner  : PropTypes.number.isRequired,
+  shifted       : PropTypes.array,
+  cardStyle     : PropTypes.func // перепутал с object, придумать правило именования булек, функций, объектов, строк, чисел
 };
 
 export default connect(mapStateToProps)(Card);

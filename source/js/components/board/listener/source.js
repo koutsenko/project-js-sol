@@ -1,8 +1,7 @@
-import { bindActionCreators } from 'redux'            ;
 import { connect }            from 'react-redux'      ;
 import   interact             from 'interactjs'       ;
 import   React                from 'react'            ;
-import   ReactDOM             from 'react-dom'        ;
+import   PropTypes            from 'prop-types'       ;
 
 import   constantsBoard       from 'constants/board'  ;
 import   selectorsTurn        from 'selectors/turn'   ;
@@ -59,14 +58,18 @@ class Source extends React.PureComponent {
       return;
     }
 
-
     let cardIds = selectorsTurn.getChildCards(this.props.turn, id);
     // console.log('стартуем драг-н-дроп, двигать будем карты с id', cardIds);
-    this.state.moving = cardIds;
-    this.state.movingEls = {};
+
+    let movingEls = {};
     cardIds.forEach(function(id) {
-      this.state.movingEls[id] = event.target.parentElement.querySelector('[data-id="' + id + '"]');
+      movingEls[id] = event.target.parentElement.querySelector('[data-id="' + id + '"]');
     }.bind(this));
+
+    this.setState({
+      moving: cardIds,
+      movingEls: movingEls
+    });
   }
 
   onDragMove(event) {
@@ -75,17 +78,17 @@ class Source extends React.PureComponent {
     this.props.api.cardShift(this.state.moving, this.state.movingEls, event.dx, event.dy);
   }
 
-
   onDragEnd(event) {
     // console.log('закончили двигать');
-
 
     if (event.interaction.dropTarget === null) {
       // console.log('это не дроп - поэтому вручную возвращаем карты');
       this.props.api.cardUnshift();
     }
-    this.state.moving = {};
-    this.state.movingEls = {};
+    this.setState({
+      moving: {},
+      movingEls: {}
+    });
   }
 
   isTappable() {
@@ -123,13 +126,14 @@ class Source extends React.PureComponent {
   render() {
     return null;
   }
-};
+}
 
 Source.propTypes = {
-  selected      : React.PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */
-  selector      : React.PropTypes.string.isRequired,
-  dndEnabled    : React.PropTypes.bool.isRequired,
-  api           : React.PropTypes.object.isRequired
+  selected      : PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */
+  selector      : PropTypes.string.isRequired,
+  dndEnabled    : PropTypes.bool.isRequired,
+  api           : PropTypes.object.isRequired,
+  turn          : PropTypes.object
 };
 
 const mapStateToProps = function(state) {

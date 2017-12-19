@@ -1,5 +1,5 @@
 import   React                from 'react'                                ;
-import   interact             from 'interactjs'                           ;
+import   PropTypes            from 'prop-types'                           ;
 import { bindActionCreators } from 'redux'                                ;
 import { connect }            from 'react-redux'                          ;
 
@@ -17,8 +17,6 @@ import   actionsBoard         from 'actions/board'                        ;
 import   constantsBoard       from 'constants/board'                      ;
 import   selectorsTurn        from 'selectors/turn'                       ;
 import   selectorsGame        from 'selectors/game'                       ;
-import   selectorsLayout      from 'selectors/layout'                     ;
-import   toolsRules           from 'tools/rules'                          ;
 import   toolsArray           from 'tools/array'                          ;
 import   constantsLayout      from 'constants/layout'                     ;
 
@@ -39,7 +37,7 @@ class Board extends React.PureComponent {
   // Как только в cards появятся ключи, сразу начнутся ремаунты вместо обновлений.
   // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
   buildCards(holderId, source) {
-    return source.map(function(cardId, index, all) {
+    return source.map(function(cardId, index) {
       let flipped = this.props.flipped.byId[holderId];
       let flips = selectorsTurn.getParentFlips(cardId, source, flipped);
       return (
@@ -75,11 +73,12 @@ class Board extends React.PureComponent {
     var openCards   = this.buildCards(constantsBoard.places.OPEN, this.props.holderCards(constantsBoard.places.OPEN));
     var homesCards  = [];
     var stacksCards = [];
+    var i;
 
-    for (var i = 1; i <= 4; i++) {
+    for (i = 1; i <= 4; i++) {
       homesCards.push(this.buildCards(constantsBoard.places['HOME'+i], this.props.holderCards(constantsBoard.places['HOME'+i])));
     }
-    for (var i = 1; i <= 7; i++) {
+    for (i = 1; i <= 7; i++) {
       stacksCards.push(this.buildCards(constantsBoard.places['STACK'+i], this.props.holderCards(constantsBoard.places['STACK'+i])));
     }
 
@@ -98,7 +97,7 @@ class Board extends React.PureComponent {
         }
         return a.props.id.localeCompare(b.props.id);
       }
-    );
+      );
 
     /**
      * Данные для передачи в Source/Target-компоненты.
@@ -128,7 +127,6 @@ class Board extends React.PureComponent {
     let backgroundAPI = {
       cardSelectCancel  : API.cardSelectCancel.bind(this)
     }
-
 
     return (
       <div id={constantsLayout.boardIdName} className={this.props.disabled ? "disabled" : null}>
@@ -179,6 +177,14 @@ const mapDispatchToProps = function(dispatch) {
     madeMove         : bindActionCreators(actionsBoard.madeMove          , dispatch),
     deckClick        : bindActionCreators(actionsBoard.deckClick         , dispatch)
   };
+};
+
+Board.propTypes = {
+  flipped: PropTypes.object,
+  cardSeeds: PropTypes.object,
+  holderCards: PropTypes.func,
+  disabled: PropTypes.bool,
+  fx: PropTypes.object
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Board);

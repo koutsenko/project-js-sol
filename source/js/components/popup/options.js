@@ -1,4 +1,5 @@
 import   React                from 'react'                      ;
+import   PropTypes            from 'prop-types'                 ;
 import   interact             from 'interactjs'                 ;
 import { bindActionCreators } from 'redux'                      ;
 import { connect }            from 'react-redux'                ;
@@ -11,8 +12,7 @@ import   actions              from 'actions/options'            ;
 
 class Options extends React.PureComponent {
   componentDidMount() {
-    interact(this.refs["applyButton"]).on('tap', this.applyChanges.bind(this));
-    // interact(this.refs["cancelButton"]).on('tap', this.props.closeOptions.bind(this));
+    interact(this.applyButton).on('tap', this.applyChanges.bind(this));
   }
 
   componentWillUpdate(nextProps) {
@@ -52,7 +52,6 @@ class Options extends React.PureComponent {
   }
 
   render() {
-    let ps = {textIndent: '1.5em'};
     let ws = {
       boxShadow: '0 0 0.2em 0.01em black',
       display: 'inline-block',
@@ -69,7 +68,7 @@ class Options extends React.PureComponent {
           <RadioButton label="без счета" checked={true} disabled={true}/>
         </div>
         <div style={{display: 'inline-block', position: 'absolute'}}>
-          <Checkbox label="учет времени" checked={true} disabled={true} handler={()=>null}/> 
+          <Checkbox label="учет времени" checked={true} disabled={true} handler={()=>null}/>
         </div>
         <div style={ws}>
           <RadioButton label="сдача по одной" checked={true} disabled={true}/>
@@ -78,9 +77,9 @@ class Options extends React.PureComponent {
         <div style={{marginTop: '1.5em', marginBottom: '0.5em'}}>разное</div>
         <hr/>
         <Checkbox label="перетаскивание карт" checked={this.state.dndEnabled} handler={this.toggleDndState.bind(this)}/>
-        <Checkbox label="эффекты анимации" checked={true} disabled={true} handler={()=>null}/> 
+        <Checkbox label="эффекты анимации" checked={true} disabled={true} handler={()=>null}/>
         <div className="buttonBar">
-          <div className="button" ref="applyButton">Применить</div>
+          <div className="button" ref={(el) => { this.applyButton = el }}>Применить</div>
         </div>
       </Popup>
     );
@@ -99,6 +98,13 @@ const mapDispatchToProps = function(dispatch) {
     closeOptions  : bindActionCreators(actions.close      , dispatch),
     toggleDnd     : bindActionCreators(actions.toggleDnd  , dispatch)
   };
+};
+
+Options.propTypes = {
+  optionsVisible: PropTypes.bool,
+  dndEnabled    : PropTypes.bool,
+  toggleDnd     : PropTypes.func,
+  closeOptions  : PropTypes.func
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Options);

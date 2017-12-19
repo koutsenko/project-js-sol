@@ -13,9 +13,11 @@ export default function(state, action) {
     }
   }
 
+  var newState;
+
   switch (action.type) {
     case actions.NEW_RECORD:
-      var newState = JSON.parse(JSON.stringify(state));
+      newState = JSON.parse(JSON.stringify(state));
       newState.records.splice(action.index, 0, action.record);
       if (newState.records.length === 6) {
         newState.records.pop();
@@ -24,15 +26,15 @@ export default function(state, action) {
 
     case actions.LOAD_SCENARIO:
     case actions.GAME_START:
-      var newState = JSON.parse(JSON.stringify(state));
+      newState = JSON.parse(JSON.stringify(state));
       newState.gamesCount++;
       return newState;
 
     case actions.GAME_COMPLETE:
-      var newState = JSON.parse(JSON.stringify(state));
+      newState = JSON.parse(JSON.stringify(state));
       newState.winsCount++;
       return newState;
   }
 
   return state;
-};
+}

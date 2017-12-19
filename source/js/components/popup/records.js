@@ -1,4 +1,5 @@
 import   React                from 'react'            ;
+import   PropTypes            from 'prop-types'       ;
 import { bindActionCreators } from 'redux'            ;
 import { connect }            from 'react-redux'      ;
 
@@ -9,57 +10,58 @@ import   selectorsGame        from 'selectors/game'   ;
 class Records extends React.PureComponent {
   buildTable() {
     var records           = this.props.records;
-    var result            = this.props.result;
     var recordsCount      = Math.min(records.length, 5);
     var recordsDisplayed  = records.slice(0, recordsCount);
     var emptiesCount      = 5 - records.length;
 
     // Собираем верстку таблицы по кусочкам...
+    // TODO Жуткие костыли с ключами, временно.
+    // TODO Но надо дождаться поддержки <Fragment> в Preact
     var layout = {};
     layout.head = [
-      <span className="number head" >#       </span> ,
-      <span className="login head"  >игрок   </span> ,
-      <span className="move head"   >ходы    </span> ,
-      <span className="time head"   >время   </span> ,
-      <br   />
+      <span key={0} className="number head" >#       </span> ,
+      <span key={1} className="login head"  >игрок   </span> ,
+      <span key={2} className="move head"   >ходы    </span> ,
+      <span key={3} className="time head"   >время   </span> ,
+      <br   key={4} />
     ];
     layout.records = recordsDisplayed.map(function(r, index) {
       var highlight = this.props.resultIndex === index ? ' your' : '';
       var displayIndex = index + 1;
       return [
-        <span className={"number" + highlight}>{displayIndex} </span>  ,
-        <span className={"login"  + highlight}>{r.nick}       </span>  ,
-        <span className={"move"   + highlight}>{r.moves}      </span>  ,
-        <span className={"time"   + highlight}>{r.time}       </span>  ,
-        <br   />
+        <span key={(index+1)*10+0} className={"number" + highlight}>{displayIndex} </span>  ,
+        <span key={(index+1)*10+1} className={"login"  + highlight}>{r.nick}       </span>  ,
+        <span key={(index+1)*10+2} className={"move"   + highlight}>{r.moves}      </span>  ,
+        <span key={(index+1)*10+3} className={"time"   + highlight}>{r.time}       </span>  ,
+        <br   key={(index+1)*10+4} />
       ];
     }.bind(this));
     layout.empties = Array.apply(null, Array(emptiesCount)).map(function(item, index) {
       var displayIndex = index + 1 + recordsCount;
       return [
-        <span className="number">{displayIndex} </span>  ,
-        <span className="login" >{"-"}          </span>  ,
-        <span className="move"  >{"-"}          </span>  ,
-        <span className="time"  >{"-"}          </span>  ,
-        <br   />
+        <span key={(index+1)*100+0} className="number">{displayIndex} </span>  ,
+        <span key={(index+1)*100+1} className="login" >{"-"}          </span>  ,
+        <span key={(index+1)*100+2} className="move"  >{"-"}          </span>  ,
+        <span key={(index+1)*100+3} className="time"  >{"-"}          </span>  ,
+        <br   key={(index+1)*100+4} />
       ];
     }, this);
     layout.fill = [
-      <span className="fill" style={{lineHeight: '0.1em'}}>...</span>,
-      <br   />
+      <span key={1001} className="fill" style={{lineHeight: '0.1em'}}>...</span>,
+      <br   key={1002} />
     ];
     layout.weak = this.props.resultIndex === 5 ? [
-      <span className="number your">  ?            </span> ,
-      <span className="login  your">  {this.props.result.nick}  </span> ,
-      <span className="move   your">  {this.props.result.moves} </span> ,
-      <span className="time   your">  {this.props.result.time}  </span> ,
-      <br   />
+      <span key={1003} className="number your">  ?            </span> ,
+      <span key={1004} className="login  your">  {this.props.result.nick}  </span> ,
+      <span key={1005} className="move   your">  {this.props.result.moves} </span> ,
+      <span key={1006} className="time   your">  {this.props.result.time}  </span> ,
+      <br   key={1007} />
     ] : [
-      <span className="number" >-</span> ,
-      <span className="login"  >-</span> ,
-      <span className="move"   >-</span> ,
-      <span className="time"   >-</span> ,
-      <br   />
+      <span key={1008} className="number" >-</span> ,
+      <span key={1009} className="login"  >-</span> ,
+      <span key={1010} className="move"   >-</span> ,
+      <span key={1011} className="time"   >-</span> ,
+      <br   key={1012} />
     ];
 
     return (
@@ -120,5 +122,16 @@ const mapStateToProps = function(state) {
     winsCount       : state.stats.winsCount         /** Кол-во побед среди сыгранных на устройстве игр    */
   };
 }
+
+Records.propTypes = {
+  records         : PropTypes.array,
+  resultIndex     : PropTypes.number,
+  result          : PropTypes.object,
+  gamesCount      : PropTypes.number,
+  winsCount       : PropTypes.number,
+  recordsVisible  : PropTypes.bool,
+  closeRecords    : PropTypes.func,
+  recordsCongrats : PropTypes.bool
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Records);

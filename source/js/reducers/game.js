@@ -13,10 +13,11 @@ export default function(state, action) {
   }
 
   var newState = JSON.parse(JSON.stringify(state));
+  var id;
 
   switch (action.type) {
     case constantsActions.GAME_CREATED:
-      var id = tsRandom();
+      id = tsRandom();
       newState.allIds.push(id);
       newState.byId[id] = {
         id                : id,
@@ -30,7 +31,7 @@ export default function(state, action) {
       break;
 
     case constantsActions.GAME_END:
-      var id = newState.allIds[newState.allIds.length-1];
+      id = newState.allIds[newState.allIds.length-1];
       newState.byId[id] = {
         time              : undefined
       };
@@ -38,7 +39,7 @@ export default function(state, action) {
 
     case constantsActions.LOAD_SCENARIO: // сигнал о загрузке сохраненки, он пока что обходится без анимации и поэтому controlsEnabled = true. TODO - переосмыслить...
       var data = JSON.parse(decodeURI(action.data));
-      var id = tsRandom();
+      id = tsRandom();
       newState.allIds.push(id);
       newState.byId[id] = {
         id                : id,
@@ -52,26 +53,26 @@ export default function(state, action) {
       break;
 
     case constantsActions.GAME_START:    // сигнал об окончании раздачи и старте игры
-      var id = newState.allIds[newState.allIds.length-1];
+      id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].status            = gameConstants.gameState.STATE_STARTED;
       newState.byId[id].controlsEnabled   = true;
       newState.byId[id].time              = action.time;  // FIXME текущее unix время, у нас возможно будут проблемы с загрузкой сохраненок...
       break;
 
     case constantsActions.GAME_COMPLETE:      // конец игры, между играми делать ничего нельзя, TODO - это имеются в виду BOARD controls. Переосмыслить. Вероятно надо делать ч/б затененную доску
-      var id = newState.allIds[newState.allIds.length-1];
+      id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].status  = gameConstants.gameState.STATE_COMPLETED;
       newState.byId[id].result  = action.result;
       newState.byId[id].time    = undefined;
       break;
 
     case constantsActions.WEAK_RECORD:
-      var id = newState.allIds[newState.allIds.length-1];
+      id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].index = 5;
       break;
 
     case constantsActions.NEW_RECORD:
-      var id = newState.allIds[newState.allIds.length-1];
+      id = newState.allIds[newState.allIds.length-1];
       newState.byId[id].index = action.index;
       break;
 
@@ -84,4 +85,4 @@ export default function(state, action) {
   // }
 
   return newState;
-};
+}

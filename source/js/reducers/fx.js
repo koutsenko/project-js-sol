@@ -15,31 +15,33 @@ export default function(state, action) {
     }
   }
 
+  var newState;
+
   switch (action.type) {
     case constantsActions.OPTIONS_TOGGLE_DND:
-      var newState = JSON.parse(JSON.stringify(state));
+      newState = JSON.parse(JSON.stringify(state));
       newState.dndEnabled = action.value;
       return newState;
 
     case constantsActions.SHOW_RECORDS:
     case constantsActions.SHOW_RULES:
     case constantsActions.SHOW_OPTIONS:
-      var newState = JSON.parse(JSON.stringify(state));
+      newState = JSON.parse(JSON.stringify(state));
       newState.maskVisible  = true;
       return newState;
 
     case constantsActions.CLOSE_RECORDS:
     case constantsActions.CLOSE_RULES:
     case constantsActions.CLOSE_OPTIONS:
-      var newState = JSON.parse(JSON.stringify(state));
+      newState = JSON.parse(JSON.stringify(state));
       newState.maskVisible  = false;
       return newState;
 
     case constantsActions.FX_RESIZE:
-      var newState = JSON.parse(JSON.stringify(state));
+      newState = JSON.parse(JSON.stringify(state));
       newState.layout = action.layout;
       return newState;
   }
 
   return state;
-};
+}
