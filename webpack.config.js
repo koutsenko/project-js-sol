@@ -4,6 +4,7 @@ var path = require('path');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 var RemovePropTypesPlugin = require('babel-plugin-transform-react-remove-prop-types').default;
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function(env) {
   var config = {
@@ -23,7 +24,7 @@ module.exports = function(env) {
     ],
     output: {
       path: path.join(__dirname, 'build'),
-      filename: 'app.min.js'
+      filename: `app${env.prod ? '.min' : ''}.js`
     },
     devServer: {
       contentBase: path.join(__dirname, 'build'),
@@ -95,8 +96,11 @@ module.exports = function(env) {
       }]
     },
     plugins: [
+      new HtmlWebpackPlugin({
+        template: 'templates/index.html'
+      }),
       new ExtractTextPlugin({
-        filename: 'app.min.css'
+        filename: `app${env.prod ? '.min' : ''}.css`
       }),
       new webpack.DefinePlugin({
         'process.env': {

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <style>
+      body {
+        margin            : 0             ;
+        overflow          : hidden        ;
+      }
+
+      #mxwsol {
+        display           : inline-block  ;
+        height            : 100%          ;
+        width             : 100%          ;
+        background-color  : black         ;
+        background-image  : none          ;
+      }
+
+      /**
+        * Отключаем bounce эффект на iOS ценой отключения скролла вообще.
+        * TODO проверить необходимость
+        */
+      html, body {
+        position          : fixed         ;
+        overflow          : hidden        ;
+        width             : 100%          ;
+        height            : 100%          ;
+      }
+
+      /**
+        * Разрешаем быстрые тапы на iOS Safari.
+        */
+      body {
+        touch-action      : manipulation  ;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="mxwsol"></div>
+  </body>
+</html>
