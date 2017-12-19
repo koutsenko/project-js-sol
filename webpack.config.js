@@ -12,8 +12,8 @@ module.exports = function(env) {
         'node_modules'
       ],
       alias: {
-        "react": "preact-compat",
-        "react-dom": "preact-compat"
+        'react': 'preact-compat',
+        'react-dom': 'preact-compat'
       }
     },
     entry: [
@@ -25,14 +25,19 @@ module.exports = function(env) {
       filename: 'app.min.js'
     },
     devServer: {
-      contentBase: path.join(__dirname, "build"),
+      contentBase: path.join(__dirname, 'build'),
       compress: true,
       disableHostCheck: true,
       port: 9000
     },
-    devtool: "source-map",
+    devtool: 'source-map',
     module: {
       rules: [{
+        test: /\.jsx?/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        exclude: /node_modules/
+      }, {
         test : /\.jsx?/,
         loader : 'babel-loader',
         exclude: /node_modules/,
