@@ -49,6 +49,8 @@
     "webpack-dev-server": "^2.9.4"
   },
   "scripts": {
+    "lint": "./node_modules/.bin/eslint ./source",
+    "lint-fix": "./node_modules/.bin/eslint --fix ./source",
     "web": "./node_modules/.bin/webpack-dev-server --env.dev --host 0.0.0.0",
     "watch": "./node_modules/.bin/webpack --env.prod --watch",
     "build": "./node_modules/.bin/webpack --env.prod",
