@@ -2,7 +2,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var webpack = require('webpack');
 var path = require('path');
 var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
-var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+var UglifyJSPlugin = require('uglifyjs-webpack-plugin');
+var RemovePropTypesPlugin = require('babel-plugin-transform-react-remove-prop-types').default;
 
 module.exports = function(env) {
   var config = {
@@ -39,10 +40,13 @@ module.exports = function(env) {
         exclude: /node_modules/
       }, {
         test : /\.jsx?/,
-        loader : 'babel-loader',
         exclude: /node_modules/,
-        query: {
-          presets: ['react']
+        use: {
+          loader : 'babel-loader',
+          options: {
+            plugins: env.prod ? [RemovePropTypesPlugin] : [],
+            presets: ['react']
+          }
         }
       },
       {
