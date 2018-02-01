@@ -1,0 +1,3 @@
+Пока что не работает из коробки установка Chromium как зависимость Puppeteer.
+Поэтому перед выполнением npm install надо запустить:
+(Windows) set NODE_TLS_REJECT_UNAUTHORIZED=0
