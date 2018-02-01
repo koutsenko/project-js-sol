@@ -71,13 +71,14 @@ class Target extends React.PureComponent {
 
     let target_card_id = selectorsTurn.getLastCard(this.props.turn, target_holder_id);
 
-    this.setState({
+    // eslint-disable-next-line react/no-direct-mutation-state
+    this.state = {
       hovered_card_id   : hovered_card_id,
       source_card_id    : source_card_id,
       source_holder_id  : source_holder_id,
       target_card_id    : target_card_id,
       target_holder_id  : target_holder_id
-    });
+    };
   }
 
   onDragEnter(event) {

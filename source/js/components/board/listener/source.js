@@ -60,16 +60,14 @@ class Source extends React.PureComponent {
 
     let cardIds = selectorsTurn.getChildCards(this.props.turn, id);
     // console.log('стартуем драг-н-дроп, двигать будем карты с id', cardIds);
-
-    let movingEls = {};
+    // eslint-disable-next-line react/no-direct-mutation-state
+    this.state.moving = cardIds;
+    // eslint-disable-next-line react/no-direct-mutation-state
+    this.state.movingEls = {};
     cardIds.forEach(function(id) {
-      movingEls[id] = event.target.parentElement.querySelector('[data-id="' + id + '"]');
+      // eslint-disable-next-line react/no-direct-mutation-state
+      this.state.movingEls[id] = event.target.parentElement.querySelector('[data-id="' + id + '"]');
     }.bind(this));
-
-    this.setState({
-      moving: cardIds,
-      movingEls: movingEls
-    });
   }
 
   onDragMove(event) {

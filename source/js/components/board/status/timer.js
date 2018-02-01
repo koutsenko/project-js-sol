@@ -18,9 +18,8 @@ class Timer extends React.PureComponent {
 
   startTimer(time) {
     clearInterval(this.timer);
-    this.setState({
-      time: time || Date.now()
-    });
+    // eslint-disable-next-line react/no-direct-mutation-state
+    this.state.time = time || Date.now();
     this.timer = setInterval(this.handleTick.bind(this), 1000);
   }
 
