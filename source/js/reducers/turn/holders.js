@@ -28,7 +28,7 @@ export default function(state, action) {
       newState = Object.assign({}, state);
       var deck = newState.byId[constantsBoard.places.DECK];
       var open = newState.byId[constantsBoard.places.OPEN];
-      action.cards.forEach(function(id) {
+      action.cards.forEach((id) => {
         deck.unshift(id);
         open.splice(open.indexOf(id), 1);
       }, this);
@@ -39,7 +39,7 @@ export default function(state, action) {
       newState = Object.assign({}, state);
       var source_holder   = newState.byId[action.source_holder_id];
       var target_holder   = newState.byId[action.target_holder_id];
-      action.cards.forEach(function(id) {
+      action.cards.forEach((id) => {
         source_holder.splice(source_holder.indexOf(id), 1);
         target_holder.push(id);
       });
@@ -50,12 +50,12 @@ export default function(state, action) {
 }
 
 const buildHolders = function(seed) {
-  let holders = {
+  const holders = {
     byId    : {},
     allIds  : Object.keys(constantsBoard.places)
   };
 
-  holders.allIds.forEach(function(holder) {
+  holders.allIds.forEach((holder) => {
     holders.byId[holder] = [];
   });
   holders.byId = Object.assign(holders.byId, {

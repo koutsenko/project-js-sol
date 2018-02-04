@@ -7,7 +7,7 @@ import   constantsBoard from 'constants/board'  ;
  */
 
 const cardDoubleClick = function(source_card_id) {
-  let map = toolsRules.getHomeMap(this.props.turn);
+  const map = toolsRules.getHomeMap(this.props.turn);
   let found = false;
 
   Object.keys(map).forEach(function(index) {
@@ -48,8 +48,8 @@ const cardSelectOk = function(id) {
  */
 const cardMove = function(source_card_id, target_id) {
   // FIXME что здесь делают эти выборки? Тот кто вызвал cardMove уже всё вычислил!
-  let boardState        = this.props.turn;
-  let target_holder_id  = selectorsTurn.getHolderId(boardState, target_id) || target_id;
+  const boardState        = this.props.turn;
+  const target_holder_id  = selectorsTurn.getHolderId(boardState, target_id) || target_id;
 
   this.props.madeMove(source_card_id, target_holder_id);
 };
@@ -59,15 +59,15 @@ const cardMove = function(source_card_id, target_id) {
  */
 const cardShift = function(cardIds, els, dx, dy) {
   if (!Object.keys(this.state.shifted).length) {
-    let initial = {};
-    let shifted = {};
+    const initial = {};
+    const shifted = {};
 
     cardIds.forEach(function(id) {
-      let rect = els[id].getBoundingClientRect();
+      const rect = els[id].getBoundingClientRect();
       // let sl = window.pageXOffset || document.documentElement.scrollLeft;
       // let st = window.pageYOffset || document.documentElement.scrollTop;
-      let x0 = this.props.fx.layout.size.l// - sl;
-      let y0 = this.props.fx.layout.size.t// - st;
+      const x0 = this.props.fx.layout.size.l// - sl;
+      const y0 = this.props.fx.layout.size.t// - st;
       initial[id] = [Math.round(rect.left-x0), Math.round(rect.top-y0)];
       shifted[id] = [0, 0];
     }, this);
@@ -79,8 +79,8 @@ const cardShift = function(cardIds, els, dx, dy) {
     this.state.shifted[id][0] += dx;
     this.state.shifted[id][1] += dy;
 
-    let x = this.state.initial[id][0] + this.state.shifted[id][0];
-    let y = this.state.initial[id][1] + this.state.shifted[id][1];
+    const x = this.state.initial[id][0] + this.state.shifted[id][0];
+    const y = this.state.initial[id][1] + this.state.shifted[id][1];
 
     els[id].style.webkitTransform = els[id].style.transform = `translate(${x}px,${y}px)`;
   }, this);
@@ -98,11 +98,11 @@ const alertFlash = function(id) {
     declined: id
   });
   // FIXME таймаут надо взять из констант.
-  setTimeout(function() {
+  setTimeout(() => {
     this.setState({
       declined: undefined
     });
-  }.bind(this), 500);
+  }, 500);
 };
 
 const targetHover = function(id, highlight) {

@@ -37,7 +37,7 @@ class Card extends React.PureComponent {
     if (nextProps.indexInOwner !== this.props.indexInOwner || this.props.ownerId !== nextProps.ownerId) {
       console.log(`изменилось место карты ${this.props.id}: ${this.props.ownerId}:${this.props.indexInOwner} -> ${nextProps.ownerId}:${nextProps.indexInOwner}`);
     }
-    let positionChanged = (nextProps.indexInOwner !== this.props.indexInOwner) || (nextProps.ownerId !== this.props.ownerId);
+    const positionChanged = (nextProps.indexInOwner !== this.props.indexInOwner) || (nextProps.ownerId !== this.props.ownerId);
     if (this.state.positionChanged !== positionChanged) {
       this.setState({
         positionChanged: positionChanged
@@ -53,10 +53,10 @@ class Card extends React.PureComponent {
   }
 
   render() {
-    let className = buildClassName(this.props, this.state);
+    const className = buildClassName(this.props, this.state);
 
-    let eventName = toolsAnim.getTransitionEvent();
-    let eventProp = 'on' + eventName[0].toUpperCase() + eventName.substr(1);
+    const eventName = toolsAnim.getTransitionEvent();
+    const eventProp = 'on' + eventName[0].toUpperCase() + eventName.substr(1);
 
     return (
       <div {...{

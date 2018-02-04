@@ -20,9 +20,9 @@ export default {
         type  : constantsActions.GAME_CREATED
       });
 
-      let state   = getState();
-      let batch   = [];
-      let source  = state.turn.holders.byId[constantsBoard.places.DECK].slice();
+      const state   = getState();
+      const batch   = [];
+      const source  = state.turn.holders.byId[constantsBoard.places.DECK].slice();
 
       // Раскладываем карты по стекам
       for (var i = 0; i < 7; i++) {
@@ -50,8 +50,8 @@ export default {
         type  : constantsActions.GAME_START
       });
 
-      batch.forEach(function(action, index) {
-        setTimeout(function() {
+      batch.forEach((action, index) => {
+        setTimeout(() => {
           dispatch(action);
         }, 100*(index+1));
       });
@@ -59,9 +59,9 @@ export default {
   },
   dump: function() {
     return function(dispatch, getState) {
-      let state = getState();
-      let game = selectorsGame.getCurrentGame(state.game);
-      let data = {
+      const state = getState();
+      const game = selectorsGame.getCurrentGame(state.game);
+      const data = {
         board: {
           flipped : state.turn.flipped,
           holders : state.turn.holders,
@@ -70,11 +70,11 @@ export default {
         seed    : game.seed,
         time    : toolsTime.calculateElapsedSeconds(game.time, Date.now()),
       };
-      setTimeout(function() {
-        let save = encodeURI(JSON.stringify(data));
+      setTimeout(() => {
+        const save = encodeURI(JSON.stringify(data));
         console.log('Dumping game save, length = ' + save.length);
         console.log(save);
-      }.bind(this), 0);
+      }, 0);
     };
   },
   completeGame: function() {
@@ -89,24 +89,24 @@ export default {
         }
 
         // ищем карты, подходящие для перемещения в дома
-        let map = toolsRules.getHomeMap(getState().turn);
+        const map = toolsRules.getHomeMap(getState().turn);
 
         // смотрим последние карты стеков и open
-        let lastCards = constantsBoard.getStackPlaces().map(function(place) {
-          let holder = getState().turn.holders.byId[place];
+        const lastCards = constantsBoard.getStackPlaces().map((place) => {
+          const holder = getState().turn.holders.byId[place];
           return holder.length ? holder[holder.length-1] : undefined;
-        }).filter(function(card_id){
+        }).filter((card_id) => {
           return card_id !== undefined;
         });
-        let openHolder = getState().turn.holders.byId[constantsBoard.places.OPEN];
-        let lastOpenCard = openHolder.length ? openHolder[openHolder.length - 1] : undefined;
+        const openHolder = getState().turn.holders.byId[constantsBoard.places.OPEN];
+        const lastOpenCard = openHolder.length ? openHolder[openHolder.length - 1] : undefined;
         if (lastOpenCard !== undefined) {
           lastCards.push(lastOpenCard);
         }
 
         // ищем есть ли на концах стеков или в open нужные карты
         let canMove = false;
-        Object.keys(map).forEach(function(index) {
+        Object.keys(map).forEach((index) => {
           if (lastCards.indexOf(map[index])+1) {
             canMove = true;
           }
@@ -114,8 +114,8 @@ export default {
 
         // если нет, открываем карту и повторяем цикл
         if (!canMove) {
-          let deckHolder = getState().turn.holders.byId[constantsBoard.places.DECK];
-          let openHolder = getState().turn.holders.byId[constantsBoard.places.OPEN];
+          const deckHolder = getState().turn.holders.byId[constantsBoard.places.DECK];
+          const openHolder = getState().turn.holders.byId[constantsBoard.places.OPEN];
           if (deckHolder.length) {
             dispatch({
               card_id           : deckHolder[deckHolder.length - 1],
@@ -131,11 +131,11 @@ export default {
         }
 
         // иначе перемещаем найденные
-        Object.keys(map).forEach(function(home_index) {
-          let wantedCard  = map[home_index];
+        Object.keys(map).forEach((home_index) => {
+          const wantedCard  = map[home_index];
 
           // смотрим верхние карты
-          lastCards.forEach(function(id) {
+          lastCards.forEach((id) => {
             if (id === wantedCard) {
               dispatch({
                 card_id           : id,

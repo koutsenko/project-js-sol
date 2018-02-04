@@ -37,7 +37,7 @@ export default function(state, action) {
       var sourceFlips = newState.byId[action.source_holder_id];
       var targetFlips = newState.byId[action.target_holder_id];
       var sourceIndex, targetIndex;
-      action.cards.forEach(function(cardId) {
+      action.cards.forEach((cardId) => {
         sourceIndex = sourceFlips.indexOf(cardId);
         targetIndex = targetFlips.indexOf(cardId);
         //  вытаскиваем из sourceFlips в любом случае (при наличии)
@@ -56,7 +56,7 @@ export default function(state, action) {
     case constantsActions.CORE_CARD_FLIP_BY_ENGINE:
       // TODO сейчас этот экшен только открывает карту. Не умеет закрывать.
       newState = Object.assign({}, state);
-      action.cards.forEach(function(cardId, index) {
+      action.cards.forEach((cardId, index) => {
         var holderId = action.holders[index];
         if (newState.byId[holderId].indexOf(cardId) === -1) {
           newState.byId[holderId] = [...newState.byId[holderId], cardId];
@@ -70,12 +70,12 @@ export default function(state, action) {
 }
 
 const buildFlipped = function() {
-  let flipped = {
+  const flipped = {
     byId    : {},
     allIds  : Object.keys(constantsBoard.places)
   };
 
-  flipped.allIds.forEach(function(holder) {
+  flipped.allIds.forEach((holder) => {
     flipped.byId[holder] = [];
   });
 

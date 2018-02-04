@@ -7,8 +7,8 @@ const getParentFlips    = createCachedSelector(
   (cardId)                  => cardId ,
   (cardId, holder)          => holder ,
   (cardId, holder, flipped) => flipped,
-  function(cardId, holder, flipped) {
-    return holder.slice(0, holder.indexOf(cardId)+1).filter(function(id) {
+  (cardId, holder, flipped) => {
+    return holder.slice(0, holder.indexOf(cardId)+1).filter((id) => {
       return !!(flipped.indexOf(id) + 1);
     });
   }
@@ -19,14 +19,14 @@ const getParentFlips    = createCachedSelector(
 const getChildCards     = createSelector(
   (boardState)          => boardState ,
   (boardState, cardId)  => cardId     ,
-  function(boardState, cardId) {
+  (boardState, cardId) => {
     let result;
-    let holderId = getHolderId(boardState, cardId);
+    const holderId = getHolderId(boardState, cardId);
 
     if (constantsBoard.isStackPlace(holderId)) {
-      let holder      = boardState.holders.byId[holderId];
-      let startIndex  = holder.indexOf(cardId);
-      let endIndex    = holder[holder.length];
+      const holder      = boardState.holders.byId[holderId];
+      const startIndex  = holder.indexOf(cardId);
+      const endIndex    = holder[holder.length];
       result = holder.slice(startIndex, endIndex);
     } else {
       result = [cardId];
@@ -39,7 +39,7 @@ const getChildCards     = createSelector(
 const getHolderId       = createSelector(
   (boardState)          => boardState ,
   (boardState, cardId)  => cardId     ,
-  function(boardState, cardId) {
+  (boardState, cardId) => {
     var holderIds = boardState.holders.allIds;
     var holderId;
 
@@ -57,8 +57,8 @@ const getHolderId       = createSelector(
 const getLastCard       = createSelector(
   (boardState)          => boardState ,
   (boardState, holderId)=> holderId   ,
-  function(boardState, holderId) {
-    let holder = boardState.holders.byId[holderId];
+  (boardState, holderId) => {
+    const holder = boardState.holders.byId[holderId];
 
     return (holder && holder.length) ? holder[holder.length - 1] : undefined;
   }
@@ -66,8 +66,8 @@ const getLastCard       = createSelector(
 
 const getLastCards      = createSelector(
   (boardState)          => boardState ,
-  function(boardState) {
-    return boardState.holders.allIds.map(function(holderId) {
+  (boardState) => {
+    return boardState.holders.allIds.map((holderId) => {
       return boardState.holders.byId[holderId][boardState.holders.byId[holderId].length - 1];
     });
   }
@@ -75,12 +75,12 @@ const getLastCards      = createSelector(
 
 const getNonDeckCards   = createSelector(
   (boardState)          => boardState ,
-  function(boardState) {
-    let holderIds   = boardState.holders.allIds.slice();
+  (boardState) => {
+    const holderIds   = boardState.holders.allIds.slice();
     let cards       = [];
 
     holderIds.splice(holderIds.indexOf(constantsBoard.places.DECK), 1);
-    holderIds.forEach(function(holderId) {
+    holderIds.forEach((holderId) => {
       cards = cards.concat(boardState.holders.byId[holderId]);
     });
 

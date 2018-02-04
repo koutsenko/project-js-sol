@@ -2,9 +2,9 @@ import actions from 'constants/actions';
 
 export default function(state, action) {
   if (state === undefined) {
-    let records     = localStorage.getItem('m3w-sol-records');
-    let gamesCount  = localStorage.getItem('m3w-sol-games-count');
-    let winsCount   = localStorage.getItem('m3w-sol-wins-count');
+    const records     = localStorage.getItem('m3w-sol-records');
+    const gamesCount  = localStorage.getItem('m3w-sol-games-count');
+    const winsCount   = localStorage.getItem('m3w-sol-wins-count');
 
     state = {
       gamesCount      : parseInt(gamesCount) || 0,   /** Общее кол-во сыгранных игр   */

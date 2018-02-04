@@ -5,8 +5,8 @@ export default function(store) {
 
   return function(next) {
     return function(action) {
-      let returnValue = next(action);
-      let state = getState();
+      const returnValue = next(action);
+      const state = getState();
       if (action.type === actions.NEW_RECORD) {
         localStorage.setItem('m3w-sol-records', JSON.stringify(state.stats.records));
       } else if (action.type === actions.LOAD_SCENARIO) {

@@ -2,17 +2,17 @@ import constantsBoard from 'constants/board';
 import selectorsTurn  from 'selectors/turn' ;
 
 const canComplete = function(state) {
-  return !selectorsTurn.getNonDeckCards(state.turn).some(function(id) {
-    let holderId = selectorsTurn.getHolderId(state.turn, id);
+  return !selectorsTurn.getNonDeckCards(state.turn).some((id) => {
+    const holderId = selectorsTurn.getHolderId(state.turn, id);
     return !!(state.turn.flipped.byId[holderId].indexOf(id)+1);
   });
 };
 
 const isAllowableCard = function(boardState, cardId) {
-  let holderId    = selectorsTurn.getHolderId(boardState, cardId);
-  let isFlipped   = !!(boardState.flipped.byId[holderId].indexOf(cardId)+1);
-  let insideStack = constantsBoard.isStackPlace(holderId);
-  let isLast      = !!(selectorsTurn.getLastCards(boardState).indexOf(cardId)+1);
+  const holderId    = selectorsTurn.getHolderId(boardState, cardId);
+  const isFlipped   = !!(boardState.flipped.byId[holderId].indexOf(cardId)+1);
+  const insideStack = constantsBoard.isStackPlace(holderId);
+  const isLast      = !!(selectorsTurn.getLastCards(boardState).indexOf(cardId)+1);
 
   return (isFlipped && insideStack) || isLast;
 };
@@ -23,9 +23,9 @@ const isAllowableCard = function(boardState, cardId) {
 const canAcceptDrop = function(source_card_id, source_holder_id, target_card_id, target_holder_id) {
   let result = false;
 
-  let sourceRank = source_card_id[0];
+  const sourceRank = source_card_id[0];
 
-  let isEmptyHolder = !target_card_id;
+  const isEmptyHolder = !target_card_id;
 
   if (target_holder_id === source_holder_id) {
     return false;
@@ -50,19 +50,19 @@ const canAcceptDrop = function(source_card_id, source_holder_id, target_card_id,
         result = (sourceRank === 'A');
       }
     } else {
-      let sourceSuit = source_card_id[1];
-      let targetRank = target_card_id[0];
-      let targetSuit = target_card_id[1];
-      let ranks = constantsBoard.ranksL2H;
-      let suits = ['H', 'S', 'D', 'C'];
+      const sourceSuit = source_card_id[1];
+      const targetRank = target_card_id[0];
+      const targetSuit = target_card_id[1];
+      const ranks = constantsBoard.ranksL2H;
+      const suits = ['H', 'S', 'D', 'C'];
 
       if (constantsBoard.isStackPlace(target_holder_id)) {
-        let rankRule = (ranks.indexOf(sourceRank)+1) === (ranks.indexOf(targetRank));
-        let suitRule = (suits.indexOf(sourceSuit) + suits.indexOf(targetSuit)) % 2;
+        const rankRule = (ranks.indexOf(sourceRank)+1) === (ranks.indexOf(targetRank));
+        const suitRule = (suits.indexOf(sourceSuit) + suits.indexOf(targetSuit)) % 2;
         result = rankRule && suitRule;
       } else if (constantsBoard.isHomePlace(target_holder_id)) {
-        let rankRule = ranks.indexOf(sourceRank) === (ranks.indexOf(targetRank)+1);
-        let suitRule = sourceSuit === targetSuit;
+        const rankRule = ranks.indexOf(sourceRank) === (ranks.indexOf(targetRank)+1);
+        const suitRule = sourceSuit === targetSuit;
         result = rankRule && suitRule;
       }
     }
@@ -72,8 +72,8 @@ const canAcceptDrop = function(source_card_id, source_holder_id, target_card_id,
 };
 
 const isGameEnd = function(state) {
-  return Object.keys(constantsBoard.cards).every(function(id) {
-    let holderId = selectorsTurn.getHolderId(state.turn, id);
+  return Object.keys(constantsBoard.cards).every((id) => {
+    const holderId = selectorsTurn.getHolderId(state.turn, id);
     return constantsBoard.isHomePlace(holderId);
   });
 };
@@ -82,20 +82,20 @@ const isGameEnd = function(state) {
  * Метод вычисляющий в какой хоум какую карту можно вкинуть.
  */
 const getHomeMap = function(boardState) {
-  let ranks = constantsBoard.ranks.slice().reverse();
-  let freeSuits = constantsBoard.suits.slice();
-  let map = {};
-  constantsBoard.getHomePlaces().forEach(function(place) {
-    let home = boardState.holders.byId[place];
+  const ranks = constantsBoard.ranks.slice().reverse();
+  const freeSuits = constantsBoard.suits.slice();
+  const map = {};
+  constantsBoard.getHomePlaces().forEach((place) => {
+    const home = boardState.holders.byId[place];
     if (home[0] !== undefined) {
       freeSuits.splice(freeSuits.indexOf(home[0][1]), 1);
     }
   });
-  constantsBoard.getHomePlaces().forEach(function(place, index) {
-    let home = boardState.holders.byId[place];
+  constantsBoard.getHomePlaces().forEach((place, index) => {
+    const home = boardState.holders.byId[place];
     // если этот дом еще не заполнен
     if (home.length !== 13) {
-      let last = home[home.length-1];
+      const last = home[home.length-1];
       if (last === undefined) {
         map[index] = 'A'+freeSuits[0];
         freeSuits.splice(0, 1);

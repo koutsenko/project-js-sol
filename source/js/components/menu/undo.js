@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'                ;
 
 import   MenuButton           from 'controls/menu/button' ;
 
-import   actionsGames         from 'actions/games'        ;
+import   actionsGame          from 'actions/game'         ;
 import   constantsGame        from 'constants/game'       ;
 import   selectorsGame        from 'selectors/game'       ;
 
@@ -26,7 +26,7 @@ class ButtonUndo extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game = selectorsGame.getCurrentGame(state.game);
+  const game = selectorsGame.getCurrentGame(state.game);
 
   return {
     disabled: !state.turn.previous || (game.status === constantsGame.gameState.STATE_COMPLETED)
@@ -35,7 +35,7 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    revertTurn: bindActionCreators(actionsGames.revertTurn, dispatch)
+    revertTurn: bindActionCreators(actionsGame.revertTurn, dispatch)
   };
 };
 

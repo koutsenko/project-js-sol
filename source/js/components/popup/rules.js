@@ -8,7 +8,7 @@ import   Popup                from 'controls/popup' ;
 
 class Rules extends React.PureComponent {
   render() {
-    let ps = {textIndent: '1.5em'};
+    const ps = {textIndent: '1.5em'};
     return (
       <Popup role="rules" visible={this.props.rulesVisible} handler={this.props.closeRules} caption="Об игре">
         <p style={ps}>Клондайк, он же косынка - простой пасьянс родом из 90-х. Был создан для обучения работе с мышью, но стал популярен сам по себе!</p>

@@ -51,23 +51,23 @@ class Source extends React.PureComponent {
   }
 
   onDragStart(event) {
-    let id = event.target.dataset['id'];
+    const id = event.target.dataset['id'];
     if (this.props.selected || !constantsBoard.isCard(id) || !toolsRules.isAllowableCard(this.props.turn, id)) {
       interact.stop(event);
       this.props.api.alertFlash(id);
       return;
     }
 
-    let cardIds = selectorsTurn.getChildCards(this.props.turn, id);
+    const cardIds = selectorsTurn.getChildCards(this.props.turn, id);
     // console.log('стартуем драг-н-дроп, двигать будем карты с id', cardIds);
     // eslint-disable-next-line react/no-direct-mutation-state
     this.state.moving = cardIds;
     // eslint-disable-next-line react/no-direct-mutation-state
     this.state.movingEls = {};
-    cardIds.forEach(function(id) {
+    cardIds.forEach((id) => {
       // eslint-disable-next-line react/no-direct-mutation-state
       this.state.movingEls[id] = event.target.parentElement.querySelector('[data-id="' + id + '"]');
-    }.bind(this));
+    });
   }
 
   onDragMove(event) {
@@ -96,13 +96,13 @@ class Source extends React.PureComponent {
   tapHandler(event) {
     if (this.isTappable()) {
       // console.log('source tapped');
-      let id = event.target.dataset['id'];
+      const id = event.target.dataset['id'];
 
       if (constantsBoard.isCard(id)) {
         if (!toolsRules.isAllowableCard(this.props.turn, id)) {
           this.props.api.alertFlash(id);
         } else {
-          let holderId = selectorsTurn.getHolderId(this.props.turn, id);
+          const holderId = selectorsTurn.getHolderId(this.props.turn, id);
           if (holderId === constantsBoard.places.DECK) {
             this.props.api.deckCardClick();
           } else {

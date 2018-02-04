@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'                ;
 
 import   MenuButton           from 'controls/menu/button' ;
 
-import   actionsGames         from 'actions/games'        ;
+import   actionsGame          from 'actions/game'         ;
 import   constantsGame        from 'constants/game'       ;
 import   selectorsGame        from 'selectors/game'       ;
 import   toolsHash            from 'tools/hash'           ;
@@ -35,7 +35,7 @@ class ButtonDeal extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game    = selectorsGame.getCurrentGame(state.game) || {};
+  const game    = selectorsGame.getCurrentGame(state.game) || {};
 
   return {
     disabled: !game.status || (game.status === constantsGame.gameState.STATE_CREATED)
@@ -44,7 +44,7 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    newGame: bindActionCreators(actionsGames.deal, dispatch)
+    newGame: bindActionCreators(actionsGame.deal, dispatch)
   };
 };
 

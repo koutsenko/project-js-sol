@@ -61,8 +61,8 @@ const getStackPlaces = function() {
 const suits = ['H', 'D', 'C', 'S'];
 const ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
 
-const cards = toolsArray.flatten(ranks.map(function(rank) {
-  return suits.map(function(suit) {
+const cards = toolsArray.flatten(ranks.map((rank) => {
+  return suits.map((suit) => {
     return rank+suit;
   });
 }));

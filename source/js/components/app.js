@@ -3,7 +3,7 @@ import   PropTypes            from 'prop-types'               ;
 import { connect }            from 'react-redux'              ;
 import { bindActionCreators } from 'redux'                    ;
 
-import   hashTools            from 'tools/hash'               ;
+import   toolsHash            from 'tools/hash'               ;
 
 import   Board                from 'components/board'         ;
 import   Menu                 from 'components/menu'          ;
@@ -11,7 +11,7 @@ import   Options              from 'components/popup/options' ;
 import   Records              from 'components/popup/records' ;
 import   Rules                from 'components/popup/rules'   ;
 
-import   gameActions          from 'actions/games'            ;
+import   actionsGame          from 'actions/game'             ;
 import   actionsApp           from 'actions/app'              ;
 
 import   selectorsLayout      from 'selectors/layout'         ;
@@ -63,9 +63,9 @@ class App extends React.PureComponent {
   }
 
   hashChangeHander(event) {
-    let oldHash = event.oldURL.split('#')[1];
-    let cmd = hashTools.getHashCmd();
-    let p1 = hashTools.getHashParm();
+    const oldHash = event.oldURL.split('#')[1];
+    const cmd = toolsHash.getHashCmd();
+    const p1 = toolsHash.getHashParm();
     console.log('hash cmd = ', cmd);
     if (cmd === 'dump') {
       this.props.dump();
@@ -114,9 +114,9 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    deal    : bindActionCreators(gameActions.deal, dispatch),
-    dump    : bindActionCreators(gameActions.dump, dispatch),
-    load    : bindActionCreators(gameActions.load, dispatch),
+    deal    : bindActionCreators(actionsGame.deal, dispatch),
+    dump    : bindActionCreators(actionsGame.dump, dispatch),
+    load    : bindActionCreators(actionsGame.load, dispatch),
     resize  : bindActionCreators(actionsApp.resize, dispatch)
   };
 };

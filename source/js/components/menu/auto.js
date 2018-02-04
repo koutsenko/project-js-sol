@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'                ;
 
 import   MenuButton           from 'controls/menu/button' ;
 
-import   actionsGame          from 'actions/games'        ;
+import   actionsGame          from 'actions/game'         ;
 import   constantsGame        from 'constants/game'       ;
 import   selectorsGame        from 'selectors/game'       ;
 import   toolsRules           from 'tools/rules'          ;
@@ -27,7 +27,7 @@ class ButtonAuto extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game = selectorsGame.getCurrentGame(state.game) || {};
+  const game = selectorsGame.getCurrentGame(state.game) || {};
 
   return {
     disabled: (game.status !== constantsGame.gameState.STATE_STARTED) || !toolsRules.canComplete(state)
