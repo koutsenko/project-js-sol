@@ -8,8 +8,8 @@ import   rootMiddleware   from 'middlewares/_root'        ;
 import   rootReducer      from 'reducers/_root'           ;
 import   actionsApp       from 'actions/app'              ;
 import   constantsLayout  from 'constants/layout'         ;
-import   hashTools        from 'tools/hash'               ;
-import   actionsGames     from 'actions/games'            ;
+import   toolsHash        from 'tools/hash'               ;
+import   actionsGame      from 'actions/game'             ;
 
 // import { composeWithDevTools }  from 'redux-devtools-extension' ;
 // const composeEnhancers = composeWithDevTools({
@@ -20,16 +20,16 @@ const store = createStore(rootReducer, rootMiddleware);
 
 // предварительно проведем какую-то работу, еще до этапа рендера
 const initGameState = function() {
-  let cmd = hashTools.getHashCmd();
-  let p1 = hashTools.getHashParm();
+  let cmd = toolsHash.getHashCmd();
+  let p1 = toolsHash.getHashParm();
 
   if (cmd === 'load') {
-    store.dispatch(actionsGames.load(p1));
+    store.dispatch(actionsGame.load(p1));
     window.history.pushState('', '/', window.location.pathname);
   } else if (cmd === 'deal') {
-    store.dispatch(actionsGames.deal(p1 || Date.now()));
+    store.dispatch(actionsGame.deal(p1 || Date.now()));
   } else {
-    store.dispatch(actionsGames.deal(Date.now()));
+    store.dispatch(actionsGame.deal(Date.now()));
   }
 }
 

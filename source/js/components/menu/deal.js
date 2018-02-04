@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'                ;
 
 import   MenuButton           from 'controls/menu/button' ;
 
-import   actionsGames         from 'actions/games'        ;
+import   actionsGame          from 'actions/game'         ;
 import   constantsGame        from 'constants/game'       ;
 import   selectorsGame        from 'selectors/game'       ;
 import   toolsHash            from 'tools/hash'           ;
@@ -44,7 +44,7 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    newGame: bindActionCreators(actionsGames.deal, dispatch)
+    newGame: bindActionCreators(actionsGame.deal, dispatch)
   };
 };
 

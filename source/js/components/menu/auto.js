@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux'                ;
 
 import   MenuButton           from 'controls/menu/button' ;
 
-import   actionsGame          from 'actions/games'        ;
+import   actionsGame          from 'actions/game'         ;
 import   constantsGame        from 'constants/game'       ;
 import   selectorsGame        from 'selectors/game'       ;
 import   toolsRules           from 'tools/rules'          ;
