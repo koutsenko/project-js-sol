@@ -57,7 +57,7 @@ class Target extends React.PureComponent {
   }
 
   updateIds(source_card_id, hovered_id) {
-    let source_holder_id = selectorsTurn.getHolderId(this.props.turn, source_card_id);
+    const source_holder_id = selectorsTurn.getHolderId(this.props.turn, source_card_id);
     let hovered_card_id;
     let target_holder_id;
 
@@ -69,7 +69,7 @@ class Target extends React.PureComponent {
       target_holder_id = hovered_id;
     }
 
-    let target_card_id = selectorsTurn.getLastCard(this.props.turn, target_holder_id);
+    const target_card_id = selectorsTurn.getLastCard(this.props.turn, target_holder_id);
 
     // eslint-disable-next-line react/no-direct-mutation-state
     this.state = {
@@ -90,14 +90,14 @@ class Target extends React.PureComponent {
       return;
     }
 
-    let acceptable = toolsRules.canAcceptDrop(
+    const acceptable = toolsRules.canAcceptDrop(
       this.state.source_card_id   ,
       this.state.source_holder_id ,
       this.state.target_card_id   ,
       this.state.target_holder_id
     );
 
-    let highlight = acceptable ? constantsBoard.highlights.ACCEPT : constantsBoard.highlights.DENY;
+    const highlight = acceptable ? constantsBoard.highlights.ACCEPT : constantsBoard.highlights.DENY;
 
     this.props.api.targetHover(this.state.target_card_id || this.state.target_holder_id, highlight);
   }
@@ -121,7 +121,7 @@ class Target extends React.PureComponent {
       return;
     }
 
-    let acceptable = toolsRules.canAcceptDrop(
+    const acceptable = toolsRules.canAcceptDrop(
       this.state.source_card_id   ,
       this.state.source_holder_id ,
       this.state.target_card_id   ,
@@ -143,13 +143,13 @@ class Target extends React.PureComponent {
   }
 
   handleDoubleClick(event) {
-    let target = event.target;
-    let id = target.dataset['id'];
+    const target = event.target;
+    const id = target.dataset['id'];
     if (!constantsBoard.isCard(id)) {
       return;
     }
 
-    let holderId = selectorsTurn.getHolderId(this.props.turn, id);
+    const holderId = selectorsTurn.getHolderId(this.props.turn, id);
     if (((holderId === constantsBoard.places.OPEN) || constantsBoard.isStackPlace(holderId)) && (selectorsTurn.getChildCards(this.props.turn, id).length===1)) {
       this.props.api.cardDoubleClick(id);
     }
@@ -163,7 +163,7 @@ class Target extends React.PureComponent {
     if (this.isTappable()) {
       console.log('target tapped');
 
-      let source_id = this.props.selected;
+      const source_id = this.props.selected;
 
       this.updateIds(source_id, event.target.dataset['id']);
 

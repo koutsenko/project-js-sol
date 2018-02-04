@@ -6,12 +6,12 @@ import   constantsBoard         from 'constants/board'  ;
 
 const getCardSeeds = createCachedSelector(
   (seed) => seed,
-  function(seed) {
-    let seedFn = function(seed, seedModifier, dispersion) {
+  (seed) => {
+    const seedFn = function(seed, seedModifier, dispersion) {
       return Math.round((seedRandom(seed.toString()+seedModifier)()-0.5) * dispersion);
     }
-    let result = {};
-    constantsBoard.cards.forEach(function(cardId) {
+    const result = {};
+    constantsBoard.cards.forEach((cardId) => {
       result[cardId] = {
         x: seedFn(seed, 'A'+cardId, 9), // это теперь проценты!
         y: seedFn(seed, 'B'+cardId, 9), // это теперь проценты!

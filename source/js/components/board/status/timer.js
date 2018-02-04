@@ -48,7 +48,7 @@ class Timer extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game = gameSelectors.getCurrentGame(state.game);
+  const game = gameSelectors.getCurrentGame(state.game);
 
   return {
     time    : game ? game.time : undefined

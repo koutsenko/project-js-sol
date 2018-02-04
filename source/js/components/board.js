@@ -37,10 +37,11 @@ class Board extends React.PureComponent {
   // Как только в cards появятся ключи, сразу начнутся ремаунты вместо обновлений.
   // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
   buildCards(holderId, source) {
-    return source.map(function(cardId, index) {
-      let flipped = this.props.flipped.byId[holderId];
-      let flips = selectorsTurn.getParentFlips(cardId, source, flipped);
+    return source.map((cardId, index) => {
+      const flipped = this.props.flipped.byId[holderId];
+      const flips = selectorsTurn.getParentFlips(cardId, source, flipped);
       return (
+        // eslint-disable-next-line react/jsx-key
         <Card
           deltas        = {this.props.cardSeeds[cardId]}
           declined      = {this.state.declined === cardId}
@@ -54,7 +55,7 @@ class Board extends React.PureComponent {
           indexInOwner  = {index}
         />
       );
-    }.bind(this));
+    });
   }
 
   buildHolder(id) {
@@ -85,12 +86,12 @@ class Board extends React.PureComponent {
     // WARN Из-за недоработки в preact, вместо ключей используем сортировку по id.
     // Как только в cards появятся ключи, сразу начнутся ремаунты вместо обновлений.
     // Читать https://github.com/developit/preact/issues/797#issuecomment-321514661.
-    let cards = []
+    const cards = []
       .concat(deckCards)
       .concat(openCards)
       .concat(toolsArray.flatten(homesCards))
       .concat(toolsArray.flatten(stacksCards))
-      .sort(function(a, b) {
+      .sort((a, b) => {
         // FIXME Возможно, какая-то проблема preact, проявляется только в работе по file://.
         if (!a.props || !b.props) {
           return a.attributes.id.localeCompare(b.attributes.id);
@@ -102,9 +103,9 @@ class Board extends React.PureComponent {
     /**
      * Данные для передачи в Source/Target-компоненты.
      */
-    let selector = `.${constantsLayout.cardClassName} ,.${constantsLayout.holderClassName}`;
-    let cancelSelector = `#${constantsLayout.boardIdName}`;
-    let sourceAPI = {
+    const selector = `.${constantsLayout.cardClassName} ,.${constantsLayout.holderClassName}`;
+    const cancelSelector = `#${constantsLayout.boardIdName}`;
+    const sourceAPI = {
       // методы надо назвать более APIшно, здесь уже нет кликов/тапов и прочего UI-related
       cardShift     : API.cardShift.bind(this),
       cardUnshift   : API.cardUnshift.bind(this),
@@ -113,7 +114,7 @@ class Board extends React.PureComponent {
       alertFlash    : API.alertFlash.bind(this),
       deckClick     : API.deckClick.bind(this)
     };
-    let targetAPI = {
+    const targetAPI = {
       cardSelectCancel  : API.cardSelectCancel.bind(this),
       cardDoubleClick   : API.cardDoubleClick.bind(this),
       cardMove          : API.cardMove.bind(this),
@@ -124,7 +125,7 @@ class Board extends React.PureComponent {
       targetUnhover     : API.targetUnhover.bind(this),
     };
 
-    let backgroundAPI = {
+    const backgroundAPI = {
       cardSelectCancel  : API.cardSelectCancel.bind(this)
     }
 
@@ -157,7 +158,7 @@ class Board extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game = selectorsGame.getCurrentGame(state.game);
+  const game = selectorsGame.getCurrentGame(state.game);
 
   return {
     cardSeeds       : selectorsGame.getCardSeeds(game.seed),

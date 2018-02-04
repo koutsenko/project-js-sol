@@ -8,14 +8,14 @@ export default function(store) {
 
   return function(next) {
     return function(action) {
-      let returnValue = next(action);
+      const returnValue = next(action);
       switch (action.type) {
         case constantsActions.CARD_BACK_BY_PLAYER:
         case constantsActions.CARD_MOVE_BY_PLAYER:
           if (toolsRules.isGameEnd(getState())) {
-            let state = getState();
-            let gameId = state.game.allIds[state.game.allIds.length-1];
-            let game = state.game.byId[gameId];
+            const state = getState();
+            const gameId = state.game.allIds[state.game.allIds.length-1];
+            const game = state.game.byId[gameId];
             store.dispatch({
               result  : {
                 moves: state.turn.index,

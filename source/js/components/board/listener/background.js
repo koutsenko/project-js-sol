@@ -20,8 +20,8 @@ class Background extends React.PureComponent {
   }
 
   isTappable(element) {
-    let selected = !!this.props.selected;
-    let acceptable = !matches(element, this.props.ignoreSelector);
+    const selected = !!this.props.selected;
+    const acceptable = !matches(element, this.props.ignoreSelector);
 
     return selected && acceptable;
   }

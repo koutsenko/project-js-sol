@@ -5,20 +5,19 @@
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "parserOptions": {
     "ecmaVersion": 7,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
+    "sourceType": "module"
   },
   "rules": {
-    "indent": ["error", 2, {
-      "SwitchCase": 1
+    "indent": ["error", 2, {                    // Табуляция = 2 пробела
+      "SwitchCase": 1                           // Сдвиг case в switch на 1 таб
     }],
-    "eol-last": "error",
-    "no-console": "off",
-    "no-multiple-empty-lines": ["error", {
+    "eol-last": "error",                        // Unix-way trailing newlines
+    "no-console": "off",                        // Пока разрешаем console.log
+    "no-multiple-empty-lines": ["error", {      // Макс. 1 пустая строка подряд
       "max": 1
     }],
-    "no-trailing-spaces": "error"
+    "no-trailing-spaces": "error",              // Необходим trim строк сорцов
+    "prefer-arrow-callback": "error",           // ES6 - Arrow-функции в колбэках
+    "prefer-const": "error"                     // ES6 - const там где возможно
   }
 }

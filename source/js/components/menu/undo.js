@@ -26,7 +26,7 @@ class ButtonUndo extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game = selectorsGame.getCurrentGame(state.game);
+  const game = selectorsGame.getCurrentGame(state.game);
 
   return {
     disabled: !state.turn.previous || (game.status === constantsGame.gameState.STATE_COMPLETED)

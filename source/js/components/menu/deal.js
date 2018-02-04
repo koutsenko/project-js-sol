@@ -35,7 +35,7 @@ class ButtonDeal extends React.PureComponent {
 }
 
 const mapStateToProps = function(state) {
-  let game    = selectorsGame.getCurrentGame(state.game) || {};
+  const game    = selectorsGame.getCurrentGame(state.game) || {};
 
   return {
     disabled: !game.status || (game.status === constantsGame.gameState.STATE_CREATED)

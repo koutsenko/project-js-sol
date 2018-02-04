@@ -8,13 +8,13 @@ export default function(store) {
 
   return function(next) {
     return function(action) {
-      let state = getState();
-      let game = selectorsGame.getCurrentGame(state.game);
+      const state = getState();
+      const game = selectorsGame.getCurrentGame(state.game);
       if ((action.type === constantsActions.CLOSE_RECORDS) && (game.result !== undefined)) {
         console.log('Закрытие таблицы рекордов после окончания игры');
-        let batch = [];
+        const batch = [];
         for (var i = 0; i < 4; i++) {
-          let holder = state.turn.holders.byId['HOME' + (i+1)];
+          const holder = state.turn.holders.byId['HOME' + (i+1)];
           for (var j = holder.length; j > 0; j--) {
             batch.push({
               card_id           : holder[j-1],
@@ -25,8 +25,8 @@ export default function(store) {
           }
         }
 
-        batch.forEach(function(action, index) {
-          let timer = setTimeout(function() {
+        batch.forEach((action, index) => {
+          const timer = setTimeout(() => {
             store.dispatch(action);
 
           }, index*100);
@@ -35,7 +35,7 @@ export default function(store) {
 
       } else if (action.type === constantsActions.GAME_CREATED) {
         // Очищаем анимации, игрок не захотел смотреть на анимацию сбора карт
-        timers.forEach(function(timer) {
+        timers.forEach((timer) => {
           clearTimeout(timer);
         });
       }

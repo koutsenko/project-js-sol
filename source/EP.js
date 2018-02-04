@@ -20,8 +20,8 @@ const store = createStore(rootReducer, rootMiddleware);
 
 // предварительно проведем какую-то работу, еще до этапа рендера
 const initGameState = function() {
-  let cmd = toolsHash.getHashCmd();
-  let p1 = toolsHash.getHashParm();
+  const cmd = toolsHash.getHashCmd();
+  const p1 = toolsHash.getHashParm();
 
   if (cmd === 'load') {
     store.dispatch(actionsGame.load(p1));
@@ -33,7 +33,7 @@ const initGameState = function() {
   }
 }
 
-window.addEventListener('load', function() {
+window.addEventListener('load', () => {
   const parent  = document.querySelector('#'+constantsLayout.rootId);
 
   initGameState();

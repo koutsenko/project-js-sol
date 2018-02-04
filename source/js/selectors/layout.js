@@ -30,8 +30,9 @@ const getMini = (layoutState) => layoutState.mini;
 const getMode = createSelector(
   getW,
   getH,
-  function(w, h) {
-    let mode, AR = w/h;
+  (w, h) => {
+    const AR = w/h;
+    let mode;
 
     if (AR < 3/4) {
       mode = constantsApp.MODES.NARROW;
@@ -52,7 +53,7 @@ const appStyle = createSelector(
   getW,
   getH,
   getMode,
-  function(w, h, mode) {
+  (w, h, mode) => {
     return {
       fontSize: normalize({
         [constantsApp.MODES.NARROW  ]: 2.5*w/100,
@@ -132,17 +133,17 @@ const getStackCardShift = function(id, index, height, flips, mini) {
 
   // иначе если вторая, третья и так далее из всех открытых карт
   // console.log('подсчет для карты ' , cards[index]);
-  let flippedCount = flips.length;
-  let nonFlippedCount = (index + 1) - flippedCount;
+  const flippedCount = flips.length;
+  const nonFlippedCount = (index + 1) - flippedCount;
   // console.log('для холдера ' + holderId + ' кол-во открытых карт равно ' + flippedCount + ', а кол-во закрытых = ' + nonFlippedCount);
 
-  let base = (height/5) * nonFlippedCount;
+  const base = (height/5) * nonFlippedCount;
   // console.log('базовый сдвиг', base);
 
-  let openedIndex = index - nonFlippedCount;
+  const openedIndex = index - nonFlippedCount;
   // console.log('индекс среди сдвинутых открытых карт: ', openedIndex);
 
-  let delta = (height/(mini ? 1.5 : 3)) * openedIndex;
+  const delta = (height/(mini ? 1.5 : 3)) * openedIndex;
   // console.log('значение нарощенной дельты ' + delta);
 
   return base + delta;
@@ -152,14 +153,12 @@ const getHolderStyle = function(w, h, mode, holderId, innerCall) {
   if (!innerCall) {
     console.log(`holder ${holderId}: selector was forced to recalculate style`);
   }
-  let holderLeft    ;
-  let holderTop     ;
 
   let holderMargin  ;
   let holderWidth   ;
   let holderHeight  ;
 
-  let holderCoors = {
+  const holderCoors = {
     [constantsBoard.places.DECK]  : [0, 0],
     [constantsBoard.places.OPEN]  : [1, 0],
     'status'                      : [2, 0],
@@ -187,18 +186,18 @@ const getHolderStyle = function(w, h, mode, holderId, innerCall) {
   } else if (mode === constantsApp.MODES.WIDE) {
     holderWidth = 875*h/100/64;
     holderHeight = 525*h/100/32;
-    let boardWidth = w - h/100*(875/64 + 2*875/512);
+    const boardWidth = w - h/100*(875/64 + 2*875/512);
     holderMargin = (boardWidth - 7*holderWidth)/14;
 
-    let rowWidth  = w - h/100*(875/64 + 2*875/512);
-    let rowMaxW   = 14*(875*h/100/64);
+    const rowWidth  = w - h/100*(875/64 + 2*875/512);
+    const rowMaxW   = 14*(875*h/100/64);
     if (rowWidth > rowMaxW) {
       holderMargin = (rowMaxW - 7*holderWidth)/14;
     }
   }
 
-  holderLeft = holderMargin + holderCoors[0]*(holderWidth + 2*holderMargin);
-  holderTop = holderCoors[1] ? ((1+1/2)*holderHeight) : holderHeight/6;
+  const holderLeft = holderMargin + holderCoors[0]*(holderWidth + 2*holderMargin);
+  const holderTop = holderCoors[1] ? ((1+1/2)*holderHeight) : holderHeight/6;
 
   return {
     height  : normalize(holderHeight),
@@ -213,7 +212,6 @@ const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shif
 
   let cardHeight      ;
   let cardWidth       ;
-  let cardTransform   ;
 
   let x = 0;
   let y = 0;
@@ -238,7 +236,7 @@ const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shif
   x += cardWidth*deltas.x/100;
   y += cardHeight*deltas.y/100;
 
-  let ownerHolderStyle = getHolderStyle(w, h, mode, holderId, true);
+  const ownerHolderStyle = getHolderStyle(w, h, mode, holderId, true);
 
   x +=  denormalize(ownerHolderStyle.left);
   y +=  denormalize(ownerHolderStyle.top);
@@ -247,7 +245,7 @@ const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shif
     y += getStackCardShift(id, index, cardHeight, flips, mini);
   }
 
-  cardTransform = `translate(${x}px,${y}px) rotate(${deltas.r}deg)`;
+  const cardTransform = `translate(${x}px,${y}px) rotate(${deltas.r}deg)`;
 
   return {
     height          : cardHeight,

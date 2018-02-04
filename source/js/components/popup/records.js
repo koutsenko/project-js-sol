@@ -25,7 +25,7 @@ class Records extends React.PureComponent {
       <span key={3} className="time head"   >время   </span> ,
       <br   key={4} />
     ];
-    layout.records = recordsDisplayed.map(function(r, index) {
+    layout.records = recordsDisplayed.map((r, index) => {
       var highlight = this.props.resultIndex === index ? ' your' : '';
       var displayIndex = index + 1;
       return [
@@ -35,8 +35,8 @@ class Records extends React.PureComponent {
         <span key={(index+1)*10+3} className={"time"   + highlight}>{r.time}       </span>  ,
         <br   key={(index+1)*10+4} />
       ];
-    }.bind(this));
-    layout.empties = Array.apply(null, Array(emptiesCount)).map(function(item, index) {
+    });
+    layout.empties = Array.apply(null, Array(emptiesCount)).map((item, index) => {
       var displayIndex = index + 1 + recordsCount;
       return [
         <span key={(index+1)*100+0} className="number">{displayIndex} </span>  ,
@@ -110,7 +110,7 @@ const mapDispatchToProps = function(dispatch) {
 };
 
 const mapStateToProps = function(state) {
-  let game = selectorsGame.getCurrentGame(state.game) || {};
+  const game = selectorsGame.getCurrentGame(state.game) || {};
 
   return {
     recordsCongrats : state.popup.recordsCongrats ,

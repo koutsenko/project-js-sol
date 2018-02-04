@@ -43,7 +43,7 @@ class Options extends React.PureComponent {
   }
 
   applyChanges() {
-    let checked = this.state.dndEnabled;
+    const checked = this.state.dndEnabled;
     if (this.props.dndEnabled !== checked) {
       this.props.toggleDnd(checked);
     }
@@ -52,7 +52,7 @@ class Options extends React.PureComponent {
   }
 
   render() {
-    let ws = {
+    const ws = {
       boxShadow: '0 0 0.2em 0.01em black',
       display: 'inline-block',
       marginRight: '0.25em',

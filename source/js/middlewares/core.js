@@ -21,7 +21,7 @@ export default function(store) {
 
   return function(next) {
     return function(action) {
-      let state = getState();
+      const state = getState();
       if (action.type === constantsActions.CARD_BACK_BY_PLAYER) {
         store.dispatch({
           cards : state.turn.holders.byId[constantsBoard.places.OPEN].slice(),
@@ -29,7 +29,7 @@ export default function(store) {
           type  : constantsActions.CORE_CARD_BACK_BY_PLAYER
         });
       } else if (action.type === constantsActions.CARD_MOVE_BY_ENGINE) {
-        let source_holder_id  = selectorsTurn.getHolderId(state.turn, action.card_id);
+        const source_holder_id  = selectorsTurn.getHolderId(state.turn, action.card_id);
 
         store.dispatch({
           source_holder_id  : source_holder_id,
@@ -39,12 +39,12 @@ export default function(store) {
           type              : constantsActions.CORE_CARD_MOVE_BY_ENGINE
         });
       } else if (action.type === constantsActions.CARD_MOVE_BY_PLAYER) {
-        let actions           = [];
-        let source_holder_id  = selectorsTurn.getHolderId(state.turn, action.card_id);
-        let source_holder     = state.turn.holders.byId[source_holder_id];
+        const actions           = [];
+        const source_holder_id  = selectorsTurn.getHolderId(state.turn, action.card_id);
+        const source_holder     = state.turn.holders.byId[source_holder_id];
         let cards;
 
-        let isOpenToDeck = (source_holder_id === constantsBoard.places.OPEN) && (action.target_holder_id === constantsBoard.places.DECK);
+        const isOpenToDeck = (source_holder_id === constantsBoard.places.OPEN) && (action.target_holder_id === constantsBoard.places.DECK);
         if (isOpenToDeck) {
           // FIXME Это копипаста с кейса CARD_BACK_BY_PLAYER. Нужен рефакторинг.
           store.dispatch({
@@ -70,7 +70,7 @@ export default function(store) {
         });
 
         if (constantsBoard.isStackPlace(source_holder_id) && source_holder.length > cards.length) {
-          let lastStackCardId = source_holder[source_holder.length-cards.length-1];
+          const lastStackCardId = source_holder[source_holder.length-cards.length-1];
           if (!(state.turn.flipped.byId[source_holder_id].indexOf(lastStackCardId)+1)) {
             actions.push({
               cards   : [lastStackCardId],
@@ -80,7 +80,7 @@ export default function(store) {
           }
         }
 
-        actions.forEach(function(action) {
+        actions.forEach((action) => {
           store.dispatch(action);
         }, this);
       }

@@ -26,11 +26,11 @@ class MenuButton extends React.PureComponent {
     this.setState({
       pressed: true
     });
-    setTimeout(function() {
+    setTimeout(() => {
       this.setState({
         pressed: false
       });
-    }.bind(this), 250);
+    }, 250);
     this.props.handler();
   }
 

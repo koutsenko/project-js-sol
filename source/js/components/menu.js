@@ -12,7 +12,7 @@ import   ButtonUndo       from  'components/menu/undo'     ;
 class Menu extends React.PureComponent {
   render() {
     // FIXME придумать другое решение о расчете размеров кнопки исходя из их кол-ва
-    let length = 6;
+    const length = 6;
 
     return (
       <div id="mxwsol-menu" style={this.props.style}>

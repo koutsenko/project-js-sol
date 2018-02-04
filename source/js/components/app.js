@@ -63,9 +63,9 @@ class App extends React.PureComponent {
   }
 
   hashChangeHander(event) {
-    let oldHash = event.oldURL.split('#')[1];
-    let cmd = toolsHash.getHashCmd();
-    let p1 = toolsHash.getHashParm();
+    const oldHash = event.oldURL.split('#')[1];
+    const cmd = toolsHash.getHashCmd();
+    const p1 = toolsHash.getHashParm();
     console.log('hash cmd = ', cmd);
     if (cmd === 'dump') {
       this.props.dump();
