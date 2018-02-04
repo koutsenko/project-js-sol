@@ -2,7 +2,6 @@ import   React            from 'react'                    ;
 import   ReactDOM         from 'react-dom'                ;
 import { Provider }       from 'react-redux'              ;
 import { createStore }    from 'redux'                    ;
-import   MobileDetect     from 'mobile-detect'            ;
 
 import   App              from 'components/app'           ;
 import   rootMiddleware   from 'middlewares/_root'        ;
@@ -17,7 +16,6 @@ import   actionsGames     from 'actions/games'            ;
 //   maxAge: 5000  // 5000 actions in redux-devtools history instead of default 50
 // });
 // const store = createStore(rootReducer, composeEnhancers(rootMiddleware));
-const md    = new MobileDetect(window.navigator.userAgent);
 const store = createStore(rootReducer, rootMiddleware);
 
 // предварительно проведем какую-то работу, еще до этапа рендера
@@ -35,52 +33,14 @@ const initGameState = function() {
   }
 }
 
-let parent  = document.querySelector('#'+constantsLayout.rootId), child;
-const getWHLT = function() {
-  let rect = parent.getBoundingClientRect();
-
-  let w = Math.round(rect.right - rect.left);
-  let h = Math.round(rect.bottom - rect.top);
-  let l = Math.round(rect.left);
-  let t = Math.round(rect.top);
-
-  return {w, h, l, t};
-}
-
-let resizeTimer;
-const windowChangeHandler = function() {
-  child.style.display = "none";
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(function() {
-    child.style.display = "";
-    store.dispatch(actionsApp.resize(md, getWHLT()));
-  }, 200);
-};
-
 window.addEventListener('load', function() {
+  const parent  = document.querySelector('#'+constantsLayout.rootId);
+
   initGameState();
-  store.dispatch(actionsApp.resize(md, getWHLT()));
+  store.dispatch(actionsApp.resize(parent));
   ReactDOM.render((
     <Provider store={store}>
       <App />
     </Provider>
   ), parent);
-
-  child = parent.querySelector('div');
-
-  window.addEventListener('resize', windowChangeHandler.bind(this), {
-    'passive': true
-  });
-  window.addEventListener('scroll', windowChangeHandler.bind(this), {
-    'passive': true
-  });
-
-  // выключаем браузерные жесты на iPhone кроме неотключаемого history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
-  ["gesturestart", "gesturechange", "gestureend", "touchstart", "touchmove", "touchend"].forEach(function(eventName) {
-    child.addEventListener(eventName, function(event) {
-      event.preventDefault();
-    }, {
-      'passive': true
-    });
-  });
 });

@@ -12,12 +12,57 @@ import   Records              from 'components/popup/records' ;
 import   Rules                from 'components/popup/rules'   ;
 
 import   gameActions          from 'actions/games'            ;
+import   actionsApp           from 'actions/app'              ;
 
 import   selectorsLayout      from 'selectors/layout'         ;
 import   constantsLayout      from 'constants/layout'         ;
 
 class App extends React.PureComponent {
-  onHashChange(event) {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      resizing: false
+    };
+
+    this.ref = undefined;
+    this.resizeTimer = undefined;
+    this.getRef = this.getRef.bind(this);
+    this.haltEvent = this.haltEvent.bind(this);
+    this.resizeHandler = this.resizeHandler.bind(this);
+    this.hashChangeHander = this.hashChangeHander.bind(this);
+  }
+
+  componentDidMount() {
+    const passive = true;
+    const bannedEvents = ["gesturestart", "gesturechange", "gestureend", "touchstart", "touchmove", "touchend"];
+
+    // выключаем браузерные жесты на iPhone кроме неотключаемого history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
+    bannedEvents.forEach(function(eventName) {
+      this.ref.addEventListener(eventName, this.haltEvent, { passive });
+    }, this);
+    window.addEventListener('resize', this.resizeHandler, { passive });
+    window.addEventListener('scroll', this.resizeHandler, { passive });
+    window.addEventListener('hashchange', this.onHashChange, { passive });
+  }
+
+  haltEvent(event) {
+    event.preventDefault();
+  }
+
+  resizeHandler() {
+    clearTimeout(this.resizeTimer);
+    this.setState({ resizing: true });
+
+    this.resizeTimer = setTimeout(() => {
+      this.props.resize(this.ref);
+      setTimeout(() => {
+        this.setState({ resizing: false });
+      }, 0);
+    }, 200);
+  }
+
+  hashChangeHander(event) {
     let oldHash = event.oldURL.split('#')[1];
     let cmd = hashTools.getHashCmd();
     let p1 = hashTools.getHashParm();
@@ -35,13 +80,18 @@ class App extends React.PureComponent {
     event.preventDefault();
   }
 
-  componentDidMount() {
-    window.onhashchange = this.onHashChange.bind(this);
+  getRef(element) {
+    this.ref = element;
   }
 
   render() {
+    let className = (this.props.mini ? "mini" : "");
+    if (this.state.resizing) {
+      className += ' resizing';
+    }
+
     return (
-      <div id={constantsLayout.appIdName} style={this.props.style} className={(this.props.mini ? "mini" : "")}>
+      <div ref={this.getRef} id={constantsLayout.appIdName} style={this.props.style} className={className}>
         <Board      />
         <Menu       />
         <div id={constantsLayout.popupsIdName} className={this.props.mask ? 'visible' : null}>
@@ -64,13 +114,15 @@ const mapStateToProps = function(state) {
 
 const mapDispatchToProps = function(dispatch) {
   return {
-    deal: bindActionCreators(gameActions.deal, dispatch),
-    dump: bindActionCreators(gameActions.dump, dispatch),
-    load: bindActionCreators(gameActions.load, dispatch)
+    deal    : bindActionCreators(gameActions.deal, dispatch),
+    dump    : bindActionCreators(gameActions.dump, dispatch),
+    load    : bindActionCreators(gameActions.load, dispatch),
+    resize  : bindActionCreators(actionsApp.resize, dispatch)
   };
 };
 
 App.propTypes = {
+  resize: PropTypes.func,
   dump: PropTypes.func,
   load: PropTypes.func,
   style: PropTypes.object,
