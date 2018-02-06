@@ -11,6 +11,12 @@ import   selectorsGame        from 'selectors/game'       ;
 import   toolsHash            from 'tools/hash'           ;
 
 class ButtonDeal extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.generateNewGame = this.generateNewGame.bind(this);
+  }
+
   generateNewGame() {
     if (toolsHash.getHashCmd() === 'deal') {
       this.props.newGame(toolsHash.getHashParm() || Date.now());
@@ -27,7 +33,7 @@ class ButtonDeal extends React.PureComponent {
         hint="Начать новый расклад, текущий будет закрыт"
         role="btn1"
         text="Разложить"
-        handler={this.generateNewGame.bind(this)}
+        handler={this.generateNewGame}
         disabled={this.props.disabled}
       />
     );

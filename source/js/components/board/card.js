@@ -33,6 +33,12 @@ function buildClassName(props) {
 }
 
 class Card extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.animationCallback = this.animationCallback.bind(this);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.indexInOwner !== this.props.indexInOwner || this.props.ownerId !== nextProps.ownerId) {
       console.log(`изменилось место карты ${this.props.id}: ${this.props.ownerId}:${this.props.indexInOwner} -> ${nextProps.ownerId}:${nextProps.indexInOwner}`);
@@ -60,7 +66,7 @@ class Card extends React.PureComponent {
 
     return (
       <div {...{
-        [eventProp]: this.animationCallback.bind(this)
+        [eventProp]: this.animationCallback
       }}
       className = {className}
       data-id   = {this.props.id}
