@@ -70,16 +70,15 @@ class Board extends React.PureComponent {
   }
 
   render() {
-    var deckCards   = this.buildCards(constantsBoard.places.DECK, this.props.holderCards(constantsBoard.places.DECK));
-    var openCards   = this.buildCards(constantsBoard.places.OPEN, this.props.holderCards(constantsBoard.places.OPEN));
-    var homesCards  = [];
-    var stacksCards = [];
-    var i;
+    const deckCards   = this.buildCards(constantsBoard.places.DECK, this.props.holderCards(constantsBoard.places.DECK));
+    const openCards   = this.buildCards(constantsBoard.places.OPEN, this.props.holderCards(constantsBoard.places.OPEN));
+    const homesCards  = [];
+    const stacksCards = [];
 
-    for (i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 4; i++) {
       homesCards.push(this.buildCards(constantsBoard.places['HOME'+i], this.props.holderCards(constantsBoard.places['HOME'+i])));
     }
-    for (i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 7; i++) {
       stacksCards.push(this.buildCards(constantsBoard.places['STACK'+i], this.props.holderCards(constantsBoard.places['STACK'+i])));
     }
 

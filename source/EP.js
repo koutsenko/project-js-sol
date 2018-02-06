@@ -19,7 +19,7 @@ import   actionsGame      from 'actions/game'             ;
 const store = createStore(rootReducer, rootMiddleware);
 
 // предварительно проведем какую-то работу, еще до этапа рендера
-const initGameState = function() {
+const initGameState = () => {
   const cmd = toolsHash.getHashCmd();
   const p1 = toolsHash.getHashParm();
 

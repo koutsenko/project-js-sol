@@ -8,9 +8,9 @@ export default {
     type: constantsActions.CLOSE_RECORDS
   }),
   write: (record) => (dispatch, getState) => {
-    var state = getState();
-    var isWeak = true;
-    for (var i = 0; i < state.stats.records.length; i++) {
+    const state = getState();
+    let isWeak = true;
+    for (let i = 0; i < state.stats.records.length; i++) {
       if ((state.stats.records[i].moves < record.moves) || ((state.stats.records[i].moves === record.moves) && (state.stats.records[i].time > record.time))) {
         // Побили чей-то рекорд, отправляем заявку
         dispatch({

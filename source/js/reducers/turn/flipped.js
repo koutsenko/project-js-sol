@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import constantsActions from 'constants/actions'    ;
 import constantsBoard   from 'constants/board'      ;
 

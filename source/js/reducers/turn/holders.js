@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import shuffleSeed      from 'knuth-shuffle-seeded' ;
 
 import constantsActions from 'constants/actions'    ;

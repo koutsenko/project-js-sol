@@ -9,15 +9,15 @@ import   selectorsGame        from 'selectors/game'   ;
 
 class Records extends React.PureComponent {
   buildTable() {
-    var records           = this.props.records;
-    var recordsCount      = Math.min(records.length, 5);
-    var recordsDisplayed  = records.slice(0, recordsCount);
-    var emptiesCount      = 5 - records.length;
+    const records           = this.props.records;
+    const recordsCount      = Math.min(records.length, 5);
+    const recordsDisplayed  = records.slice(0, recordsCount);
+    const emptiesCount      = 5 - records.length;
 
     // Собираем верстку таблицы по кусочкам...
     // TODO Жуткие костыли с ключами, временно.
     // TODO Но надо дождаться поддержки <Fragment> в Preact
-    var layout = {};
+    const layout = {};
     layout.head = [
       <span key={0} className="number head" >#       </span> ,
       <span key={1} className="login head"  >игрок   </span> ,
@@ -26,8 +26,8 @@ class Records extends React.PureComponent {
       <br   key={4} />
     ];
     layout.records = recordsDisplayed.map((r, index) => {
-      var highlight = this.props.resultIndex === index ? ' your' : '';
-      var displayIndex = index + 1;
+      const highlight = this.props.resultIndex === index ? ' your' : '';
+      const displayIndex = index + 1;
       return [
         <span key={(index+1)*10+0} className={"number" + highlight}>{displayIndex} </span>  ,
         <span key={(index+1)*10+1} className={"login"  + highlight}>{r.nick}       </span>  ,
@@ -37,7 +37,7 @@ class Records extends React.PureComponent {
       ];
     });
     layout.empties = Array.apply(null, Array(emptiesCount)).map((item, index) => {
-      var displayIndex = index + 1 + recordsCount;
+      const displayIndex = index + 1 + recordsCount;
       return [
         <span key={(index+1)*100+0} className="number">{displayIndex} </span>  ,
         <span key={(index+1)*100+1} className="login" >{"-"}          </span>  ,
@@ -76,7 +76,7 @@ class Records extends React.PureComponent {
   }
 
   buildStats() {
-    var winsPercentage = (this.props.gamesCount === 0) ? 0 : Math.ceil(100 * this.props.winsCount / this.props.gamesCount);
+    const winsPercentage = (this.props.gamesCount === 0) ? 0 : Math.ceil(100 * this.props.winsCount / this.props.gamesCount);
     return (
       <div className="recordstable">
         <span className="key">расклады</span>
