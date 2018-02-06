@@ -25,11 +25,9 @@ class Holder extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state, ownProps) {
-  return {
-    holderStyle: selectorsLayout.holderStyle(ownProps.id, state.fx.layout)
-  };
-};
+const mapStateToProps = (state, ownProps) => ({
+  holderStyle: selectorsLayout.holderStyle(ownProps.id, state.fx.layout)
+});
 
 Holder.propTypes = {
   id              : PropTypes.string.isRequired,

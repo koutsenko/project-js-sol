@@ -2,7 +2,7 @@
  * https://davidwalsh.name/css-animation-callback
  */
 export default {
-  getTransitionEvent: function() {
+  getTransitionEvent: () => {
     var t;
     var el = document.createElement('fakeelement');
     var transitions = {

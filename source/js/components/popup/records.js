@@ -103,13 +103,11 @@ class Records extends React.PureComponent {
   }
 }
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    closeRecords: bindActionCreators(actionsRecords.close, dispatch)
-  }
-};
+const mapDispatchToProps = (dispatch) => ({
+  closeRecords: bindActionCreators(actionsRecords.close, dispatch)
+});
 
-const mapStateToProps = function(state) {
+const mapStateToProps = (state) => {
   const game = selectorsGame.getCurrentGame(state.game) || {};
 
   return {

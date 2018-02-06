@@ -134,8 +134,6 @@ Source.propTypes = {
   turn          : PropTypes.object
 };
 
-const mapStateToProps = function(state) {
-  return state;
-};
+const mapStateToProps = (state) => state;
 
 export default connect(mapStateToProps)(Source);

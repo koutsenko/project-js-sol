@@ -88,19 +88,15 @@ class Options extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
-  return {
-    dndEnabled      : state.fx.dndEnabled,
-    optionsVisible  : state.popup.optionsVisible
-  };
-}
+const mapStateToProps = (state) => ({
+  dndEnabled      : state.fx.dndEnabled,
+  optionsVisible  : state.popup.optionsVisible
+});
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    closeOptions  : bindActionCreators(actions.close      , dispatch),
-    toggleDnd     : bindActionCreators(actions.toggleDnd  , dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  closeOptions  : bindActionCreators(actions.close      , dispatch),
+  toggleDnd     : bindActionCreators(actions.toggleDnd  , dispatch)
+});
 
 Options.propTypes = {
   optionsVisible: PropTypes.bool,

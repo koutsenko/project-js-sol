@@ -1,3 +1,4 @@
+/* eslint-disable func-names */
 import   selectorsTurn  from 'selectors/turn'   ;
 import   toolsRules     from 'tools/rules'      ;
 import   constantsBoard from 'constants/board'  ;

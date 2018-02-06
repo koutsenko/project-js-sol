@@ -1,5 +1,5 @@
 const toolsLayout = {
-  getWHLT: function(el) {
+  getWHLT: (el) => {
     const rect = el.getBoundingClientRect();
 
     const w = Math.round(rect.right - rect.left);

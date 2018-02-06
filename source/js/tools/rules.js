@@ -1,14 +1,12 @@
 import constantsBoard from 'constants/board';
 import selectorsTurn  from 'selectors/turn' ;
 
-const canComplete = function(state) {
-  return !selectorsTurn.getNonDeckCards(state.turn).some((id) => {
-    const holderId = selectorsTurn.getHolderId(state.turn, id);
-    return !!(state.turn.flipped.byId[holderId].indexOf(id)+1);
-  });
-};
+const canComplete = (state) => !selectorsTurn.getNonDeckCards(state.turn).some((id) => {
+  const holderId = selectorsTurn.getHolderId(state.turn, id);
+  return !!(state.turn.flipped.byId[holderId].indexOf(id)+1);
+});
 
-const isAllowableCard = function(boardState, cardId) {
+const isAllowableCard = (boardState, cardId) => {
   const holderId    = selectorsTurn.getHolderId(boardState, cardId);
   const isFlipped   = !!(boardState.flipped.byId[holderId].indexOf(cardId)+1);
   const insideStack = constantsBoard.isStackPlace(holderId);
@@ -20,7 +18,7 @@ const isAllowableCard = function(boardState, cardId) {
 /**
  * Доделать на предмет дропа в OPEN и в DECK
  */
-const canAcceptDrop = function(source_card_id, source_holder_id, target_card_id, target_holder_id) {
+const canAcceptDrop = (source_card_id, source_holder_id, target_card_id, target_holder_id) => {
   let result = false;
 
   const sourceRank = source_card_id[0];
@@ -71,17 +69,15 @@ const canAcceptDrop = function(source_card_id, source_holder_id, target_card_id,
   return result;
 };
 
-const isGameEnd = function(state) {
-  return Object.keys(constantsBoard.cards).every((id) => {
-    const holderId = selectorsTurn.getHolderId(state.turn, id);
-    return constantsBoard.isHomePlace(holderId);
-  });
-};
+const isGameEnd = (state) => Object.keys(constantsBoard.cards).every((id) => {
+  const holderId = selectorsTurn.getHolderId(state.turn, id);
+  return constantsBoard.isHomePlace(holderId);
+});
 
 /**
  * Метод вычисляющий в какой хоум какую карту можно вкинуть.
  */
-const getHomeMap = function(boardState) {
+const getHomeMap = (boardState) => {
   const ranks = constantsBoard.ranks.slice().reverse();
   const freeSuits = constantsBoard.suits.slice();
   const map = {};

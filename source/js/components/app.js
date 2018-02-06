@@ -38,9 +38,9 @@ class App extends React.PureComponent {
     const bannedEvents = ["gesturestart", "gesturechange", "gestureend", "touchstart", "touchmove", "touchend"];
 
     // выключаем браузерные жесты на iPhone кроме неотключаемого history swipe. Это можно было бы сделать через CSS, но сафари не умеет в touch-action: none
-    bannedEvents.forEach(function(eventName) {
+    bannedEvents.forEach((eventName) => {
       this.ref.addEventListener(eventName, this.haltEvent, { passive });
-    }, this);
+    });
     window.addEventListener('resize', this.resizeHandler, { passive });
     window.addEventListener('scroll', this.resizeHandler, { passive });
     window.addEventListener('hashchange', this.onHashChange, { passive });
@@ -104,22 +104,18 @@ class App extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
-  return {
-    style : selectorsLayout.appStyle(state.fx.layout),
-    mini  : state.fx.layout.mini,
-    mask  : state.fx.maskVisible
-  };
-};
+const mapStateToProps = (state) => ({
+  style : selectorsLayout.appStyle(state.fx.layout),
+  mini  : state.fx.layout.mini,
+  mask  : state.fx.maskVisible
+});
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    deal    : bindActionCreators(actionsGame.deal, dispatch),
-    dump    : bindActionCreators(actionsGame.dump, dispatch),
-    load    : bindActionCreators(actionsGame.load, dispatch),
-    resize  : bindActionCreators(actionsApp.resize, dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  deal    : bindActionCreators(actionsGame.deal, dispatch),
+  dump    : bindActionCreators(actionsGame.dump, dispatch),
+  load    : bindActionCreators(actionsGame.load, dispatch),
+  resize  : bindActionCreators(actionsApp.resize, dispatch)
+});
 
 App.propTypes = {
   resize: PropTypes.func,

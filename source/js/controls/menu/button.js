@@ -59,10 +59,8 @@ MenuButton.propTypes = {
   text      : PropTypes.string.isRequired
 };
 
-const mapStateToProps = function(state, ownProps) {
-  return {
-    style : selectorsLayout.menuButtonStyle(state.fx.layout, ownProps.btnCount, ownProps.btnIndex)
-  };
-}
+const mapStateToProps = (state, ownProps) => ({
+  style: selectorsLayout.menuButtonStyle(state.fx.layout, ownProps.btnCount, ownProps.btnIndex)
+});
 
 export default connect(mapStateToProps)(MenuButton);

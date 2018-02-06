@@ -26,7 +26,7 @@ class ButtonAuto extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
+const mapStateToProps = (state) => {
   const game = selectorsGame.getCurrentGame(state.game) || {};
 
   return {
@@ -34,11 +34,9 @@ const mapStateToProps = function(state) {
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    completeGame: bindActionCreators(actionsGame.completeGame, dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  completeGame: bindActionCreators(actionsGame.completeGame, dispatch)
+});
 
 ButtonAuto.propTypes = {
   btnIndex: PropTypes.number,

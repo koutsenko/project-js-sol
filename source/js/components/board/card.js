@@ -8,7 +8,7 @@ import   constantsBoard       from 'constants/board'                  ;
 
 import   toolsAnim            from 'tools/anim'                       ;
 
-function buildClassName(props) {
+const buildClassName = (props) => {
   let className = props.className;
   if (props.shifted) {
     className += ' moving';
@@ -79,22 +79,18 @@ class Card extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state, ownProps) {
-  return {
-    cardStyle : function(componentState) {
-      return selectorsLayout.cardStyle(
-        ownProps.id,
-        ownProps.flips,
-        ownProps.ownerId,
-        ownProps.indexInOwner,
-        state.fx.layout,
-        ownProps.shifted,
-        ownProps.deltas,
-        componentState.positionChanged
-      );
-    }
-  };
-};
+const mapStateToProps = (state, ownProps) => ({
+  cardStyle: (componentState) => selectorsLayout.cardStyle(
+    ownProps.id,
+    ownProps.flips,
+    ownProps.ownerId,
+    ownProps.indexInOwner,
+    state.fx.layout,
+    ownProps.shifted,
+    ownProps.deltas,
+    componentState.positionChanged
+  )
+});
 
 Card.propTypes = {
   declined      : PropTypes.bool.isRequired,

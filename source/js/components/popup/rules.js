@@ -21,17 +21,13 @@ class Rules extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
-  return {
-    rulesVisible: state.popup.rulesVisible
-  };
-}
+const mapStateToProps = (state) => ({
+  rulesVisible: state.popup.rulesVisible
+});
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    closeRules: bindActionCreators(actions.close, dispatch)
-  }
-};
+const mapDispatchToProps = (dispatch) => ({
+  closeRules: bindActionCreators(actions.close, dispatch)
+});
 
 Rules.propTypes = {
   rulesVisible: PropTypes.bool,

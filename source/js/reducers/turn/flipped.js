@@ -69,7 +69,7 @@ export default function(state, action) {
   return state;
 }
 
-const buildFlipped = function() {
+const buildFlipped = () => {
   const flipped = {
     byId    : {},
     allIds  : Object.keys(constantsBoard.places)

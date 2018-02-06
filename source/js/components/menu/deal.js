@@ -40,7 +40,7 @@ class ButtonDeal extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
+const mapStateToProps = (state) => {
   const game    = selectorsGame.getCurrentGame(state.game) || {};
 
   return {
@@ -48,11 +48,9 @@ const mapStateToProps = function(state) {
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    newGame: bindActionCreators(actionsGame.deal, dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  newGame: bindActionCreators(actionsGame.deal, dispatch)
+});
 
 ButtonDeal.propTypes = {
   btnIndex: PropTypes.number,

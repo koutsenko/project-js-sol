@@ -157,28 +157,24 @@ class Board extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
+const mapStateToProps = (state) => {
   const game = selectorsGame.getCurrentGame(state.game);
 
   return {
     cardSeeds       : selectorsGame.getCardSeeds(game.seed),
     flipped         : state.turn.flipped,
-    holderCards     : function(holderId) {
-      return state.turn.holders.byId[holderId]
-    },
+    holderCards     : (holderId) => state.turn.holders.byId[holderId],
     fx              : state.fx,
     turn            : state.turn,
     disabled        : (game === undefined) || !game.controlsEnabled
   };
 }
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    deckCardClick    : bindActionCreators(actionsBoard.deckCardClick     , dispatch),
-    madeMove         : bindActionCreators(actionsBoard.madeMove          , dispatch),
-    deckClick        : bindActionCreators(actionsBoard.deckClick         , dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  deckCardClick    : bindActionCreators(actionsBoard.deckCardClick     , dispatch),
+  madeMove         : bindActionCreators(actionsBoard.madeMove          , dispatch),
+  deckClick        : bindActionCreators(actionsBoard.deckClick         , dispatch)
+});
 
 Board.propTypes = {
   flipped: PropTypes.object,

@@ -23,15 +23,9 @@ class ButtonRecords extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function() {
-  return {};
-};
-
-const mapDispatchToProps = function(dispatch) {
-  return {
-    openRecords: bindActionCreators(actions.open, dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  openRecords: bindActionCreators(actions.open, dispatch)
+});
 
 ButtonRecords.propTypes = {
   btnIndex: PropTypes.number,
@@ -40,4 +34,4 @@ ButtonRecords.propTypes = {
   disabled: PropTypes.bool
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonRecords);
+export default connect(null, mapDispatchToProps)(ButtonRecords);
