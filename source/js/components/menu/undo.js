@@ -25,7 +25,7 @@ class ButtonUndo extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
+const mapStateToProps = (state) => {
   const game = selectorsGame.getCurrentGame(state.game);
 
   return {
@@ -33,11 +33,9 @@ const mapStateToProps = function(state) {
   };
 };
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    revertTurn: bindActionCreators(actionsGame.revertTurn, dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  revertTurn: bindActionCreators(actionsGame.revertTurn, dispatch)
+});
 
 ButtonUndo.propTypes = {
   btnIndex: PropTypes.number,

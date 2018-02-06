@@ -1,5 +1,3 @@
 export default {
-  flatten: function(array2d) {
-    return [].concat.apply([], array2d);
-  }
+  flatten: (array2d) => [].concat.apply([], array2d)
 };

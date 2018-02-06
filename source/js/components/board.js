@@ -70,16 +70,15 @@ class Board extends React.PureComponent {
   }
 
   render() {
-    var deckCards   = this.buildCards(constantsBoard.places.DECK, this.props.holderCards(constantsBoard.places.DECK));
-    var openCards   = this.buildCards(constantsBoard.places.OPEN, this.props.holderCards(constantsBoard.places.OPEN));
-    var homesCards  = [];
-    var stacksCards = [];
-    var i;
+    const deckCards   = this.buildCards(constantsBoard.places.DECK, this.props.holderCards(constantsBoard.places.DECK));
+    const openCards   = this.buildCards(constantsBoard.places.OPEN, this.props.holderCards(constantsBoard.places.OPEN));
+    const homesCards  = [];
+    const stacksCards = [];
 
-    for (i = 1; i <= 4; i++) {
+    for (let i = 1; i <= 4; i++) {
       homesCards.push(this.buildCards(constantsBoard.places['HOME'+i], this.props.holderCards(constantsBoard.places['HOME'+i])));
     }
-    for (i = 1; i <= 7; i++) {
+    for (let i = 1; i <= 7; i++) {
       stacksCards.push(this.buildCards(constantsBoard.places['STACK'+i], this.props.holderCards(constantsBoard.places['STACK'+i])));
     }
 
@@ -157,28 +156,24 @@ class Board extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
+const mapStateToProps = (state) => {
   const game = selectorsGame.getCurrentGame(state.game);
 
   return {
     cardSeeds       : selectorsGame.getCardSeeds(game.seed),
     flipped         : state.turn.flipped,
-    holderCards     : function(holderId) {
-      return state.turn.holders.byId[holderId]
-    },
+    holderCards     : (holderId) => state.turn.holders.byId[holderId],
     fx              : state.fx,
     turn            : state.turn,
     disabled        : (game === undefined) || !game.controlsEnabled
   };
 }
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    deckCardClick    : bindActionCreators(actionsBoard.deckCardClick     , dispatch),
-    madeMove         : bindActionCreators(actionsBoard.madeMove          , dispatch),
-    deckClick        : bindActionCreators(actionsBoard.deckClick         , dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  deckCardClick    : bindActionCreators(actionsBoard.deckCardClick     , dispatch),
+  madeMove         : bindActionCreators(actionsBoard.madeMove          , dispatch),
+  deckClick        : bindActionCreators(actionsBoard.deckClick         , dispatch)
+});
 
 Board.propTypes = {
   flipped: PropTypes.object,

@@ -11,6 +11,13 @@ import   Popup                from 'controls/popup'             ;
 import   actions              from 'actions/options'            ;
 
 class Options extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = this.buildState(props);
+    this.toggleDndState = this.toggleDndState.bind(this);
+  }
+
   componentDidMount() {
     interact(this.applyButton).on('tap', this.applyChanges.bind(this));
   }
@@ -29,11 +36,6 @@ class Options extends React.PureComponent {
     return {
       dndEnabled: props.dndEnabled
     };
-  }
-
-  constructor(props) {
-    super(props);
-    this.setState(this.buildState(props));
   }
 
   toggleDndState() {
@@ -76,7 +78,7 @@ class Options extends React.PureComponent {
         </div>
         <div style={{marginTop: '1.5em', marginBottom: '0.5em'}}>разное</div>
         <hr/>
-        <Checkbox label="перетаскивание карт" checked={this.state.dndEnabled} handler={this.toggleDndState.bind(this)}/>
+        <Checkbox label="перетаскивание карт" checked={this.state.dndEnabled} handler={this.toggleDndState}/>
         <Checkbox label="эффекты анимации" checked={true} disabled={true} handler={()=>null}/>
         <div className="buttonBar">
           <div className="button" ref={(el) => { this.applyButton = el }}>Применить</div>
@@ -86,19 +88,15 @@ class Options extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
-  return {
-    dndEnabled      : state.fx.dndEnabled,
-    optionsVisible  : state.popup.optionsVisible
-  };
-}
+const mapStateToProps = (state) => ({
+  dndEnabled      : state.fx.dndEnabled,
+  optionsVisible  : state.popup.optionsVisible
+});
 
-const mapDispatchToProps = function(dispatch) {
-  return {
-    closeOptions  : bindActionCreators(actions.close      , dispatch),
-    toggleDnd     : bindActionCreators(actions.toggleDnd  , dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  closeOptions  : bindActionCreators(actions.close      , dispatch),
+  toggleDnd     : bindActionCreators(actions.toggleDnd  , dispatch)
+});
 
 Options.propTypes = {
   optionsVisible: PropTypes.bool,

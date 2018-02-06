@@ -4,9 +4,7 @@ import   seedRandom             from 'seed-random'      ;
 
 import   constantsBoard         from 'constants/board'  ;
 
-const seedFn = function(seed, seedModifier, dispersion) {
-  return Math.round((seedRandom(seed.toString()+seedModifier)()-0.5) * dispersion);
-}
+const seedFn = (seed, seedModifier, dispersion) => Math.round((seedRandom(seed.toString()+seedModifier)()-0.5) * dispersion);
 
 const getCardSeeds = createCachedSelector(
   (seed) => seed,

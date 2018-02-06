@@ -18,6 +18,8 @@
     }],
     "no-trailing-spaces": "error",              // Необходим trim строк сорцов
     "prefer-arrow-callback": "error",           // ES6 - Arrow-функции в колбэках
-    "prefer-const": "error"                     // ES6 - const там где возможно
+    "prefer-const": "error",                    // ES6 - const там где возможно
+    "func-names": "error",                      // ES6 - поиск не-arrow ф-ций
+    "no-var": "error"                           // ES6 - только const и let
   }
 }

@@ -24,15 +24,9 @@ class ButtonRules extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function() {
-  return {};
-};
-
-const mapDispatchToProps = function(dispatch) {
-  return {
-    openRules: bindActionCreators(actions.open, dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  openRules: bindActionCreators(actions.open, dispatch)
+});
 
 ButtonRules.propTypes = {
   btnIndex: PropTypes.number,
@@ -41,4 +35,4 @@ ButtonRules.propTypes = {
   disabled: PropTypes.bool
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonRules);
+export default connect(null, mapDispatchToProps)(ButtonRules);

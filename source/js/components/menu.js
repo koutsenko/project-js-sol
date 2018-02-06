@@ -27,12 +27,10 @@ class Menu extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
-  return {
-    style  : selectorsLayout.menuStyle(6, state.fx.layout),
-    layout : state.fx.layout
-  };
-}
+const mapStateToProps = (state) => ({
+  style  : selectorsLayout.menuStyle(6, state.fx.layout),
+  layout : state.fx.layout
+});
 
 Menu.propTypes = {
   style: PropTypes.object

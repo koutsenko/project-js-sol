@@ -10,12 +10,8 @@ import   constantsBoard       from 'constants/board'  ;
  * Возможно, не обязательны, так как 'px' и так добавляется по-умолчанию.
  * Но - явное лучше неявного.
  */
-const normalize = function(value) {
-  return value !== null ? (Math.round(value) + 'px') : value;
-}
-const denormalize = function(value) {
-  return value !== null ? (parseInt(value.substr(0, value.length-2))) : value;
-}
+const normalize = (value) => value !== null ? (Math.round(value) + 'px') : value;
+const denormalize = (value) => value !== null ? (parseInt(value.substr(0, value.length-2))) : value;
 
 /**
  * Простые input-селекторы
@@ -125,7 +121,7 @@ const menuButtonStyle = createCachedSelector(
 /**
  * "Тяжелые вычисления"
  */
-const getStackCardShift = function(id, index, height, flips, mini) {
+const getStackCardShift = (id, index, height, flips, mini) => {
   // если карта закрытая или первая открытая, тупо возвращаем как раньше
   if (!(flips.indexOf(id)+1) || index === 0) {
     return (height/5) * index;
@@ -149,7 +145,7 @@ const getStackCardShift = function(id, index, height, flips, mini) {
   return base + delta;
 }
 
-const getHolderStyle = function(w, h, mode, holderId, innerCall) {
+const getHolderStyle = (w, h, mode, holderId, innerCall) => {
   if (!innerCall) {
     console.log(`holder ${holderId}: selector was forced to recalculate style`);
   }
@@ -207,7 +203,7 @@ const getHolderStyle = function(w, h, mode, holderId, innerCall) {
   };
 };
 
-const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated) {
+const getCardStyle = (id, w, h, mode, mini, index, flips, holderId, shifted, deltas, animated) => {
   console.log(`card ${id}: selector was forced to recalculate style`);
 
   let cardHeight      ;
@@ -256,7 +252,7 @@ const getCardStyle = function(id, w, h, mode, mini, index, flips, holderId, shif
   };
 };
 
-const getMenuStyle = function(w, h, mode, btnCount) {
+const getMenuStyle = (w, h, mode, btnCount) => {
   console.log(`menu: selector was forced to recalculate card style`);
   let fontSize    ;
   let menuWidth   ; // вычисляется первым... поэтому для красоты не по алфавиту
@@ -304,7 +300,7 @@ const getMenuStyle = function(w, h, mode, btnCount) {
   };
 };
 
-const getMenuButtonStyle = function(w, h, mode, btnCount, btnIndex) {
+const getMenuButtonStyle = (w, h, mode, btnCount, btnIndex) => {
   console.log(`menu button index ${btnIndex}: selector was forced to recalculate style`);
   let menuButtonSide    ;
   let menuButtonMargin  ;

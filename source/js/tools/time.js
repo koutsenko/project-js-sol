@@ -3,7 +3,7 @@ export default {
    * Перевод прошедшего UNIX времени в виде "00:00", для отображения в таймере
    * Второй параметр обычно Date.now
    */
-  calculateElapsedTime: function(startTime, endTime) {
+  calculateElapsedTime: (startTime, endTime) => {
     const elapsedSeconds  = Math.floor((endTime - startTime)/1000);
     const elapsedMinutes  = Math.floor(elapsedSeconds/60);
 
@@ -17,14 +17,14 @@ export default {
    * Получение актуального UNIX времени старта, для загрузки сохраненки
    * Первый параметр обычно Date.now
    */
-  calculateUnixTimeBefore: function(currentUnix, elapsedSeconds) {
+  calculateUnixTimeBefore: (currentUnix, elapsedSeconds) => {
     return currentUnix - elapsedSeconds*1000;
   },
   /**
    * Перевод прошедшего UNIX времени в кол-во секунд, для выгрузки в сохраненку
    * Второй параметр обычно Date.now
    */
-  calculateElapsedSeconds: function(startTime, endTime) {
+  calculateElapsedSeconds: (startTime, endTime) => {
     return Math.floor((endTime - startTime)/1000);
   }
 }

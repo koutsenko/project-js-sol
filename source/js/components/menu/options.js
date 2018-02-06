@@ -23,15 +23,9 @@ class ButtonOptions extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function() {
-  return {};
-};
-
-const mapDispatchToProps = function(dispatch) {
-  return {
-    openOptions: bindActionCreators(actions.open, dispatch)
-  };
-};
+const mapDispatchToProps = (dispatch) => ({
+  openOptions: bindActionCreators(actions.open, dispatch)
+});
 
 ButtonOptions.propTypes = {
   btnIndex: PropTypes.number,
@@ -40,4 +34,4 @@ ButtonOptions.propTypes = {
   disabled: PropTypes.bool
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ButtonOptions);
+export default connect(null, mapDispatchToProps)(ButtonOptions);

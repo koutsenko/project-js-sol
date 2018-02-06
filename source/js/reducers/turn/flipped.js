@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import constantsActions from 'constants/actions'    ;
 import constantsBoard   from 'constants/board'      ;
 
@@ -69,7 +70,7 @@ export default function(state, action) {
   return state;
 }
 
-const buildFlipped = function() {
+const buildFlipped = () => {
   const flipped = {
     byId    : {},
     allIds  : Object.keys(constantsBoard.places)

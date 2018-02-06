@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import tsRandom         from 'uuid/v1'            ;
 
 import constantsActions from 'constants/actions'  ;

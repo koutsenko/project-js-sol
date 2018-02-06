@@ -8,7 +8,7 @@ import   constantsBoard       from 'constants/board'                  ;
 
 import   toolsAnim            from 'tools/anim'                       ;
 
-function buildClassName(props) {
+const buildClassName = (props) => {
   let className = props.className;
   if (props.shifted) {
     className += ' moving';
@@ -33,6 +33,12 @@ function buildClassName(props) {
 }
 
 class Card extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.animationCallback = this.animationCallback.bind(this);
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.indexInOwner !== this.props.indexInOwner || this.props.ownerId !== nextProps.ownerId) {
       console.log(`изменилось место карты ${this.props.id}: ${this.props.ownerId}:${this.props.indexInOwner} -> ${nextProps.ownerId}:${nextProps.indexInOwner}`);
@@ -60,7 +66,7 @@ class Card extends React.PureComponent {
 
     return (
       <div {...{
-        [eventProp]: this.animationCallback.bind(this)
+        [eventProp]: this.animationCallback
       }}
       className = {className}
       data-id   = {this.props.id}
@@ -73,22 +79,18 @@ class Card extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state, ownProps) {
-  return {
-    cardStyle : function(componentState) {
-      return selectorsLayout.cardStyle(
-        ownProps.id,
-        ownProps.flips,
-        ownProps.ownerId,
-        ownProps.indexInOwner,
-        state.fx.layout,
-        ownProps.shifted,
-        ownProps.deltas,
-        componentState.positionChanged
-      );
-    }
-  };
-};
+const mapStateToProps = (state, ownProps) => ({
+  cardStyle: (componentState) => selectorsLayout.cardStyle(
+    ownProps.id,
+    ownProps.flips,
+    ownProps.ownerId,
+    ownProps.indexInOwner,
+    state.fx.layout,
+    ownProps.shifted,
+    ownProps.deltas,
+    componentState.positionChanged
+  )
+});
 
 Card.propTypes = {
   declined      : PropTypes.bool.isRequired,

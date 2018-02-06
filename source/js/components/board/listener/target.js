@@ -195,9 +195,7 @@ class Target extends React.PureComponent {
   }
 }
 
-const mapStateToProps = function(state) {
-  return state;
-};
+const mapStateToProps = (state) => state;
 
 Target.propTypes = {
   selected      : PropTypes.string,  /** Ранее выбранные source-цели, нужны для обработчика тапов */

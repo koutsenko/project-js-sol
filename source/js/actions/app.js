@@ -6,7 +6,7 @@ const md = new MobileDetect(window.navigator.userAgent);
 const isPhone = md.phone();
 
 export default {
-  resize: function(el) {
+  resize: (el) => {
     const size = toolsLayout.getWHLT(el);
 
     return {

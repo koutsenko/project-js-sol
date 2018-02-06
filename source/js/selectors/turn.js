@@ -40,10 +40,10 @@ const getHolderId       = createSelector(
   (boardState)          => boardState ,
   (boardState, cardId)  => cardId     ,
   (boardState, cardId) => {
-    var holderIds = boardState.holders.allIds;
-    var holderId;
+    const holderIds = boardState.holders.allIds;
+    let holderId;
 
-    for (var i = 0; i < holderIds.length; i++) {
+    for (let i = 0; i < holderIds.length; i++) {
       if (boardState.holders.byId[holderIds[i]].indexOf(cardId)+1) {
         holderId = holderIds[i];
         break;

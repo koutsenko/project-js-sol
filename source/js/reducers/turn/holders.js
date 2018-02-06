@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import shuffleSeed      from 'knuth-shuffle-seeded' ;
 
 import constantsActions from 'constants/actions'    ;
@@ -49,7 +50,7 @@ export default function(state, action) {
   return state;
 }
 
-const buildHolders = function(seed) {
+const buildHolders = (seed) => {
   const holders = {
     byId    : {},
     allIds  : Object.keys(constantsBoard.places)
