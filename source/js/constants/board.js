@@ -45,11 +45,7 @@ const getStackPlaces = () => [
 const suits = ['H', 'D', 'C', 'S'];
 const ranks = ['A', 'K', 'Q', 'J', '=', '9', '8', '7', '6', '5', '4', '3', '2'];
 
-const cards = toolsArray.flatten(ranks.map((rank) => {
-  return suits.map((suit) => {
-    return rank+suit;
-  });
-}));
+const cards = toolsArray.flatten(ranks.map((rank) => suits.map((suit) => rank+suit)));
 
 const ranksL2H = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '=', 'J', 'Q', 'K'];
 

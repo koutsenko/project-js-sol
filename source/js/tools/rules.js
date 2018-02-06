@@ -1,9 +1,9 @@
 import constantsBoard from 'constants/board';
 import selectorsTurn  from 'selectors/turn' ;
 
-const canComplete = (state) => !selectorsTurn.getNonDeckCards(state.turn).some((id) => {
+const canComplete = (state) => selectorsTurn.getNonDeckCards(state.turn).every((id) => {
   const holderId = selectorsTurn.getHolderId(state.turn, id);
-  return !!(state.turn.flipped.byId[holderId].indexOf(id)+1);
+  return state.turn.flipped.byId[holderId].indexOf(id) !== -1;
 });
 
 const isAllowableCard = (boardState, cardId) => {
@@ -69,9 +69,13 @@ const canAcceptDrop = (source_card_id, source_holder_id, target_card_id, target_
   return result;
 };
 
-const isGameEnd = (state) => Object.keys(constantsBoard.cards).every((id) => {
+const isGameEnd = (state) => constantsBoard.cards.every((id) => {
   const holderId = selectorsTurn.getHolderId(state.turn, id);
-  return constantsBoard.isHomePlace(holderId);
+  const isHomePlace = constantsBoard.isHomePlace(holderId);
+  if (!isHomePlace) {
+    console.log('not home place for ', id);
+  }
+  return isHomePlace;
 });
 
 /**

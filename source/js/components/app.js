@@ -43,7 +43,7 @@ class App extends React.PureComponent {
     });
     window.addEventListener('resize', this.resizeHandler, { passive });
     window.addEventListener('scroll', this.resizeHandler, { passive });
-    window.addEventListener('hashchange', this.onHashChange, { passive });
+    window.addEventListener('hashchange', this.hashChangeHander, { passive });
   }
 
   haltEvent(event) {
