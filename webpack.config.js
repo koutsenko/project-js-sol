@@ -8,6 +8,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = function(env) {
   var config = {
+    mode: env.prod ? 'production' : 'development',
     resolve: {
       modules: [
         path.join(__dirname, 'source', 'js'),
